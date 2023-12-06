@@ -85,8 +85,7 @@ li {
 }
 
 /* make the portfolio link blue when you're on the portfolio page */
-#portfolio-link a:link,
-a:visited {
+#portfolio-link a {
     background-color: #004691;
 }
 
