@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-ca">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="initial-scale=1.0, width=device-width">
+        <title>About Me - Aaryn Xie</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Glass+Antiqua|Zeyada">
+    </head>
+
+    <body>
+        <div class="website" id="aboutme">
+            <!--this is my header-->
+            <div class="header">
+                <img id="header-background" src="photos/headerbg.png"
+                    alt="the header background: a white bar with colourful splashes of blue and purple">
+                <a class="home-button" href="home.html"><img src="photos/headerhome.png"
+                        alt="the home button: 3 sparkles" /></a>
+                <div class="nav">
+                    <ul>
+                        <!--the id invokes the css that indicates we're on the about me page-->
+                        <li><span class="aboutme" id="aboutme-link"><a href="aboutme.html">About Me</a></span> </li>
+                        <li><span class="portfolio"><a href="portfolio.html">Portfolio</a></span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                <!--this is the top section of my about me page, displaying an image of myself and a short biography-->
+                <div class="aboutme-top">
+                    <img id="aboutme-background1" src="photos/aboutme/aboutmebg1.png"
+                        alt="the top about me background: a black background on top with a blue swirl">
+                    <!--the image of myself-->
+                    <div class="left-column">
+                        <img id="aboutme-profile" src="photos/aboutme/portraitpicture.png"
+                            alt="a shoulder up portrait picture of me">
+                    </div>
+                    <!--the short biography-->
+                    <div class="right-column">
+                        <h1 class="title">Hello,</h1>
+                        <p class="introduction">I'm Aaryn Xie. I'm a graphic designer and illustrator based in Canada. I'm
+                            currently in my second year of Global Business and Digital Arts at the University of Waterloo.
+                            Through my art, I hope to bring more hope and life to this world. I am passionate about
+                            connecting people through storytelling in my art. I am especially interested in finding the
+                            beauty in the mundane things in life.
+                            <br><br>When I'm not drawing, I can be found learning about the different
+                            languages and cultures around the world.
+                        </p>
+                        <img id="signature" src="photos/aboutme/signature.png" alt="my signature, Aaryn Xie">
+                    </div>
+                </div>
+                <!--the bottom half of my about me page, displaying a table of my education experience and a contact me form-->
+                <div class="aboutme-bottom">
+                    <img id="aboutme-background2" src="photos/aboutme/aboutmebg2.png"
+                        alt="the bottom about me background: a dark blue background fading into turquoise">
+                    <!--the table of my education of experience, including my high school and my university-->
+                    <div class="education-background">
+                        <h1 class="title">Education</h1>
+                        <table>
+                            <tr>
+                                <th style="width:20%">Year</th>
+                                <th>Education</th>
+                                <th>Description</th>
+                            </tr>
+                            <tr>
+                                <td>Sep 2018 - Jun 2022</td>
+                                <td>Unionville High School</td>
+                                <td>I was in the specialized arts program at Unionville High School. I studied visual arts
+                                    intensively during the 4 years I spent there. I explored different mediums, themes, and
+                                    techniques in my art.</td>
+                            </tr>
+                            <tr>
+                                <td>Sep 2022 - Present</td>
+                                <td>University of Waterloo</td>
+                                <td>I'm studying in the Global Business and Digital Arts program. During my time there, I've
+                                    expanded my skills and horizons as a designer.</td>
+                            </tr>
+                            <tr>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--the contact me form, which asks the user for their full nme, email, and a short message-->
+                    <div class="contactme-form">
+                        <h1 class="title" id="contactme">Contact Me</h1>
+                        <form action="/action_page.php" id="contact-form">
+                            <label for="fullname">Full Name</label><br>
+                            <input type="text" id="fullname" name="fullname" placeholder="Your full name"><br>
+                            <label for="lname">Email</label><br>
+                            <input type="text" id="email" name="email" placeholder="Your email address"><br>
+                            <label for="message">Subject</label><br>
+                            <textarea name="message" rows="5" placeholder="Write something..."></textarea><br>
+                            <input type="submit" value="Submit">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--this is my footer-->
+            <div class="footer">
+                <p>©2023 Aaryn Xie</p>
+                <div class="footer-images">
+                    <a href="mailto:a34xie@uwaterloo.ca"><img src="photos/email logo.png" alt="email logo"></a>
+                    <a target="_blank" href="https://www.instagram.com/rynn.illust/"><img src="photos/instagram logo.png"
+                            alt="instagram logo"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
