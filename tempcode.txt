@@ -1,0 +1,71 @@
+let player;
+let trees = [];
+
+function setup() {
+  createCanvas(400, 400);
+  
+  player = { x: 20, y: 20, w: 10, h: 10 };
+  
+  // Create 10 trees at different y levels
+  for (let i = 0; i < 10; i++) {
+    trees.push({ x: random(50, 350), y: random(50, 350), w: 10, h: 30 });
+  }
+}
+
+function draw() {
+  background(220);
+  handleMovement();
+  
+  // Sort objects by y position for correct layering
+  let allObjects = [...trees, player];
+  allObjects.sort((a, b) => (a.y + a.h) - (b.y + b.h));
+  
+  for (let obj of allObjects) {
+    if (obj === player) {
+      drawPlayer();
+    } else {
+      drawTree(obj);
+    }
+  }
+}
+
+function drawTree(tree) {
+  fill(0, 200, 0);
+  rect(tree.x, tree.y, tree.w, tree.h);
+}
+
+function drawPlayer() {
+  fill(0, 0, 255);
+  rect(player.x, player.y, player.w, player.h);
+}
+
+function handleMovement() {
+  let speed = 2;
+  let newX = player.x;
+  let newY = player.y;
+
+  if (keyIsDown(LEFT_ARROW)) newX -= speed;
+  if (keyIsDown(RIGHT_ARROW)) newX += speed;
+  if (keyIsDown(UP_ARROW)) newY -= speed;
+  if (keyIsDown(DOWN_ARROW)) newY += speed;
+
+  let canMove = true;
+
+  for (let tree of trees) {
+    if (
+      newX + player.w > tree.x &&
+      newX < tree.x + tree.w &&
+      newY + player.h > tree.y &&
+      newY < tree.y + tree.h
+    ) {
+      if (!(newY + player.h < tree.y + tree.h- player.h || newY > tree.y +tree.h- player.h)) {
+        canMove = false;
+      }
+    }
+  }
+
+  if (canMove) {
+    player.x = newX;
+    player.y = newY;
+  }
+}
