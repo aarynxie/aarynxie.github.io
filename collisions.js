@@ -32,6 +32,7 @@ let envObj = [
   [
     // room 2
     { x: 0, y: 0, type: "TREE_BIG" },
+    { x: 0, y: 200, type: "TREE_SMALL" },
   ],
 ];
 let envObjCurrent = [...envObj];
@@ -80,7 +81,7 @@ function initializeCols() {
     for (let j = 0; j < room.length; j++) {
       let env = room[j];
 
-      if (env.type === "TREE_BIG") {
+      if (env.type == "TREE_BIG") {
         obstacles[i].push({ x: 65 + env.x, y: 27 + env.y, w: 66, h: 119 });
         obstacles[i].push({ x: 42 + env.x, y: 52 + env.y, w: 29, h: 31 });
         obstacles[i].push({ x: 87 + env.x, y: 8 + env.y, w: 82, h: 31 });
@@ -89,6 +90,19 @@ function initializeCols() {
         obstacles[i].push({ x: 254 + env.x, y: 73 + env.y, w: 31, h: 54 });
         obstacles[i].push({ x: 173 + env.x, y: 49 + env.y, w: 78, h: 98 });
         obstacles[i].push({ x: 119 + env.x, y: 25 + env.y, w: 60, h: 150 });
+      } else if (env.type == "TREE_SMALL") {
+        obstacles[i].push({ x: 149 + env.x, y: 91 + env.y, w: 9, h: 20 });
+        obstacles[i].push({ x: 41 + env.x, y: 31 + env.y, w: 13, h: 10 });
+        obstacles[i].push({ x: 19 + env.x, y: 67 + env.y, w: 12, h: 13 });
+        obstacles[i].push({ x: 149 + env.x, y: 111 + env.y, w: 18, h: 30 });
+        obstacles[i].push({ x: 138 + env.x, y: 36 + env.y, w: 11, h: 109 });
+        obstacles[i].push({ x: 120 + env.x, y: 17 + env.y, w: 18, h: 128 });
+        obstacles[i].push({ x: 106 + env.x, y: 9 + env.y, w: 14, h: 136 });
+        obstacles[i].push({ x: 8 + env.x, y: 80 + env.y, w: 23, h: 65 });
+        obstacles[i].push({ x: 31 + env.x, y: 41 + env.y, w: 23, h: 104 });
+        obstacles[i].push({ x: 54 + env.x, y: 12 + env.y, w: 29, h: 133 });
+        obstacles[i].push({ x: 83 + env.x, y: 1 + env.y, w: 23, h: 161 });
+      } else if (env.type == "BUSH_BIG") {
       }
     }
   }
@@ -130,6 +144,8 @@ function backgroundDrawCols() {
   for (let env of envObjCurrent) {
     if (env.type == "TREE_BIG") {
       image(envObjImage[0], env.x, env.y);
+    } else if (env.type == "TREE_SMALL") {
+      image(envObjImage[1], env.x, env.y);
     }
   }
   noStroke();
