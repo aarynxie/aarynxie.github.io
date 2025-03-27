@@ -100,7 +100,7 @@ function setNewRoom() {
     );
     changeDirection = direction;
     if (changeDirection == "DOWN") {
-      currentRoom = 2;
+      nextRoom = 2;
       changingRooms = true;
     }
     // set the sticks
@@ -113,11 +113,11 @@ function setNewRoom() {
     let [direction, isChanging] = changeRoomDirection(true, false, false, true); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "RIGHT") {
-      currentRoom = 2;
+      nextRoom = 2;
       changingRooms = true;
     }
     if (changeDirection == "DOWN") {
-      currentRoom = 4;
+      nextRoom = 4;
       changingRooms = true;
     }
     // set the sticks
@@ -131,30 +131,30 @@ function setNewRoom() {
     let [direction, isChanging] = changeRoomDirection(true, true, true, true); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "UP") {
-      currentRoom = 0;
+      nextRoom = 0;
       changingRooms = true;
     }
     if (changeDirection == "LEFT") {
-      currentRoom = 1;
+      nextRoom = 1;
       changingRooms = true;
     }
     if (changeDirection == "RIGHT") {
-      currentRoom = 3;
+      nextRoom = 3;
       changingRooms = true;
     }
     if (changeDirection == "DOWN") {
-      currentRoom = 5;
+      nextRoom = 5;
       changingRooms = true;
     }
   } else if (currentRoom == 3) {
     let [direction, isChanging] = changeRoomDirection(true, false, true, false); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "LEFT") {
-      currentRoom = 2;
+      nextRoom = 2;
       changingRooms = true;
     }
     if (changeDirection == "DOWN") {
-      currentRoom = 6;
+      nextRoom = 6;
       changingRooms = true;
     }
   } else if (currentRoom == 4) {
@@ -167,15 +167,15 @@ function setNewRoom() {
     );
     changeDirection = direction;
     if (changeDirection == "RIGHT") {
-      currentRoom = 5;
+      nextRoom = 5;
       changingRooms = true;
     }
     if (changeDirection == "UP") {
-      currentRoom = 1;
+      nextRoom = 1;
       changingRooms = true;
     }
     if (changeDirection == "DOWN") {
-      currentRoom = 8;
+      nextRoom = 8;
       changingRooms = true;
     }
     // set the sticks
@@ -189,44 +189,44 @@ function setNewRoom() {
     let [direction, isChanging] = changeRoomDirection(false, true, true, true); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "UP") {
-      currentRoom = 2;
+      nextRoom = 2;
       changingRooms = true;
     }
     if (changeDirection == "LEFT") {
-      currentRoom = 4;
+      nextRoom = 4;
       changingRooms = true;
     }
     if (changeDirection == "RIGHT") {
-      currentRoom = 6;
+      nextRoom = 6;
       changingRooms = true;
     }
   } else if (currentRoom == 6) {
     let [direction, isChanging] = changeRoomDirection(false, true, true, false); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "LEFT") {
-      currentRoom = 5;
+      nextRoom = 5;
       changingRooms = true;
     }
     if (changeDirection == "UP") {
-      currentRoom = 3;
+      nextRoom = 3;
       changingRooms = true;
     }
   } else if (currentRoom == 7) {
     let [direction, isChanging] = changeRoomDirection(true, false, false, true); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "DOWN") {
-      currentRoom = 9;
+      nextRoom = 9;
       changingRooms = true;
     }
     if (changeDirection == "RIGHT") {
-      currentRoom = 8;
+      nextRoom = 8;
       changingRooms = true;
     }
   } else if (currentRoom == 8) {
     let [direction, isChanging] = changeRoomDirection(true, true, true, false); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "DOWN") {
-      currentRoom = 10;
+      nextRoom = 10;
       changingRooms = true;
     }
     if (changeDirection == "LEFT") {
@@ -234,65 +234,63 @@ function setNewRoom() {
       changingRooms = true;
     }
     if (changeDirection == "UP") {
-      currentRoom = 4;
+      nextRoom = 4;
       changingRooms = true;
     }
   } else if (currentRoom == 9) {
     let [direction, isChanging] = changeRoomDirection(false, true, false, true); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "RIGHT") {
-      currentRoom = 10;
+      nextRoom = 10;
       changingRooms = true;
     }
     if (changeDirection == "UP") {
-      currentRoom = 7;
+      nextRoom = 7;
       changingRooms = true;
     }
   } else if (currentRoom == 10) {
     let [direction, isChanging] = changeRoomDirection(false, true, true, false); //down, up, left, right
     changeDirection = direction;
     if (changeDirection == "LEFT") {
-      currentRoom = 9;
+      nextRoom = 9;
       changingRooms = true;
     }
     if (changeDirection == "UP") {
-      currentRoom = 8;
+      nextRoom = 8;
       changingRooms = true;
     }
   }
   if (changingRooms) {
-    fadingIn = true;
-    roomReset();
+    fadingOut = true;
   }
 }
-let nextRoom;
+let nextRoom = 0;
 
 function fadingTransition() {
   if (fadingIn) {
-    alphaValue += 2; // Slow fade-in
-    if (alphaValue >= 255) {
-      alphaValue = 255;
-      fadingIn = false; // Stop fade-in
+    alphaValue -= 15;
+    if (alphaValue <= 0) {
+      alphaValue = 0;
+      fadingIn = false;
     }
   }
   // Handle Fade-Out Effect
   if (fadingOut) {
-    alphaValue -= 2; // Slow fade-out
-    if (alphaValue <= 0) {
-      alphaValue = 0;
+    alphaValue += 15;
+    if (alphaValue >= 255) {
+      alphaValue = 255;
       fadingOut = false;
 
       // Change game state after fade-out completes
-      if (gameState === "playing") {
-        gameState = "gameOver";
-        fadingIn = true; // Start fade-in for new state
-      } else if (gameState === "gameOver") {
-        gameState = "menu"; // Properly reset to menu
-        alphaValue = 0; // Reset opacity for menu fade-in
-        fadingIn = true; // Start fade-in effect for menu
-      }
+      currentRoom = nextRoom;
+      fadingIn = true; // Start fade-in for new state
+      roomReset();
     }
   }
+  push();
+  fill(0, alphaValue);
+  rect(0, 0, width, height);
+  pop();
 }
 let fadingIn = false;
 let fadingOut = false;

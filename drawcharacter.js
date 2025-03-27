@@ -169,7 +169,10 @@ function playerMove() {
   }
 
   //if (canMove(tempX, tempY)) {
-  playerPos.colX = tempX;
-  playerPos.colY = tempY;
+
+  if (!fadingOut && !fadingIn) {
+    playerPos.colX = tempX;
+    playerPos.colY = tempY;
+  }
   //}
 }

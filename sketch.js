@@ -41,6 +41,7 @@ function draw() {
       drawFocusMode();
     }
     somaCheckCooldownCheck();
+    fadingTransition();
   } else if (startScreen) {
     showStartScreen();
   } else if (gameOver) {
