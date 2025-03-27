@@ -11,7 +11,6 @@ let playerPos = {
   colX: 500, // used for detecting collision, since the sprite is drawn slightly off from its hitbox
   colY: 250,
 };
-let playerSpeed = 10;
 
 let moving = false;
 let facingDirection = "DOWN";
@@ -170,7 +169,7 @@ function playerMove() {
 
   //if (canMove(tempX, tempY)) {
 
-  if (!fadingOut && !fadingIn) {
+  if (canMove(tempX, tempY) && !fadingOut && !fadingIn) {
     playerPos.colX = tempX;
     playerPos.colY = tempY;
   }

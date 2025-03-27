@@ -1,3 +1,7 @@
+// for debugging
+let currentRoom = 2;
+let playerSpeed = 10;
+
 function preload() {
   backgroundPreload();
   playerPreload();
@@ -24,7 +28,7 @@ function draw() {
         playerMove();
       }
       //checkDialogueTrigger();
-      //backgroundDrawCols();
+      backgroundDrawCols();
       playerDraw();
       pop();
       temperatureCheck();

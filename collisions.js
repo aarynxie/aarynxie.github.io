@@ -1,69 +1,40 @@
 let player;
+// create a function in setup that defines all the locations of env obj - stores into obstacles array
+// create a function that draws all the env obj
+
+//one array to store the hitboxes, and one array to store the draw locations.
 let obstacles = [
   [
+    // room 0
     { x: 100, y: 0, w: 225, h: 225 },
-    { x: 325, y: 0, w: 400, h: 150 },
-    { x: 700, y: 150, w: 100, h: 150 },
-    { x: 0, y: 500, w: 500, h: 100 },
-    { x: 675, y: 550, w: 500, h: 100 },
   ],
   [
+    // room 1
     { x: 0, y: 0, w: 50, h: 95 },
-    { x: 50, y: 0, w: 30, h: 30 },
-    { x: 285, y: 0, w: 215, h: 75 },
-    { x: 375, y: 75, w: 75, h: 50 },
-    { x: 100, y: 0, w: 275, h: 5 },
-    { x: 675, y: 0, w: 110, h: 63 },
-    { x: 115, y: 118, w: 95, h: 100 },
-    { x: 0, y: 215, w: 283, h: 63 },
-    { x: 200, y: 233, w: 333, h: 70 },
-    { x: 225, y: 300, w: 120, h: 50 },
-    { x: 320, y: 350, w: 25, h: 33 },
-    { x: 75, y: 390, w: 67, h: 63 },
-    { x: 50, y: 450, w: 105, h: 25 },
-    { x: 0, y: 475, w: 125, h: 75 },
-    { x: 375, y: 495, w: 165, h: 70 },
-    { x: 325, y: 550, w: 263, h: 50 },
-    { x: 690, y: 175, w: 115, h: 60 },
-    { x: 650, y: 230, w: 150, h: 63 },
-    { x: 735, y: 275, w: 75, h: 100 },
-    { x: 715, y: 375, w: 100, h: 75 },
-    { x: 775, y: 450, w: 25, h: 45 },
   ],
   [
-    { x: 0, y: 0, w: 25, h: 600 },
-    { x: 25, y: 0, w: 25, h: 75 },
-    { x: 50, y: 0, w: 25, h: 75 },
-    { x: 75, y: 0, w: 25, h: 25 },
-    { x: 25, y: 300, w: 25, h: 225 },
-    { x: 50, y: 450, w: 25, h: 75 },
-    { x: 100, y: 200, w: 100, h: 100 },
-    { x: 300, y: 0, w: 500, h: 25 },
-    { x: 325, y: 25, w: 125, h: 25 },
-    { x: 275, y: 50, w: 175, h: 150 },
-    { x: 225, y: 100, w: 50, h: 100 },
-    { x: 325, y: 200, w: 50, h: 75 },
-    { x: 250, y: 275, w: 150, h: 100 },
-    { x: 175, y: 375, w: 100, h: 225 },
-    { x: 150, y: 475, w: 25, h: 125 },
-    { x: 350, y: 375, w: 60, h: 225 },
-    { x: 410, y: 400, w: 25, h: 225 },
-    { x: 325, y: 475, w: 25, h: 125 },
-    { x: 435, y: 425, w: 15, h: 180 },
-    { x: 550, y: 110, w: 105, h: 40 },
-    { x: 650, y: 250, w: 50, h: 50 },
-    { x: 540, y: 300, w: 180, h: 75 },
-    { x: 500, y: 300, w: 50, h: 30 },
-    { x: 500, y: 550, w: 100, h: 50 },
-    { x: 600, y: 575, w: 25, h: 25 },
-    { x: 625, y: 550, w: 175, h: 50 },
-    { x: 775, y: 500, w: 25, h: 50 },
-    { x: 700, y: 225, w: 100, h: 53 },
-    { x: 775, y: 25, w: 25, h: 70 },
-    { x: 655, y: 100, w: 95, h: 5 },
+    // room 2
+    { x: 0, y: 0, w: 25, h: 100 },
   ],
 ];
 let obstaclesCurrent = [...obstacles];
+
+let envObj = [
+  [
+    // room 0
+    { x: 0, y: 0, type: "TREE_BIG" },
+  ],
+  [
+    // room 1
+    { x: 0, y: 0, type: "TREE_BIG" },
+    { x: 0, y: 100, type: "TREE_BIG" },
+  ],
+  [
+    // room 2
+    { x: 0, y: 0, type: "TREE_BIG" },
+  ],
+];
+let envObjCurrent = [...envObj];
 
 let sticks = [
   { x: 470, y: 400, w: 45, h: 24 },
@@ -96,6 +67,31 @@ function initializeCols() {
     h: 70,
     speed: 3.5,
   };
+
+  // initialize collisions for envObj from the array
+  for (let env of envObj) {
+    if (env.type == "TREE_BIG") {
+    }
+  }
+
+  for (let i = 0; i < envObj.length; i++) {
+    let room = envObj[i];
+
+    for (let j = 0; j < room.length; j++) {
+      let env = room[j];
+
+      if (env.type === "TREE_BIG") {
+        obstacles[i].push({ x: 65 + env.x, y: 27 + env.y, w: 66, h: 119 });
+        obstacles[i].push({ x: 42 + env.x, y: 52 + env.y, w: 29, h: 31 });
+        obstacles[i].push({ x: 87 + env.x, y: 8 + env.y, w: 82, h: 31 });
+        obstacles[i].push({ x: 15 + env.x, y: 72 + env.y, w: 66, h: 75 });
+        obstacles[i].push({ x: 172 + env.x, y: 31 + env.y, w: 66, h: 75 });
+        obstacles[i].push({ x: 254 + env.x, y: 73 + env.y, w: 31, h: 54 });
+        obstacles[i].push({ x: 173 + env.x, y: 49 + env.y, w: 78, h: 98 });
+        obstacles[i].push({ x: 119 + env.x, y: 25 + env.y, w: 60, h: 150 });
+      }
+    }
+  }
 }
 
 // checks if the player can move or not and return boolean value
@@ -129,20 +125,30 @@ function rectCollision(rect1, rect2) {
 
 // debugging function that draws shapes to show obstacles and character hitbox
 function backgroundDrawCols() {
-  /*
   push();
+  imageMode(CORNER);
+  for (let env of envObjCurrent) {
+    if (env.type == "TREE_BIG") {
+      image(envObjImage[0], env.x, env.y);
+    }
+  }
   noStroke();
   fill(255, 0, 0, 100);
   for (let obs of obstaclesCurrent) {
     rect(obs.x, obs.y, obs.w, obs.h);
+    console.log("a");
   }
+
   fill(0, 255, 0, 100);
   rect(playerPos.colX, playerPos.colY, 30, 70);
-  pop();*/
+
+  pop();
+
+  /*
   push();
   imageMode(CORNER);
-  sticksDraw();
-  thornsDraw();
+  //sticksDraw();
+  //thornsDraw();
   pop();
   /*
   push();
