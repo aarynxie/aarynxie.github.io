@@ -33,6 +33,11 @@ let envObj = [
     // room 2
     { x: 0, y: 0, type: "TREE_BIG" },
     { x: 0, y: 200, type: "TREE_SMALL" },
+    { x: 500, y: 200, type: "BUSH_BIG" },
+    { x: 500, y: 400, type: "BUSH_SMALL" },
+    { x: 600, y: 450, type: "ROCK_BIG" },
+    { x: 400, y: 450, type: "ROCK_MEDIUM" },
+    { x: 200, y: 450, type: "ROCK_SMALL" },
   ],
 ];
 let envObjCurrent = [...envObj];
@@ -70,11 +75,6 @@ function initializeCols() {
   };
 
   // initialize collisions for envObj from the array
-  for (let env of envObj) {
-    if (env.type == "TREE_BIG") {
-    }
-  }
-
   for (let i = 0; i < envObj.length; i++) {
     let room = envObj[i];
 
@@ -103,8 +103,33 @@ function initializeCols() {
         obstacles[i].push({ x: 54 + env.x, y: 12 + env.y, w: 29, h: 133 });
         obstacles[i].push({ x: 83 + env.x, y: 1 + env.y, w: 23, h: 161 });
       } else if (env.type == "BUSH_BIG") {
+        obstacles[i].push({ x: 37 + env.x, y: 15 + env.y, w: 23, h: 16 });
+        obstacles[i].push({ x: 58 + env.x, y: 6 + env.y, w: 57, h: 25 });
+        obstacles[i].push({ x: 116 + env.x, y: 15 + env.y, w: 12, h: 16 });
+      } else if (env.type == "BUSH_SMALL") {
+        obstacles[i].push({ x: 25 + env.x, y: env.y, w: 56, h: 1 });
+      } else if (env.type == "ROCK_BIG") {
+        obstacles[i].push({ x: 16 + env.x, y: 45 + env.y, w: 6, h: 12 });
+        obstacles[i].push({ x: 22 + env.x, y: 32 + env.y, w: 8, h: 23 });
+        obstacles[i].push({ x: 30 + env.x, y: 21 + env.y, w: 10, h: 36 });
+        obstacles[i].push({ x: 112 + env.x, y: 45 + env.y, w: 6, h: 12 });
+        obstacles[i].push({ x: 40 + env.x, y: 10 + env.y, w: 11, h: 47 });
+        obstacles[i].push({ x: 104 + env.x, y: 26 + env.y, w: 9, h: 31 });
+        obstacles[i].push({ x: 92 + env.x, y: 13 + env.y, w: 12, h: 44 });
+        obstacles[i].push({ x: 84 + env.x, y: 7 + env.y, w: 8, h: 50 });
+        obstacles[i].push({ x: 50 + env.x, y: 2 + env.y, w: 34, h: 55 });
+      } else if (env.type == "ROCK_MEDIUM") {
+        obstacles[i].push({ x: 17 + env.x, y: 13 + env.y, w: 11, h: 11 });
+        obstacles[i].push({ x: 59 + env.x, y: 15 + env.y, w: 7, h: 17 });
+        obstacles[i].push({ x: 6 + env.x, y: 24 + env.y, w: 22, h: 9 });
+        obstacles[i].push({ x: 66 + env.x, y: 29 + env.y, w: 28, h: 4 });
+        obstacles[i].push({ x: 28 + env.x, y: env.y, w: 33, h: 33 });
+      } else if (env.type == "ROCK_SMALL") {
+        //obstacles[i].push({ x: 14 + env.x, y: 7 + env.y, w: 13, h: 1 });
+        obstacles[i].push({ x: 14 + env.x, y: env.y, w: 38, h: 1 });
+        //obstacles[i].push({ x: 45 + env.x, y: 6 + env.y, w: 11, h: 1 });
       }
-    }
+    } // obstacles[i].push({ x: + env.x, y:  + env.y, w: , h:  });
   }
 }
 
@@ -146,6 +171,16 @@ function backgroundDrawCols() {
       image(envObjImage[0], env.x, env.y);
     } else if (env.type == "TREE_SMALL") {
       image(envObjImage[1], env.x, env.y);
+    } else if (env.type == "BUSH_BIG") {
+      image(envObjImage[2], env.x, env.y);
+    } else if (env.type == "BUSH_SMALL") {
+      image(envObjImage[3], env.x, env.y);
+    } else if (env.type == "ROCK_BIG") {
+      image(envObjImage[4], env.x, env.y);
+    } else if (env.type == "ROCK_MEDIUM") {
+      image(envObjImage[5], env.x, env.y);
+    } else if (env.type == "ROCK_SMALL") {
+      image(envObjImage[6], env.x, env.y);
     }
   }
   noStroke();
