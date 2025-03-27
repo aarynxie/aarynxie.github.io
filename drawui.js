@@ -55,7 +55,7 @@ function temperatureCheck() {
   } else {
     temperature = 4500;
   }
-  playerSpeed = max(0.5, map(temperature, 0, 4500, 1, 2.5));
+  //playerSpeed = max(0.5, map(temperature, 0, 4500, 1, 2.5));
   frameDelay = map(temperature, 0, 2500, 16, 12);
 
   if (currentRoom == 4) {

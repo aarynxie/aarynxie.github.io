@@ -23,19 +23,19 @@ function draw() {
       if (!showDialogue) {
         playerMove();
       }
-      checkDialogueTrigger();
-      backgroundDrawCols();
+      //checkDialogueTrigger();
+      //backgroundDrawCols();
       playerDraw();
       pop();
       temperatureCheck();
       push();
       blendMode(MULTIPLY);
-      backgroundOverlay();
-      backgroundFlashlight();
+      //backgroundOverlay();
+      //backgroundFlashlight();
       pop();
       setNewRoom();
       uiDraw();
-      drawDialogue();
+      //drawDialogue();
       soundPlay();
     } else if (allowSomaCheck) {
       drawFocusMode();

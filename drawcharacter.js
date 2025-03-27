@@ -11,7 +11,7 @@ let playerPos = {
   colX: 500, // used for detecting collision, since the sprite is drawn slightly off from its hitbox
   colY: 250,
 };
-let playerSpeed = 2.5;
+let playerSpeed = 10;
 
 let moving = false;
 let facingDirection = "DOWN";
@@ -133,29 +133,25 @@ function playerMove() {
   let moveX = 0,
     moveY = 0; // Track movement
 
-  let newX = playerPos.colX;
-  let newY = playerPos.colY;
-
   // Check if movement keys are pressed and update movement accordingly
   if (keyIsDown(68) && playerPos.colX + 30 < width) {
     // D key (right)
-    moveX = 1;
+    moveX = playerSpeed;
     facingDirection = "RIGHT";
   }
   if (keyIsDown(65) && playerPos.colX > 0) {
     // A key (left)
-    moveX = -1;
+    moveX = playerSpeed * -1;
     facingDirection = "LEFT";
   }
   if (keyIsDown(87) && playerPos.colY > 0) {
     // W key (up)
-    moveY = -1;
+    moveY = playerSpeed * -1;
     facingDirection = "UP";
-    newY -= player.speed;
   }
   if (keyIsDown(83) && playerPos.colY + 70 < height) {
     // S key (down)
-    moveY = 1;
+    moveY = playerSpeed;
     facingDirection = "DOWN";
   }
 
@@ -172,8 +168,8 @@ function playerMove() {
     moving = false;
   }
 
-  if (canMove(tempX, tempY)) {
-    playerPos.colX = tempX;
-    playerPos.colY = tempY;
-  }
+  //if (canMove(tempX, tempY)) {
+  playerPos.colX = tempX;
+  playerPos.colY = tempY;
+  //}
 }
