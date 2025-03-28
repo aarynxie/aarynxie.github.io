@@ -95,6 +95,17 @@ let envObj = [
 ];
 let envObjCurrent = [...envObj];
 
+// need 3 arrays of 3 different level objectives
+// change sticks show into objectives show?
+// make a function that runs only once each time it switches to a new level, to initialize the objectivesShow into the current level's objective objects
+let belongings = [
+  { x: 461, y: 464, w: 50, h: 50 },
+  { x: 706, y: 420, w: 50, h: 50 },
+  { x: 20, y: 199, w: 50, h: 50 },
+  { x: 147, y: 93, w: 50, h: 50 },
+  { x: 128, y: 49, w: 50, h: 50 },
+];
+
 let sticks = [
   { x: 470, y: 400, w: 45, h: 24 },
   { x: 730, y: 130, w: 45, h: 24 },
@@ -178,9 +189,7 @@ function initializeCols() {
         obstacles[i].push({ x: 66 + env.x, y: 29 + env.y, w: 28, h: 4 });
         obstacles[i].push({ x: 28 + env.x, y: env.y, w: 33, h: 33 });
       } else if (env.type == "ROCK_SMALL") {
-        //obstacles[i].push({ x: 14 + env.x, y: 7 + env.y, w: 13, h: 1 });
         obstacles[i].push({ x: 14 + env.x, y: env.y, w: 38, h: 1 });
-        //obstacles[i].push({ x: 45 + env.x, y: 6 + env.y, w: 11, h: 1 });
       }
     } // obstacles[i].push({ x: + env.x, y:  + env.y, w: , h:  });
   }
@@ -215,11 +224,13 @@ function rectCollision(rect1, rect2) {
   );
 }
 
-// debugging function that draws shapes to show obstacles and character hitbox
+// draws the background objects
+// also debugging function that draws shapes to show the hitbox of obstacles and character
 function backgroundDrawCols() {
   push();
   imageMode(CORNER);
   for (let env of envObjCurrent) {
+    // draw the environment objects
     if (env.type == "TREE_BIG") {
       image(envObjImage[0], env.x, env.y);
     } else if (env.type == "TREE_SMALL") {
@@ -237,20 +248,18 @@ function backgroundDrawCols() {
     }
   }
   noStroke();
+  // debugging for hitboxes
   fill(255, 0, 0, 100);
   for (let obs of obstaclesCurrent) {
     rect(obs.x, obs.y, obs.w, obs.h);
-    console.log("a");
   }
-
   fill(0, 255, 0, 100);
   rect(playerPos.colX, playerPos.colY, 30, 70);
-
   pop();
 
   push();
   imageMode(CORNER);
-  //sticksDraw();
+  sticksDraw();
   thornsDraw();
   pop();
   /*
@@ -263,8 +272,12 @@ function backgroundDrawCols() {
   pop();*/
   push();
   fill(0, 0, 255, 100);
-  for (let stk of thornsCurrent) {
-    rect(stk.x, stk.y, stk.w, stk.h);
+  for (let bel of belongings) {
+    rect(bel.x, bel.y, bel.w, bel.h);
+  }
+
+  for (let thr of thornsCurrent) {
+    rect(thr.x, thr.y, thr.w, thr.h);
     //image(stickImage, stk.x, stk.y);
   }
   pop();
@@ -313,11 +326,11 @@ function detectThornsReset() {
   previousThornsHit = thornsHit;
 }
 
+let level = 0; // 0 is prologue, then levels 1, 2, 3
 function sticksDraw() {
   push();
   fill(0);
   sticksCol();
-
   for (let i = 0; i < sticksCurrent.length; i++) {
     let stk = sticksCurrent[i]; // Get the current element
     if (sticksShowCurrent[i]) {
