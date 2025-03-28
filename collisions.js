@@ -6,15 +6,49 @@ let player;
 let obstacles = [
   [
     // room 0
-    { x: 100, y: 0, w: 225, h: 225 },
-  ],
+    { x: 207, y: 0, w: 593, h: 118 },
+    { x: 662, y: 118, w: 138, h: 482 },
+    { x: 418, y: 118, w: 208, h: 90 },
+    { x: 0, y: 0, w: 207, h: 600 },
+    { x: 207, y: 464, w: 193, h: 136 },
+  ], //{ x: , y: , w: , h:  },
   [
     // room 1
-    { x: 0, y: 0, w: 50, h: 95 },
+    { x: 0, y: 0, w: 83, h: 600 },
+    { x: 83, y: 0, w: 317, h: 29 },
+    { x: 400, y: 0, w: 400, h: 52 },
+    { x: 83, y: 544, w: 580, h: 56 },
+    { x: 663, y: 487, w: 137, h: 113 },
   ],
   [
     // room 2
-    { x: 0, y: 0, w: 25, h: 100 },
+    { x: 0, y: 0, w: 400, h: 52 },
+    { x: 662, y: 0, w: 138, h: 52 },
+    { x: 0, y: 487, w: 800, h: 113 },
+  ],
+  [
+    // room 3
+    { x: 0, y: 0, w: 86, h: 51 },
+    { x: 0, y: 487, w: 174, h: 113 },
+    { x: 400, y: 500, w: 400, h: 100 },
+  ],
+  [
+    // room 4
+    { x: 0, y: 0, w: 800, h: 50 },
+    { x: 0, y: 542, w: 322, h: 58 },
+    { x: 522, y: 542, w: 278, h: 90 },
+  ],
+  [
+    // room 5
+    { x: 0, y: 0, w: 717, h: 50 },
+    { x: 717, y: 0, w: 83, h: 100 },
+    { x: 0, y: 542, w: 800, h: 90 },
+  ],
+  [
+    { x: 0, y: 0, w: 174, h: 100 },
+    { x: 400, y: 0, w: 400, h: 44 },
+    { x: 694, y: 44, w: 106, h: 556 },
+    { x: 0, y: 542, w: 694, h: 90 },
   ],
 ];
 let obstaclesCurrent = [...obstacles];
@@ -22,22 +56,41 @@ let obstaclesCurrent = [...obstacles];
 let envObj = [
   [
     // room 0
-    { x: 0, y: 0, type: "TREE_BIG" },
   ],
   [
     // room 1
+    /*
     { x: 0, y: 0, type: "TREE_BIG" },
-    { x: 0, y: 100, type: "TREE_BIG" },
+    { x: 0, y: 100, type: "TREE_BIG" },*/
   ],
   [
     // room 2
+    /*
     { x: 0, y: 0, type: "TREE_BIG" },
     { x: 0, y: 200, type: "TREE_SMALL" },
     { x: 500, y: 200, type: "BUSH_BIG" },
     { x: 500, y: 400, type: "BUSH_SMALL" },
     { x: 600, y: 450, type: "ROCK_BIG" },
     { x: 400, y: 450, type: "ROCK_MEDIUM" },
-    { x: 200, y: 450, type: "ROCK_SMALL" },
+    { x: 200, y: 450, type: "ROCK_SMALL" },*/
+    { x: 265, y: 319, type: "BUSH_BIG" },
+    { x: 102, y: 174, type: "BUSH_BIG" },
+    { x: 78, y: 162, type: "ROCK_SMALL" },
+    { x: 580, y: 363, type: "TREE_SMALL" },
+    { x: -7, y: 121, type: "BUSH_SMALL" },
+    { x: 272, y: 45, type: "ROCK_MEDIUM" },
+  ],
+  [
+    // room 3
+  ],
+  [
+    // room 4
+  ],
+  [
+    // room 5
+  ],
+  [
+    // room 6
   ],
 ];
 let envObjCurrent = [...envObj];
@@ -56,9 +109,9 @@ let sticksCounter = 0;
 let sticksTotal = sticks.length;
 
 let thorns = [
-  { x: 155, y: 420, w: 95, h: 52 },
-  { x: 615, y: 120, w: 95, h: 52 },
-  { x: 95, y: 120, w: 95, h: 52 },
+  { x: 148, y: 29, w: 90, h: 52 },
+  { x: 200, y: 129, w: 90, h: 52 },
+  { x: 400, y: 339, w: 90, h: 52 },
 ];
 let thornsCurrent = [...thorns];
 
@@ -195,11 +248,10 @@ function backgroundDrawCols() {
 
   pop();
 
-  /*
   push();
   imageMode(CORNER);
   //sticksDraw();
-  //thornsDraw();
+  thornsDraw();
   pop();
   /*
   push();
@@ -208,14 +260,14 @@ function backgroundDrawCols() {
     rect(stk.x, stk.y, stk.w, stk.h);
     //image(stickImage, stk.x, stk.y);
   }
-  pop();
+  pop();*/
   push();
   fill(0, 0, 255, 100);
-  for (let stk of thorns) {
+  for (let stk of thornsCurrent) {
     rect(stk.x, stk.y, stk.w, stk.h);
     //image(stickImage, stk.x, stk.y);
   }
-  pop();*/
+  pop();
 }
 
 function thornsDraw() {

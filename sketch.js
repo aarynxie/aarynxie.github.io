@@ -1,5 +1,5 @@
 // for debugging
-let currentRoom = 2;
+let currentRoom = 0;
 let playerSpeed = 10;
 
 function preload() {
@@ -41,6 +41,7 @@ function draw() {
       uiDraw();
       //drawDialogue();
       soundPlay();
+      healthBarDraw();
     } else if (allowSomaCheck) {
       drawFocusMode();
     }

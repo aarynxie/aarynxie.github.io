@@ -115,8 +115,7 @@ function setNewRoom() {
     sticksCurrent = sticks.slice(0, 1);
     sticksShowCurrent = sticksShow.slice(0, 1);
     // set obstacles
-    roomSetup(0); //room number
-    thornsCurrent = [{ x: 0, y: 0, w: 0, h: 0 }];
+    roomSetup(0, 0, 0); //room number, thornStart, thornEnd
   } else if (currentRoom == 1) {
     let [direction, isChanging] = changeRoomDirection(true, false, false, true); //down, up, left, right
     changeDirection = direction;
@@ -132,8 +131,7 @@ function setNewRoom() {
     sticksShowCurrent = sticksShow.slice(1, 3);
 
     // set obstacles
-    roomSetup(1); //room number
-    thornsCurrent = thorns.slice(0, 2);
+    roomSetup(1, 0, 1); //room number, thornStart, thornEnd
   } else if (currentRoom == 2) {
     let [direction, isChanging] = changeRoomDirection(true, true, true, true); //down, up, left, right
     changeDirection = direction;
@@ -150,7 +148,7 @@ function setNewRoom() {
       nextRoom = 5;
     }
     changingRooms = isChanging;
-    roomSetup(2); //room number
+    roomSetup(2, 1, 2); //room number
   } else if (currentRoom == 3) {
     let [direction, isChanging] = changeRoomDirection(true, false, true, false); //down, up, left, right
     changeDirection = direction;
@@ -161,6 +159,7 @@ function setNewRoom() {
       nextRoom = 6;
     }
     changingRooms = isChanging;
+    roomSetup(3, 2, 3);
   } else if (currentRoom == 4) {
     let [direction, isChanging] = changeRoomDirection(
       //down, up, left, right
@@ -180,12 +179,12 @@ function setNewRoom() {
       nextRoom = 8;
     }
     changingRooms = isChanging;
+    roomSetup(4);
     // set the sticks
     sticksCurrent = sticks.slice(3, 4);
     sticksShowCurrent = sticksShow.slice(3, 4);
 
     // set obstacles
-    obstaclesCurrent = obstacles[2];
     thornsCurrent = thorns.slice(2, 3);
   } else if (currentRoom == 5) {
     let [direction, isChanging] = changeRoomDirection(false, true, true, true); //down, up, left, right
@@ -200,6 +199,7 @@ function setNewRoom() {
       nextRoom = 6;
     }
     changingRooms = isChanging;
+    roomSetup(5);
   } else if (currentRoom == 6) {
     let [direction, isChanging] = changeRoomDirection(false, true, true, false); //down, up, left, right
     changeDirection = direction;
@@ -210,6 +210,7 @@ function setNewRoom() {
       nextRoom = 3;
     }
     changingRooms = isChanging;
+    roomSetup(6);
   } else if (currentRoom == 7) {
     let [direction, isChanging] = changeRoomDirection(true, false, false, true); //down, up, left, right
     changeDirection = direction;
@@ -260,9 +261,10 @@ function setNewRoom() {
 }
 let nextRoom = 0;
 
-function roomSetup(roomNum) {
+function roomSetup(roomNum, thornStart, thornEnd) {
   obstaclesCurrent = obstacles[roomNum];
   envObjCurrent = envObj[roomNum];
+  thornsCurrent = thorns.slice(thornStart, thornEnd);
 }
 
 function fadingTransition() {
