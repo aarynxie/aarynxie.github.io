@@ -2,12 +2,20 @@ let uiStickBarImage;
 let uiHealthBarImage;
 let uiAbilitiesBarImage;
 let freezingImage;
+let fontRegular;
+let fontBold;
+
+let dialogueBgImages = [];
 
 function uiPreload() {
   uiStickBarImage = loadImage("sprites/ui/stickbar.png");
   uiHealthBarImage = loadImage("sprites/ui/healthbar.png");
   uiAbilitiesBarImage = loadImage("sprites/ui/abilitiesbar.png");
   freezingImage = loadImage("sprites/ui/freezing.png");
+  fontRegular = loadFont("fonts/MinecraftRegular-Bmg3.otf");
+  fontBold = loadFont("fonts/MinecraftBold-nMK1.otf");
+  dialogueBgImages[0] = loadImage("sprites/ui/dialogue_textbox_Erin.png");
+  dialogueBgImages[1] = loadImage("sprites/ui/dialogue_textbox_Grandma.png");
 }
 
 let stickBarText;
@@ -20,7 +28,7 @@ function uiDraw() {
 function stickBarDraw() {
   push();
   image(uiStickBarImage, 690, 10, 100, 49);
-  stickBarText = sticksCounter + " / " + sticksTotal;
+  stickBarText = objectivesCounter + "/" + objectivesTotal;
   textSize(20);
   text(stickBarText, 745, 40);
   pop();

@@ -23,7 +23,7 @@ function soundPlay() {
       walkingSound.stop();
     }
 
-    let playPop = detectSticksCounterChange();
+    let playPop = detectobjectivesCounterChange();
     if (playPop) {
       popSound.play();
     }
@@ -49,11 +49,11 @@ function soundPlay() {
   }
 }
 
-let prevSticksCounter = 0;
+let prevobjectivesCounter = 0;
 
-function detectSticksCounterChange() {
-  if (sticksCounter !== prevSticksCounter) {
-    prevSticksCounter = sticksCounter;
+function detectobjectivesCounterChange() {
+  if (objectivesCounter !== prevobjectivesCounter) {
+    prevobjectivesCounter = objectivesCounter;
     return true;
   }
 }

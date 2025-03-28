@@ -1,3 +1,6 @@
+// use image(dialogueBgImages[0], x, y) for erin's dialogue bg
+// use image(dialogueBgImages[1], x, y) for grandma's dialogue bg
+
 let showDialogue = false;
 let dialogueCompleted = false;
 let currentTextIndex = 0;

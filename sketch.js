@@ -14,6 +14,7 @@ function setup() {
   createCanvas(800, 600);
   initializeCols();
   soundSetup();
+  textFont(fontRegular);
 }
 
 function draw() {
@@ -53,5 +54,7 @@ function draw() {
     showGameOver();
   } else if (levelComplete) {
     showLevelComplete();
+  } else if (cutscene) {
+    drawCutscene();
   }
 }

@@ -101,7 +101,7 @@ let envObjCurrent = [...envObj];
 let belongings = [
   { x: 461, y: 464, w: 50, h: 50 },
   { x: 706, y: 420, w: 50, h: 50 },
-  { x: 20, y: 199, w: 50, h: 50 },
+  { x: 50, y: 199, w: 50, h: 50 },
   { x: 147, y: 93, w: 50, h: 50 },
   { x: 128, y: 49, w: 50, h: 50 },
 ];
@@ -112,16 +112,21 @@ let sticks = [
   { x: 100, y: 360, w: 45, h: 24 },
   { x: 600, y: 50, w: 45, h: 24 },
 ];
+
+let worms = [
+  { x: 570, y: 400, w: 45, h: 24 },
+  { x: 730, y: 130, w: 45, h: 24 },
+  { x: 100, y: 360, w: 45, h: 24 },
+  { x: 600, y: 50, w: 45, h: 24 },
+];
+
 let objectives = [...belongings];
 let objectivesShow = new Array(belongings.length).fill(true);
 let objectivesCurrent = [...belongings];
 let objectivesShowCurrent = [...objectivesShow];
 
-let belongingsCounter = 0;
-let belonginsTotal = belongings.length;
-
-let sticksCounter = 0;
-let sticksTotal = sticks.length;
+let objectivesCounter = 0;
+let objectivesTotal = belongings.length;
 
 let thorns = [
   { x: 148, y: 29, w: 90, h: 52 },
@@ -360,10 +365,10 @@ function objectivesCol() {
       updateObjectivesShow(currentRoom, i, false);
     }
   }
-  sticksCounter = 0; // update this later to be generic counter
+  objectivesCounter = 0;
   for (let i = 0; i < objectivesShow.length; i++) {
     if (!objectivesShow[i]) {
-      sticksCounter++;
+      objectivesCounter++;
     }
   }
 }
