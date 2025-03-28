@@ -77,7 +77,7 @@ let envObj = [
     { x: 102, y: 174, type: "BUSH_BIG" },
     { x: 78, y: 162, type: "ROCK_SMALL" },
     { x: 580, y: 363, type: "TREE_SMALL" },
-    { x: -7, y: 121, type: "BUSH_SMALL" },
+    { x: -7, y: 150, type: "BUSH_SMALL" },
     { x: 272, y: 45, type: "ROCK_MEDIUM" },
   ],
   [
@@ -112,9 +112,13 @@ let sticks = [
   { x: 100, y: 360, w: 45, h: 24 },
   { x: 600, y: 50, w: 45, h: 24 },
 ];
-let sticksShow = new Array(sticks.length).fill(true);
-let sticksCurrent = [...sticks];
-let sticksShowCurrent = [...sticksShow];
+let objectives = [...belongings];
+let objectivesShow = new Array(belongings.length).fill(true);
+let objectivesCurrent = [...belongings];
+let objectivesShowCurrent = [...objectivesShow];
+
+let belongingsCounter = 0;
+let belonginsTotal = belongings.length;
 
 let sticksCounter = 0;
 let sticksTotal = sticks.length;
@@ -259,7 +263,7 @@ function backgroundDrawCols() {
 
   push();
   imageMode(CORNER);
-  sticksDraw();
+  objectivesDraw();
   thornsDraw();
   pop();
   /*
@@ -273,7 +277,7 @@ function backgroundDrawCols() {
   push();
   fill(0, 0, 255, 100);
   for (let bel of belongings) {
-    rect(bel.x, bel.y, bel.w, bel.h);
+    //rect(bel.x, bel.y, bel.w, bel.h);
   }
 
   for (let thr of thornsCurrent) {
@@ -327,21 +331,21 @@ function detectThornsReset() {
 }
 
 let level = 0; // 0 is prologue, then levels 1, 2, 3
-function sticksDraw() {
+function objectivesDraw() {
   push();
   fill(0);
-  sticksCol();
-  for (let i = 0; i < sticksCurrent.length; i++) {
-    let stk = sticksCurrent[i]; // Get the current element
-    if (sticksShowCurrent[i]) {
-      //rect(stk.x, stk.y, stk.w, stk.h);
-      image(stickImage, stk.x, stk.y);
+  objectivesCol();
+  for (let i = 0; i < objectivesCurrent.length; i++) {
+    let obj = objectivesCurrent[i]; // Get the current element
+    if (objectivesShowCurrent[i]) {
+      rect(obj.x, obj.y, obj.w, obj.h);
+      //image(stickImage, stk.x, stk.y);
     }
   }
   pop();
 }
 //collision for sticks
-function sticksCol() {
+function objectivesCol() {
   let playerRect = {
     x: playerPos.colX,
     y: playerPos.colY,
@@ -349,30 +353,31 @@ function sticksCol() {
     h: player.h,
   };
 
-  for (let i = 0; i < sticks.length; i++) {
-    let stk = sticks[i];
+  for (let i = 0; i < objectives.length; i++) {
+    let stk = objectives[i];
 
     if (rectCollision(playerRect, stk)) {
-      updateSticksShow(currentRoom, i, false);
+      updateObjectivesShow(currentRoom, i, false);
     }
   }
-  sticksCounter = 0;
-  for (let i = 0; i < sticksShow.length; i++) {
-    if (!sticksShow[i]) {
+  sticksCounter = 0; // update this later to be generic counter
+  for (let i = 0; i < objectivesShow.length; i++) {
+    if (!objectivesShow[i]) {
       sticksCounter++;
     }
   }
 }
 
 // defines which sticks in the array is in which room
-const roomStickIndices = {
+let roomObjectivesIndices = {
   0: [0], // Room 0 affects index 0
-  1: [1, 2], // Room 1 affects indices 1 and 2 separately
-  4: [3],
+  1: [1], // Room 1 affects indices 1 and 2 separately
+  2: [2, 3],
+  3: [4],
 };
 
-function updateSticksShow(currentRoom, stickIndex, value) {
-  if (roomStickIndices[currentRoom]?.includes(stickIndex)) {
-    sticksShow[stickIndex] = value;
+function updateObjectivesShow(currentRoom, objIndex, value) {
+  if (roomObjectivesIndices[currentRoom]?.includes(objIndex)) {
+    objectivesShow[objIndex] = value;
   }
 }
