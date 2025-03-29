@@ -7,6 +7,7 @@ let fontBold;
 let uiInventoryImage;
 let inventoryItemsImage = [];
 let uiNewItemImage;
+let uiHealImage;
 
 let dialogueBgImages = [];
 
@@ -31,17 +32,18 @@ function uiPreload() {
   inventoryItemsImage[7] = loadImage("sprites/ui/inventory/headphones-1.png");
 
   uiNewItemImage = loadImage("sprites/ui/newitem.png");
+  uiHealImage = loadImage("sprites/ui/heal.png");
 }
 
 let stickBarText;
 function uiDraw() {
-  stickBarDraw();
+  newItemDraw();
   abilitiesBarDraw();
   healthBarDraw();
   inventoryDraw();
 }
 
-function stickBarDraw() {
+function newItemDraw() {
   push();
   //image(uiStickBarImage, 690, 10, 100, 49);
   if (newItem !== 5) {
@@ -91,6 +93,45 @@ function drawNewItem(newItem2) {
     // Remove tint after drawing
     noTint();
   }
+}
+
+let ifHeal = false;
+let healX, healY, healY2;
+let healFrames = 0; // Frame counter for animation
+let healOpacity = 350; // Start fully visible
+
+function healDraw() {
+  healX = playerPos.x;
+  if (ifHeal) {
+    healFrames++;
+
+    // Move up gradually (1.5 pixels per frame)
+    healY -= 1;
+
+    // Fade out gradually (reduce opacity)
+    healOpacity -= 6; // Decrease opacity (255 → 0 over ~30 frames)
+
+    // Set transparency
+    tint(255, healOpacity);
+    healY2 = playerPos.y + healY + 20;
+    image(uiHealImage, healX, healY2);
+    noTint(); // Reset tint after drawing
+
+    // Stop animation after ~60 frames
+    if (healFrames >= 60) {
+      ifHeal = false;
+      healFrames = 0;
+      healOpacity = 350; // Reset opacity for next use
+    }
+  }
+}
+
+// Call this function when healing starts
+function startHealEffect() {
+  ifHeal = true;
+  healFrames = 0;
+  healY = 0;
+  healOpacity = 350;
 }
 
 function healthBarDraw() {
@@ -208,7 +249,8 @@ function inventoryDraw() {
     }
 
     // draw focused item
-    if (invSelect) {
+    //console.log(inventoryItemsDesc[0].desc);
+    if (invSelect !== 100) {
       image(inventoryItemsImage[invSelect], 274, 227, 90, 90);
       // draw description
       fill("#561900");
@@ -230,6 +272,7 @@ function inventoryDraw() {
       inventoryArr.some(
         (item) => item.type === itemType && item.usable === true
       );
+    // uses the item if item is usable
     if (
       (isUsable(invSelect) && invSelect !== 5) ||
       (invSelect == 5 && health < maxHealth)
@@ -240,8 +283,9 @@ function inventoryDraw() {
           inventoryMode = false;
           // invSelect is the item type, check inventoryArr, get the index of the invSelect item, subtract 1 from the quantity
           useInventoryItem(invSelect);
-          invSelect = undefined;
+          invSelect = 100;
           health = min(maxHealth, health + 1);
+          startHealEffect();
         }
       } else {
         fill("#561900");
@@ -260,7 +304,7 @@ function inventoryDraw() {
 // stores all the inventory items, using the number IDs
 let inventoryArr = [{ type: 5, quantity: 1, usable: true }];
 
-let invSelect;
+let invSelect = 100;
 
 function hitTest(x, y, w, h) {
   return mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h;

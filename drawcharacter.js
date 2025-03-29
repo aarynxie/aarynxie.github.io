@@ -123,6 +123,7 @@ function playerDraw() {
   }
   image(currentFrame, 0, 0);
   pop();
+  healDraw();
 }
 
 // Handle player movement
