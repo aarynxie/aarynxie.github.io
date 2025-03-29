@@ -4,6 +4,8 @@ let uiAbilitiesBarImage;
 let freezingImage;
 let fontRegular;
 let fontBold;
+let uiInventoryImage;
+let inventoryItemsImage = [];
 
 let dialogueBgImages = [];
 
@@ -11,18 +13,29 @@ function uiPreload() {
   uiStickBarImage = loadImage("sprites/ui/stickbar.png");
   uiHealthBarImage = loadImage("sprites/ui/healthbar.png");
   uiAbilitiesBarImage = loadImage("sprites/ui/abilitiesbar.png");
+  uiInventoryImage = loadImage("sprites/ui/inventory.png");
   freezingImage = loadImage("sprites/ui/freezing.png");
   fontRegular = loadFont("fonts/MinecraftRegular-Bmg3.otf");
   fontBold = loadFont("fonts/MinecraftBold-nMK1.otf");
   dialogueBgImages[0] = loadImage("sprites/ui/dialogue_textbox_Erin.png");
   dialogueBgImages[1] = loadImage("sprites/ui/dialogue_textbox_Grandma.png");
+
+  inventoryItemsImage[0] = loadImage("sprites/ui/inventory/flashlight.png");
+  inventoryItemsImage[1] = loadImage("sprites/ui/inventory/binoculars.png");
+  inventoryItemsImage[2] = loadImage("sprites/ui/inventory/sketchbook.png");
+  inventoryItemsImage[3] = loadImage("sprites/ui/inventory/waterbottle.png");
+  inventoryItemsImage[4] = loadImage("sprites/ui/inventory/bunnyslippers.png");
+  inventoryItemsImage[5] = loadImage("sprites/ui/inventory/healthpack.png");
+  inventoryItemsImage[6] = loadImage("sprites/ui/inventory/stick.png");
+  inventoryItemsImage[7] = loadImage("sprites/ui/inventory/headphones-1.png");
 }
 
 let stickBarText;
 function uiDraw() {
   stickBarDraw();
   abilitiesBarDraw();
-  //healthBarDraw();
+  healthBarDraw();
+  inventoryDraw();
 }
 
 function stickBarDraw() {
@@ -39,17 +52,19 @@ function healthBarDraw() {
   push();
   fill("#a43131");
   noStroke();
-  let healthWidth = map(health, 0, 4, 0, 127);
-  rect(77, 31, healthWidth, 22);
+  let healthWidth = map(health, 0, 4, 0, 126);
+  rect(83, 36, healthWidth, 22);
   pop();
 }
 
 function abilitiesBarDraw() {
-  image(uiAbilitiesBarImage, 10, 510);
+  image(uiAbilitiesBarImage, 10, 505);
   push();
   fill(0, 150);
-  let cooldownHeight = map(timeSinceSomaCheck, 0, 1500, 57, 0);
-  rect(46, 519, 57, max(cooldownHeight, 0));
+  noStroke();
+  // draw cooldown
+  let cooldownHeight = map(timeSinceSomaCheck, 0, 1500, 60, 0);
+  rect(26, 518, 60, max(cooldownHeight, 0));
   pop();
 }
 
@@ -104,5 +119,11 @@ function jacketCol() {
 
   if (rectCollision(playerRect, jacketRect)) {
     wearingJacket = true;
+  }
+}
+let inventoryMode = false;
+function inventoryDraw() {
+  if (inventoryMode) {
+    image(uiInventoryImage, 223, 120);
   }
 }

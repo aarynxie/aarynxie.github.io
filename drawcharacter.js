@@ -169,7 +169,7 @@ function playerMove() {
 
   //if (canMove(tempX, tempY)) {
 
-  if (canMove(tempX, tempY) && !fadingOut && !fadingIn) {
+  if (canMove(tempX, tempY) && !fadingOut && !fadingIn && !inventoryMode) {
     playerPos.colX = tempX;
     playerPos.colY = tempY;
   }

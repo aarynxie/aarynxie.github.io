@@ -1,6 +1,7 @@
 // for debugging
 let currentRoom = 0;
 let playerSpeed = 10;
+let showCutscenes = false;
 
 function preload() {
   backgroundPreload();
@@ -15,6 +16,13 @@ function setup() {
   initializeCols();
   soundSetup();
   textFont(fontRegular);
+  // for debugging
+  if (!showCutscenes) {
+    startScreen = false;
+    playGame = true;
+    currentLevel = 1;
+    inventoryMode = true;
+  }
 }
 
 function draw() {
@@ -42,7 +50,6 @@ function draw() {
       uiDraw();
       //drawDialogue();
       soundPlay();
-      healthBarDraw();
     } else if (allowSomaCheck) {
       drawFocusMode();
     }

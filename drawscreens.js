@@ -18,7 +18,12 @@ function showStartScreen() {
   if (keyIsDown(32)) {
     //playGame = true;
     startScreen = false;
-    cutscene = true;
+    if (showCutscenes) {
+      cutscene = true;
+    } else {
+      playGame = true;
+      currentLevel = 1;
+    }
   }
 }
 
@@ -47,7 +52,12 @@ function checkGameStatus() {
         1: [1],
         2: [2, 3],
       };
-      cutscene = true; // instead of setting to true, set game status to complete?
+      if (showCutscenes) {
+        cutscene = true; // instead of setting to true, set game status to complete?
+      } else {
+        playGame = true;
+        currentLevel = 2;
+      }
     }
   } else if (currentLevel == 2) {
     if (objectivesCounter >= objectivesTotal) {
@@ -65,7 +75,12 @@ function checkGameStatus() {
         2: [2, 3],
       };
     }
-    cutscene = true;
+    if (showCutscenes) {
+      cutscene = true;
+    } else {
+      playGame = true;
+      currentLevel = 3;
+    }
   } else if (currentLevel == 3) {
   }
 }
