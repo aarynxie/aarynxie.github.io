@@ -52,7 +52,7 @@ function healthBarDraw() {
   push();
   fill("#a43131");
   noStroke();
-  let healthWidth = map(health, 0, 4, 0, 126);
+  let healthWidth = map(health, 0, maxHealth, 0, 126);
   rect(83, 36, healthWidth, 22);
   pop();
 }
@@ -123,7 +123,6 @@ function jacketCol() {
 }
 let inventoryMode = false;
 function inventoryDraw() {
-  updateInventory();
   if (inventoryMode) {
     image(uiInventoryImage, 223, 120);
     push();
@@ -132,31 +131,14 @@ function inventoryDraw() {
     textSize(20);
     text("Inventory", 357, 168);
 
-    // use button
-    noStroke();
-    // check if can use the item, if no, gray the use button out
-    if (hitTest(264, 367, 110, 25)) {
-      fill("#833312");
-      if (mouseIsPressed) {
-        inventoryMode = false;
-        // do the action
-      }
-    } else {
-      fill("#561900");
-    }
-
-    rect(264, 367, 110, 25);
-    fill(255);
-    textSize(16);
-    text("Use", 306, 385);
-
     // draw items
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 2; j++) {
         fill(200);
         //rect(j * 62 + 434, i * 62 + 225, 30, 30);
+        let currentItem;
         if (inventoryArr[i * 2 + j]) {
-          let currentItem = inventoryArr[i * 2 + j].type;
+          currentItem = inventoryArr[i * 2 + j].type;
           image(inventoryItemsImage[currentItem], j * 62 + 434, i * 62 + 225);
           fill(0);
           text(
@@ -165,19 +147,79 @@ function inventoryDraw() {
             i * 62 + 225 + 35
           );
         }
+        if (hitTest(j * 62 + 424, i * 62 + 215, 50, 50)) {
+          push();
+          stroke("#561900");
+          strokeWeight(3);
+          noFill();
+          rect(j * 62 + 424, i * 62 + 215, 50, 50);
+          if (mouseIsPressed) {
+            invSelect = currentItem;
+          }
+          pop();
+        }
       }
     }
+
+    // draw focused item
+    if (invSelect) {
+      image(inventoryItemsImage[invSelect], 274, 227, 90, 90);
+    }
+
+    // use button
+    noStroke();
+    // check if can use the item, if no, gray the use button out
+    // checks invarr for an item of a specific type, and returns true/false depending on if it's usable
+    let isUsable = (itemType) =>
+      inventoryArr.some(
+        (item) => item.type === itemType && item.usable === true
+      );
+    if (isUsable(invSelect)) {
+      if (hitTest(264, 367, 110, 25)) {
+        fill("#833312");
+        if (mouseIsPressed) {
+          inventoryMode = false;
+          // invSelect is the item type, check inventoryArr, get the index of the invSelect item, subtract 1 from the quantity
+          useInventoryItem(invSelect);
+          invSelect = undefined;
+          health = min(maxHealth, health + 1);
+        }
+      } else {
+        fill("#561900");
+      }
+    } else {
+      fill(80);
+    }
+
+    rect(264, 367, 110, 25);
+    fill(255);
+    textSize(16);
+    text("Use", 306, 385);
+
     pop();
   }
 }
 // stores all the inventory items, using the number IDs
-let inventoryArr = [{ type: 5, quantity: 1 }];
-let inventoryArrHealth = [{ type: 5, quantity: 1 }];
+let inventoryArr = [{ type: 5, quantity: 1, usable: true }];
 
-function updateInventory() {
-  //inventoryArr = inventoryArrHealth.concat(inventoryArrObjectives);
-}
+let invSelect;
 
 function hitTest(x, y, w, h) {
   return mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h;
+}
+
+// uses up an inventory item
+function useInventoryItem(itemType) {
+  // Find the index of the item with the given type
+  let index = inventoryArr.findIndex((item) => item.type === itemType);
+
+  // If the item exists in the inventory
+  if (index !== -1) {
+    inventoryArr[index].quantity -= 1; // Subtract 1 from quantity
+
+    // If the quantity reaches 0, remove the item from the inventory
+    if (inventoryArr[index].quantity <= 0) {
+      inventoryArr.splice(index, 1);
+    }
+  }
 }

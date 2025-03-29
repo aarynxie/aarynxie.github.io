@@ -135,7 +135,8 @@ let thorns = [
 ];
 let thornsCurrent = [...thorns];
 
-let health = 4;
+let maxHealth = 4;
+let health = maxHealth;
 
 function initializeCols() {
   // Initialize player
@@ -349,7 +350,6 @@ function objectivesDraw() {
       }
     }
   }
-  console.log(currentLevel + " " + objectivesCounter);
   pop();
 }
 //collision for sticks
@@ -395,6 +395,7 @@ function addToInventory(itemType) {
   // Check if the item is already in the inventory
   let existingItem = inventoryArr.find((item) => item.type === itemType);
   let quant;
+  let ifUsable;
   if (itemType !== 5) {
     if (currentLevel == 1) {
       quant = 1;
@@ -404,6 +405,12 @@ function addToInventory(itemType) {
   } else {
     quant = 1;
   }
+  // if item is health kit, set to usable
+  if (itemType == 5) {
+    ifUsable = true;
+  } else {
+    ifUsable = false;
+  }
 
   if (existingItem) {
     if (itemType !== 5) {
@@ -412,6 +419,6 @@ function addToInventory(itemType) {
       existingItem.quantity += 1;
     }
   } else {
-    inventoryArr.push({ type: itemType, quantity: quant }); // Add new item
+    inventoryArr.push({ type: itemType, quantity: quant, usable: ifUsable }); // Add new item
   }
 }
