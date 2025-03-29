@@ -99,11 +99,11 @@ let envObjCurrent = [...envObj];
 // change sticks show into objectives show?
 // make a function that runs only once each time it switches to a new level, to initialize the objectivesShow into the current level's objective objects
 let belongings = [
-  { x: 461, y: 464, w: 50, h: 50 },
-  { x: 706, y: 420, w: 50, h: 50 },
-  { x: 50, y: 199, w: 50, h: 50 },
-  { x: 147, y: 93, w: 50, h: 50 },
-  { x: 128, y: 49, w: 50, h: 50 },
+  { x: 461, y: 464, w: 50, h: 50, type: 3 }, // waterbottle
+  { x: 706, y: 420, w: 50, h: 50, type: 0 }, // flashlight
+  { x: 50, y: 199, w: 50, h: 50, type: 4 }, // bunny slippers
+  { x: 147, y: 93, w: 50, h: 50, type: 1 }, //binoculars
+  { x: 128, y: 49, w: 50, h: 50, type: 2 }, // sketchbook
 ];
 
 let sticks = [
@@ -338,12 +338,17 @@ function detectThornsReset() {
 let level = 0; // 0 is prologue, then levels 1, 2, 3
 function objectivesDraw() {
   push();
-  fill(0);
+  fill(0, 100);
   objectivesCol();
   for (let i = 0; i < objectivesCurrent.length; i++) {
     let obj = objectivesCurrent[i]; // Get the current element
     if (objectivesShowCurrent[i]) {
+      if (currentLevel == 1) {
+        image(inventoryItemsImage[obj.type], obj.x, obj.y);
+      } else {
+      }
       rect(obj.x, obj.y, obj.w, obj.h);
+
       //image(stickImage, stk.x, stk.y);
     }
   }
@@ -366,12 +371,17 @@ function objectivesCol() {
     }
   }
   objectivesCounter = 0;
+  inventoryArrObjectives = [];
   for (let i = 0; i < objectivesShow.length; i++) {
     if (!objectivesShow[i]) {
       objectivesCounter++;
+      if (currentLevel == 1) {
+        addToInventory(objectives[i].type);
+      }
     }
   }
 }
+let inventoryArrObjectives = [];
 
 // defines which sticks in the array is in which room
 let roomObjectivesIndices = {
@@ -384,5 +394,18 @@ let roomObjectivesIndices = {
 function updateObjectivesShow(currentRoom, objIndex, value) {
   if (roomObjectivesIndices[currentRoom]?.includes(objIndex)) {
     objectivesShow[objIndex] = value;
+  }
+}
+
+function addToInventory(itemType) {
+  // Check if the item is already in the inventory
+  let existingItem = inventoryArrObjectives.find(
+    (item) => item.type === itemType
+  );
+
+  if (existingItem) {
+    existingItem.quantity += 1; // Increase quantity if already collected
+  } else {
+    inventoryArrObjectives.push({ type: itemType, quantity: 1 }); // Add new item
   }
 }

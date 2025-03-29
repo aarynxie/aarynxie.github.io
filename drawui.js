@@ -123,7 +123,56 @@ function jacketCol() {
 }
 let inventoryMode = false;
 function inventoryDraw() {
+  updateInventory();
+  console.log(inventoryArr);
   if (inventoryMode) {
     image(uiInventoryImage, 223, 120);
+    push();
+    fill(255);
+    textAlign(CORNER);
+    textSize(20);
+    text("Inventory", 357, 168);
+
+    // use button
+    noStroke();
+    // check if can use the item, if no, gray the use button out
+    if (hitTest(264, 367, 110, 25)) {
+      fill("#833312");
+      if (mouseIsPressed) {
+        inventoryMode = false;
+        // do the action
+      }
+    } else {
+      fill("#561900");
+    }
+
+    rect(264, 367, 110, 25);
+    fill(255);
+    textSize(16);
+    text("Use", 306, 385);
+
+    // draw items
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 2; j++) {
+        fill(200);
+        //rect(j * 62 + 434, i * 62 + 225, 30, 30);
+        if (inventoryArr[i * 2 + j]) {
+          let currentItem = inventoryArr[i * 2 + j].type;
+          image(inventoryItemsImage[currentItem], j * 62 + 434, i * 62 + 225);
+        }
+      }
+    }
+    pop();
   }
+}
+// stores all the inventory items, using the number IDs
+let inventoryArr = [];
+let inventoryArrHealth = [{ type: 5, quantity: 1 }];
+
+function updateInventory() {
+  inventoryArr = inventoryArrHealth.concat(inventoryArrObjectives);
+}
+
+function hitTest(x, y, w, h) {
+  return mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h;
 }
