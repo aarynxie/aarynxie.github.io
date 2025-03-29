@@ -79,9 +79,13 @@ function drawFocusMode() {
 function keyPressed() {
   if (keyIsDown(69) && !somaCheck) {
     // press E
+    if (inventoryMode) {
+      invSelect = undefined;
+    }
     inventoryMode = !inventoryMode;
   } else if (keyIsDown(27)) {
     inventoryMode = false;
+    invSelect = undefined;
   }
 
   if (!somaCheck && keyIsDown(81) && allowSomaCheck && !inventoryMode) {

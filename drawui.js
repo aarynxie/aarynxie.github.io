@@ -6,6 +6,7 @@ let fontRegular;
 let fontBold;
 let uiInventoryImage;
 let inventoryItemsImage = [];
+let uiNewItemImage;
 
 let dialogueBgImages = [];
 
@@ -28,6 +29,8 @@ function uiPreload() {
   inventoryItemsImage[5] = loadImage("sprites/ui/inventory/healthpack.png");
   inventoryItemsImage[6] = loadImage("sprites/ui/inventory/stick.png");
   inventoryItemsImage[7] = loadImage("sprites/ui/inventory/headphones-1.png");
+
+  uiNewItemImage = loadImage("sprites/ui/newitem.png");
 }
 
 let stickBarText;
@@ -40,11 +43,54 @@ function uiDraw() {
 
 function stickBarDraw() {
   push();
-  image(uiStickBarImage, 690, 10, 100, 49);
-  stickBarText = objectivesCounter + "/" + objectivesTotal;
+  //image(uiStickBarImage, 690, 10, 100, 49);
+  if (newItem !== 5) {
+    drawNewItem(newItem);
+  }
+
+  //stickBarText = objectivesCounter + "/" + objectivesTotal;
   textSize(20);
   text(stickBarText, 745, 40);
   pop();
+}
+
+let frameCountNewItem = 0;
+let itemX = 800; // Start offscreen
+let itemOpacity = 255; // Fully visible
+
+function drawNewItem(newItem2) {
+  //console.log(newItem);
+  if (ifNewItem) {
+    frameCountNewItem++;
+
+    // Move in from the right
+    if (itemX > 690) {
+      itemX = 800 - frameCountNewItem * 4; // Moves left
+    }
+
+    // Start fading out after 60 frames
+    if (frameCountNewItem > 80) {
+      itemOpacity -= 5; // Reduce opacity gradually
+      if (itemOpacity < 0) itemOpacity = 0; // Ensure it doesn’t go below 0
+    }
+
+    // Set transparency
+    tint(255, itemOpacity);
+
+    // Draw images
+    image(uiNewItemImage, itemX, 10, 102.9, 60.2);
+    image(inventoryItemsImage[newItem2], itemX + 15, 25);
+
+    // Reset after fully faded
+    if (itemOpacity === 0) {
+      frameCountNewItem = 0;
+      itemOpacity = 255;
+      itemX = 800;
+      ifNewItem = false;
+    }
+    // Remove tint after drawing
+    noTint();
+  }
 }
 
 function healthBarDraw() {
@@ -164,6 +210,16 @@ function inventoryDraw() {
     // draw focused item
     if (invSelect) {
       image(inventoryItemsImage[invSelect], 274, 227, 90, 90);
+      // draw description
+      fill("#561900");
+      textSize(11);
+      text(inventoryItemsDesc[invSelect].desc, 267, 343);
+
+      textSize(16);
+      fill("#561900");
+      text(inventoryItemsDesc[invSelect].name, 269, 321);
+      fill(255);
+      text(inventoryItemsDesc[invSelect].name, 271, 319);
     }
 
     // use button
@@ -174,7 +230,10 @@ function inventoryDraw() {
       inventoryArr.some(
         (item) => item.type === itemType && item.usable === true
       );
-    if (isUsable(invSelect)) {
+    if (
+      (isUsable(invSelect) && invSelect !== 5) ||
+      (invSelect == 5 && health < maxHealth)
+    ) {
       if (hitTest(264, 367, 110, 25)) {
         fill("#833312");
         if (mouseIsPressed) {
@@ -195,7 +254,6 @@ function inventoryDraw() {
     fill(255);
     textSize(16);
     text("Use", 306, 385);
-
     pop();
   }
 }
@@ -223,3 +281,14 @@ function useInventoryItem(itemType) {
     }
   }
 }
+
+let inventoryItemsDesc = [
+  { name: "Flashlight", desc: "Flashlight desc" },
+  { name: "Binoculars", desc: "Binoculars desc" },
+  { name: "Sketchbook", desc: "Sketchbook desc" },
+  { name: "Waterbottle", desc: "Waterbottle desc" },
+  { name: "Bunny Slippers", desc: "Slippers desc" },
+  { name: "Health Pack", desc: "A kit with bandages \nand disinfectants" },
+  { name: "Firewood", desc: "Firewood desc" },
+  { name: "Headphones", desc: "Headphones desc" },
+];

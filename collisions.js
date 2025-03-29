@@ -7,10 +7,13 @@ let obstacles = [
   [
     // room 0
     { x: 207, y: 0, w: 593, h: 118 },
-    { x: 662, y: 118, w: 138, h: 482 },
-    { x: 418, y: 118, w: 208, h: 90 },
+    { x: 662, y: 103, w: 138, h: 467 },
+    { x: 207, y: 263, w: 215, h: 45 },
+    { x: 207, y: 103, w: 117, h: 160 },
+    { x: 566, y: 163, w: 1, h: 20 },
+    { x: 354, y: 103, w: 213, h: 60 },
     { x: 0, y: 0, w: 207, h: 600 },
-    { x: 207, y: 464, w: 193, h: 136 },
+    { x: 207, y: 477, w: 169, h: 123 },
   ], //{ x: , y: , w: , h:  },
   [
     // room 1
@@ -22,7 +25,7 @@ let obstacles = [
   ],
   [
     // room 2
-    { x: 0, y: 0, w: 400, h: 52 },
+    { x: 0, y: 0, w: 376, h: 52 },
     { x: 662, y: 0, w: 138, h: 52 },
     { x: 0, y: 487, w: 800, h: 113 },
   ],
@@ -99,7 +102,7 @@ let envObjCurrent = [...envObj];
 // change sticks show into objectives show?
 // make a function that runs only once each time it switches to a new level, to initialize the objectivesShow into the current level's objective objects
 let belongings = [
-  { x: 461, y: 464, w: 50, h: 50, type: 3 }, // waterbottle
+  { x: 442, y: 452, w: 50, h: 50, type: 3 }, // waterbottle
   { x: 706, y: 420, w: 50, h: 50, type: 0 }, // flashlight
   { x: 50, y: 199, w: 50, h: 50, type: 4 }, // bunny slippers
   { x: 147, y: 93, w: 50, h: 50, type: 1 }, //binoculars
@@ -259,12 +262,15 @@ function backgroundDrawCols() {
   }
   noStroke();
   // debugging for hitboxes
-  fill(255, 0, 0, 100);
-  for (let obs of obstaclesCurrent) {
-    rect(obs.x, obs.y, obs.w, obs.h);
+  if (debuggingHitboxes) {
+    fill(255, 0, 0, 100);
+    for (let obs of obstaclesCurrent) {
+      rect(obs.x, obs.y, obs.w, obs.h);
+    }
+    fill(0, 255, 0, 100);
+    rect(playerPos.colX, playerPos.colY, 30, 70);
   }
-  fill(0, 255, 0, 100);
-  rect(playerPos.colX, playerPos.colY, 30, 70);
+
   pop();
 
   push();
@@ -282,10 +288,11 @@ function backgroundDrawCols() {
   pop();*/
   push();
   fill(0, 0, 255, 100);
-
-  for (let thr of thornsCurrent) {
-    rect(thr.x, thr.y, thr.w, thr.h);
-    //image(stickImage, stk.x, stk.y);
+  if (debuggingHitboxes) {
+    for (let thr of thornsCurrent) {
+      rect(thr.x, thr.y, thr.w, thr.h);
+      //image(stickImage, stk.x, stk.y);
+    }
   }
   pop();
 }
@@ -334,6 +341,10 @@ function detectThornsReset() {
 }
 
 let level = 0; // 0 is prologue, then levels 1, 2, 3
+
+let objectiveHit = false;
+let previousObjectiveHit = false;
+
 function objectivesDraw() {
   push();
   fill(0, 100);
@@ -352,7 +363,7 @@ function objectivesDraw() {
   }
   pop();
 }
-//collision for sticks
+//collision for objectives
 function objectivesCol() {
   let playerRect = {
     x: playerPos.colX,
@@ -360,14 +371,25 @@ function objectivesCol() {
     w: player.w,
     h: player.h,
   };
-
+  objectiveHit = false;
   for (let i = 0; i < objectives.length; i++) {
     let stk = objectives[i];
-
     if (rectCollision(playerRect, stk)) {
-      updateObjectivesShow(currentRoom, i, false);
+      if (
+        roomObjectivesIndices[currentRoom]?.includes(i) &&
+        objectivesShow[i]
+      ) {
+        objectiveHit = true;
+      }
+      newItem = stk.type;
+      updateObjectivesShow(currentRoom, i);
     }
   }
+  if (objectiveHit && !previousObjectiveHit) {
+    ifNewItem = true;
+  }
+  previousObjectiveHit = objectiveHit;
+  // counts how many objective items the player has collected
   objectivesCounter = 0;
   for (let i = 0; i < objectivesShow.length; i++) {
     if (!objectivesShow[i]) {
@@ -385,9 +407,9 @@ let roomObjectivesIndices = {
   3: [4],
 };
 
-function updateObjectivesShow(currentRoom, objIndex, value) {
+function updateObjectivesShow(currentRoom, objIndex) {
   if (roomObjectivesIndices[currentRoom]?.includes(objIndex)) {
-    objectivesShow[objIndex] = value;
+    objectivesShow[objIndex] = false;
   }
 }
 
@@ -422,3 +444,6 @@ function addToInventory(itemType) {
     inventoryArr.push({ type: itemType, quantity: quant, usable: ifUsable }); // Add new item
   }
 }
+
+let newItem = 3;
+let ifNewItem = false;

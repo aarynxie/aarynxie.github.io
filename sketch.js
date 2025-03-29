@@ -2,6 +2,7 @@
 let currentRoom = 0;
 let playerSpeed = 10;
 let showCutscenes = false;
+let debuggingHitboxes = false;
 
 function preload() {
   backgroundPreload();
