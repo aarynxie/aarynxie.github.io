@@ -124,7 +124,6 @@ function jacketCol() {
 let inventoryMode = false;
 function inventoryDraw() {
   updateInventory();
-  console.log(inventoryArr);
   if (inventoryMode) {
     image(uiInventoryImage, 223, 120);
     push();
@@ -166,11 +165,11 @@ function inventoryDraw() {
   }
 }
 // stores all the inventory items, using the number IDs
-let inventoryArr = [];
+let inventoryArr = [{ type: 5, quantity: 1 }];
 let inventoryArrHealth = [{ type: 5, quantity: 1 }];
 
 function updateInventory() {
-  inventoryArr = inventoryArrHealth.concat(inventoryArrObjectives);
+  //inventoryArr = inventoryArrHealth.concat(inventoryArrObjectives);
 }
 
 function hitTest(x, y, w, h) {

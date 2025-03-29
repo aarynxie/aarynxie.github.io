@@ -371,17 +371,13 @@ function objectivesCol() {
     }
   }
   objectivesCounter = 0;
-  inventoryArrObjectives = [];
   for (let i = 0; i < objectivesShow.length; i++) {
     if (!objectivesShow[i]) {
       objectivesCounter++;
-      if (currentLevel == 1) {
-        addToInventory(objectives[i].type);
-      }
+      addToInventory(objectives[i].type);
     }
   }
 }
-let inventoryArrObjectives = [];
 
 // defines which sticks in the array is in which room
 let roomObjectivesIndices = {
@@ -399,13 +395,16 @@ function updateObjectivesShow(currentRoom, objIndex, value) {
 
 function addToInventory(itemType) {
   // Check if the item is already in the inventory
-  let existingItem = inventoryArrObjectives.find(
-    (item) => item.type === itemType
-  );
-
+  let existingItem = inventoryArr.find((item) => item.type === itemType);
+  let quant;
+  if (currentLevel == 1) {
+    quant = 1;
+  } else if (currentLevel == 2) {
+    quant = objectivesCounter;
+  }
   if (existingItem) {
-    existingItem.quantity += 1; // Increase quantity if already collected
+    existingItem.quantity = quant; // Increase quantity if already collected
   } else {
-    inventoryArrObjectives.push({ type: itemType, quantity: 1 }); // Add new item
+    inventoryArr.push({ type: itemType, quantity: quant }); // Add new item
   }
 }
