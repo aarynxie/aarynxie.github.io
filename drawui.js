@@ -158,6 +158,12 @@ function inventoryDraw() {
         if (inventoryArr[i * 2 + j]) {
           let currentItem = inventoryArr[i * 2 + j].type;
           image(inventoryItemsImage[currentItem], j * 62 + 434, i * 62 + 225);
+          fill(0);
+          text(
+            inventoryArr[i * 2 + j].quantity,
+            j * 62 + 434 + 30,
+            i * 62 + 225 + 35
+          );
         }
       }
     }

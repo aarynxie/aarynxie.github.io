@@ -52,6 +52,10 @@ function checkGameStatus() {
         1: [1],
         2: [2, 3],
       };
+      addToInventory(5);
+      inventoryArr = inventoryArr.filter(
+        (item) => item.type < 0 || item.type > 4
+      );
       if (showCutscenes) {
         cutscene = true; // instead of setting to true, set game status to complete?
       } else {
@@ -74,12 +78,14 @@ function checkGameStatus() {
         1: [1],
         2: [2, 3],
       };
-    }
-    if (showCutscenes) {
-      cutscene = true;
-    } else {
-      playGame = true;
-      currentLevel = 3;
+      addToInventory(5);
+
+      if (showCutscenes) {
+        cutscene = true;
+      } else {
+        playGame = true;
+        currentLevel = 3;
+      }
     }
   } else if (currentLevel == 3) {
   }
@@ -137,8 +143,9 @@ function drawCutscene() {
       cutscene = false;
       playGame = true;
       currentLevel = 2;
+
+      pop();
     }
-    pop();
   } else if (currentLevel == 2) {
     // below is temp code
     push();

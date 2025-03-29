@@ -37,6 +37,7 @@ function draw() {
         playerMove();
       }
       //checkDialogueTrigger();
+      setNewRoom(); // if something breaks move this to line 50
       backgroundDrawCols();
       playerDraw();
       pop();
@@ -46,7 +47,7 @@ function draw() {
       //backgroundOverlay();
       //backgroundFlashlight();
       pop();
-      setNewRoom();
+
       uiDraw();
       //drawDialogue();
       soundPlay();

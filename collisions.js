@@ -107,10 +107,10 @@ let belongings = [
 ];
 
 let sticks = [
-  { x: 470, y: 400, w: 45, h: 24 },
-  { x: 730, y: 130, w: 45, h: 24 },
-  { x: 100, y: 360, w: 45, h: 24 },
-  { x: 600, y: 50, w: 45, h: 24 },
+  { x: 470, y: 400, w: 45, h: 24, type: 6 },
+  { x: 730, y: 130, w: 45, h: 24, type: 6 },
+  { x: 100, y: 360, w: 45, h: 24, type: 6 },
+  { x: 600, y: 50, w: 45, h: 24, type: 6 },
 ];
 
 let worms = [
@@ -281,9 +281,6 @@ function backgroundDrawCols() {
   pop();*/
   push();
   fill(0, 0, 255, 100);
-  for (let bel of belongings) {
-    //rect(bel.x, bel.y, bel.w, bel.h);
-  }
 
   for (let thr of thornsCurrent) {
     rect(thr.x, thr.y, thr.w, thr.h);
@@ -345,13 +342,14 @@ function objectivesDraw() {
     if (objectivesShowCurrent[i]) {
       if (currentLevel == 1) {
         image(inventoryItemsImage[obj.type], obj.x, obj.y);
-      } else {
+        rect(obj.x, obj.y, obj.w, obj.h);
+      } else if (currentLevel == 2) {
+        image(stickImage, obj.x, obj.y);
+        rect(obj.x, obj.y, obj.w, obj.h);
       }
-      rect(obj.x, obj.y, obj.w, obj.h);
-
-      //image(stickImage, stk.x, stk.y);
     }
   }
+  console.log(currentLevel + " " + objectivesCounter);
   pop();
 }
 //collision for sticks
@@ -397,13 +395,22 @@ function addToInventory(itemType) {
   // Check if the item is already in the inventory
   let existingItem = inventoryArr.find((item) => item.type === itemType);
   let quant;
-  if (currentLevel == 1) {
+  if (itemType !== 5) {
+    if (currentLevel == 1) {
+      quant = 1;
+    } else if (currentLevel == 2) {
+      quant = objectivesCounter;
+    }
+  } else {
     quant = 1;
-  } else if (currentLevel == 2) {
-    quant = objectivesCounter;
   }
+
   if (existingItem) {
-    existingItem.quantity = quant; // Increase quantity if already collected
+    if (itemType !== 5) {
+      existingItem.quantity = quant; // Increase quantity if already collected
+    } else {
+      existingItem.quantity += 1;
+    }
   } else {
     inventoryArr.push({ type: itemType, quantity: quant }); // Add new item
   }
