@@ -40,7 +40,7 @@ function checkGameStatus() {
   if (currentLevel == 1) {
     if (objectivesCounter >= objectivesTotal) {
       playGame = false;
-      // reset stuff
+      // reset for next level
       objectivesCounter = 0;
       objectivesTotal = sticks.length;
       objectives = [...sticks];
@@ -79,7 +79,9 @@ function checkGameStatus() {
         2: [2, 3],
       };
       addToInventory(5);
-
+      addToInventory(5);
+      addToInventory(5);
+      inventoryArr = inventoryArr.filter((item) => item.type == 5);
       if (showCutscenes) {
         cutscene = true;
       } else {
@@ -88,10 +90,12 @@ function checkGameStatus() {
       }
     }
   } else if (currentLevel == 3) {
+    if (objectivesCounter >= objectivesTotal) {
+      // congrats!!
+    }
   }
 }
 
-let currentLevel = 0;
 let cutscene = false;
 // what changes based on the level?
 // starting dialogue

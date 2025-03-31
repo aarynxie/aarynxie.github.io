@@ -4,6 +4,7 @@ let playerSpeed = 10;
 let showCutscenes = false;
 let debuggingHitboxes = false;
 let transitions = true;
+let currentLevel = 0;
 
 function preload() {
   backgroundPreload();

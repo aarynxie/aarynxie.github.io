@@ -332,17 +332,19 @@ let belongings = [
 ];
 
 let sticks = [
-  { x: 470, y: 400, w: 45, h: 24, type: 6 },
-  { x: 730, y: 130, w: 45, h: 24, type: 6 },
-  { x: 100, y: 360, w: 45, h: 24, type: 6 },
-  { x: 600, y: 50, w: 45, h: 24, type: 6 },
+  { x: 118, y: 99, w: 45, h: 24, type: 6 }, // room 4
+  { x: 260, y: 461, w: 45, h: 24, type: 6 }, // room 5
+  { x: 599, y: 351, w: 45, h: 24, type: 6 }, // room 6
+  { x: 260, y: 252, w: 45, h: 24, type: 6 }, // room 8
+  { x: 566, y: 303, w: 45, h: 24, type: 6 }, // room 9
 ];
 
 let worms = [
-  { x: 570, y: 400, w: 45, h: 24 },
-  { x: 730, y: 130, w: 45, h: 24 },
-  { x: 100, y: 360, w: 45, h: 24 },
-  { x: 600, y: 50, w: 45, h: 24 },
+  { x: 278, y: 456, w: 50, h: 34, type: 7 }, // room 3
+  { x: 293, y: 346, w: 50, h: 34, type: 7 }, // room 4
+  { x: 95, y: 247, w: 50, h: 34, type: 7 }, // room 7
+  { x: 628, y: 133, w: 50, h: 34, type: 7 }, // room 8
+  { x: 49, y: 453, w: 50, h: 34, type: 7 }, // room 10
 ];
 
 let objectives = [...belongings];
@@ -354,9 +356,25 @@ let objectivesCounter = 0;
 let objectivesTotal = belongings.length;
 
 let thorns = [
-  { x: 148, y: 29, w: 90, h: 52 },
-  { x: 200, y: 129, w: 90, h: 52 },
-  { x: 400, y: 339, w: 90, h: 52 },
+  { x: 148, y: 29, w: 90, h: 52 }, // room 1
+  { x: 200, y: 129, w: 90, h: 52 }, // room 2
+  { x: 400, y: 339, w: 90, h: 52 }, // room 3
+  { x: 511, y: 85, w: 90, h: 52 }, //room 4
+  { x: 560, y: 405, w: 90, h: 52 },
+  { x: 253, y: 212, w: 90, h: 52 }, // room 5
+  { x: 97, y: 418, w: 90, h: 52 },
+  { x: 554, y: 157, w: 90, h: 52 },
+  { x: 152, y: 484, w: 90, h: 52 }, // room 6
+  { x: 74, y: 94, w: 90, h: 52 },
+  { x: 494, y: 198, w: 90, h: 52 },
+  { x: 217, y: 53, w: 90, h: 52 }, // room 7
+  { x: 568, y: 363, w: 90, h: 52 },
+  { x: 510, y: 284, w: 90, h: 52 }, // room 8
+  { x: 643, y: 451, w: 90, h: 52 },
+  { x: 418, y: 75, w: 90, h: 52 }, // room 9
+  { x: 591, y: 409, w: 90, h: 52 },
+  { x: 327, y: 160, w: 90, h: 52 }, // room 10
+  { x: 379, y: 285, w: 90, h: 52 },
 ];
 let thornsCurrent = [...thorns];
 
@@ -372,6 +390,9 @@ function initializeCols() {
     h: 70,
     speed: 3.5,
   };
+  for (let i = 0; i < envObj.length; i++) {
+    envObj[i] = envObj[i].reverse();
+  }
 
   // initialize collisions for envObj from the array
   for (let i = 0; i < envObj.length; i++) {
@@ -556,7 +577,7 @@ function updateThornsHit() {
 
 function detectThornsReset() {
   if (previousThornsHit && !thornsHit) {
-    health--;
+    //health--;
   }
   // Update previous state
   previousThornsHit = thornsHit;
@@ -580,6 +601,9 @@ function objectivesDraw() {
       } else if (currentLevel == 2) {
         image(stickImage, obj.x, obj.y);
         rect(obj.x, obj.y, obj.w, obj.h);
+      } else if (currentLevel == 3) {
+        image(wormImage, obj.x, obj.y);
+        rect(obj.x, obj.y, obj.w, obj.h);
       }
     }
   }
@@ -595,15 +619,16 @@ function objectivesCol() {
   };
   objectiveHit = false;
   for (let i = 0; i < objectives.length; i++) {
-    let stk = objectives[i];
-    if (rectCollision(playerRect, stk)) {
+    let obj = objectives[i];
+    if (rectCollision(playerRect, obj)) {
       if (
         roomObjectivesIndices[currentRoom]?.includes(i) &&
         objectivesShow[i]
       ) {
         objectiveHit = true;
+        newItem = obj.type;
       }
-      newItem = stk.type;
+
       updateObjectivesShow(currentRoom, i);
     }
   }
@@ -619,9 +644,10 @@ function objectivesCol() {
       addToInventory(objectives[i].type);
     }
   }
+  console.log(inventoryArr);
 }
 
-// defines which sticks in the array is in which room
+// defines which objectives in the array is in which room
 let roomObjectivesIndices = {
   0: [0], // Room 0 affects index 0
   1: [1], // Room 1 affects indices 1 and 2 separately
@@ -643,7 +669,7 @@ function addToInventory(itemType) {
   if (itemType !== 5) {
     if (currentLevel == 1) {
       quant = 1;
-    } else if (currentLevel == 2) {
+    } else if (currentLevel == 2 || currentLevel == 3) {
       quant = objectivesCounter;
     }
   } else {

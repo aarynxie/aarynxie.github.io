@@ -29,7 +29,8 @@ function uiPreload() {
   inventoryItemsImage[4] = loadImage("sprites/ui/inventory/bunnyslippers.png");
   inventoryItemsImage[5] = loadImage("sprites/ui/inventory/healthpack.png");
   inventoryItemsImage[6] = loadImage("sprites/ui/inventory/stick.png");
-  inventoryItemsImage[7] = loadImage("sprites/ui/inventory/headphones-1.png");
+  inventoryItemsImage[7] = loadImage("sprites/ui/inventory/worm.png");
+  inventoryItemsImage[8] = loadImage("sprites/ui/inventory/headphones-1.png");
 
   uiNewItemImage = loadImage("sprites/ui/newitem.png");
   uiHealImage = loadImage("sprites/ui/heal.png");
@@ -334,5 +335,6 @@ let inventoryItemsDesc = [
   { name: "Bunny Slippers", desc: "Slippers desc" },
   { name: "Health Pack", desc: "A kit with bandages \nand disinfectants" },
   { name: "Firewood", desc: "Firewood desc" },
+  { name: "Worm", desc: "Worm desc" },
   { name: "Headphones", desc: "Headphones desc" },
 ];
