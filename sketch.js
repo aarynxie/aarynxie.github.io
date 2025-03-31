@@ -3,6 +3,7 @@ let currentRoom = 0;
 let playerSpeed = 10;
 let showCutscenes = false;
 let debuggingHitboxes = false;
+let transitions = true;
 
 function preload() {
   backgroundPreload();
@@ -56,7 +57,9 @@ function draw() {
       drawFocusMode();
     }
     somaCheckCooldownCheck();
-    fadingTransition();
+    if (transitions) {
+      fadingTransition();
+    }
   } else if (startScreen) {
     showStartScreen();
   } else if (gameOver) {
