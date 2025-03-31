@@ -8,8 +8,8 @@ let frameCounter = 0;
 let playerPos = {
   x: 500,
   y: 250,
-  colX: 500, // used for detecting collision, since the sprite is drawn slightly off from its hitbox
-  colY: 250,
+  colX: 430 + 15, // used for detecting collision, since the sprite is drawn slightly off from its hitbox
+  colY: 284 + 25,
 };
 
 let moving = false;
@@ -127,9 +127,8 @@ function playerDraw() {
 }
 
 // Handle player movement
-
+let maxSpeed = playerSpeed;
 function playerMove() {
-  let maxSpeed = playerSpeed; // Maximum movement per frame
   let moveX = 0,
     moveY = 0; // Track movement
 

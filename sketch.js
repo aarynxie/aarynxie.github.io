@@ -1,9 +1,9 @@
 // for debugging
 let currentRoom = 0;
 let playerSpeed = 10;
-let showCutscenes = false;
+let showCutscenes = true;
 let debuggingHitboxes = false;
-let transitions = true;
+let transitions = true; // fade in fade out
 let currentLevel = 0;
 
 function preload() {
@@ -59,7 +59,7 @@ function draw() {
     }
     somaCheckCooldownCheck();
     if (transitions) {
-      fadingTransition();
+      fadingTransition(playGame, 0);
     }
   } else if (startScreen) {
     showStartScreen();

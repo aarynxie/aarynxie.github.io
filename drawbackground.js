@@ -1,5 +1,6 @@
 let backgroundImages = [];
 let backgroundImagesOverlay = [];
+let cutsceneBgImages = [];
 
 let envObjImage = [];
 
@@ -75,6 +76,10 @@ function backgroundPreload() {
   stickImage = loadImage("sprites/environment/objects/stick.png");
   thornsImage = loadImage("sprites/environment/objects/thorns.png");
   wormImage = loadImage("sprites/environment/objects/worm.png");
+
+  cutsceneBgImages[0] = loadImage(
+    "sprites/environment/background/level/levels-1-1.png"
+  );
 }
 
 function backgroundDraw() {
@@ -408,10 +413,18 @@ function roomSetup(roomNum, thornStart, thornEnd, objStart, objEnd) {
     roomObjectivesIndices[10] = [4];
   }
 }
-
-function fadingTransition() {
+let fadeSpeed;
+let fadeMax;
+function fadingTransition(boolean, cutsceneNo) {
+  if (cutsceneNo == 1) {
+    fadeSpeed = 5;
+    fadeMax = 400;
+  } else {
+    fadeSpeed = 15;
+    fadeMax = 255;
+  }
   if (fadingIn) {
-    alphaValue -= 15;
+    alphaValue -= fadeSpeed;
     if (alphaValue <= 0) {
       alphaValue = 0;
       fadingIn = false;
@@ -419,15 +432,22 @@ function fadingTransition() {
   }
   // Handle Fade-Out Effect
   if (fadingOut) {
-    alphaValue += 15;
-    if (alphaValue >= 255) {
+    alphaValue += fadeSpeed;
+    if (alphaValue >= fadeMax) {
       alphaValue = 255;
       fadingOut = false;
 
       // Change game state after fade-out completes
-      currentRoom = nextRoom;
+
       fadingIn = true; // Start fade-in for new state
-      roomReset();
+      if (boolean) {
+        currentRoom = nextRoom;
+        roomReset();
+      } else if (cutsceneNo == 1 && cutscene1Phase == 1) {
+        cutsceneFrameCount = 0;
+        cutscene1Phase = 2;
+        facingDirection = "DOWN";
+      }
     }
   }
   push();

@@ -250,7 +250,6 @@ function inventoryDraw() {
     }
 
     // draw focused item
-    //console.log(inventoryItemsDesc[0].desc);
     if (invSelect !== 100) {
       image(inventoryItemsImage[invSelect], 274, 227, 90, 90);
       // draw description

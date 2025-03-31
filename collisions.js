@@ -644,7 +644,6 @@ function objectivesCol() {
       addToInventory(objectives[i].type);
     }
   }
-  console.log(inventoryArr);
 }
 
 // defines which objectives in the array is in which room

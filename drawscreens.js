@@ -120,7 +120,101 @@ levelcomplete = true
 reset objectivescounter
 when level complete is true, trigger some dialogue guiding the player back to the 
 */
+let cutscenePos = { x: 284, y: 308 };
+let cutsceneFrameCount = 0;
+let startFrameCount = false;
+let cutscene1Phase = 1;
+function drawCutscene1() {
+  let directionDraw;
+  spriteImage = walkImages;
 
+  if (cutscene1Phase == 1) {
+    image(cutsceneBgImages[0], 0, 0);
+    //drawDialogue(3, person);
+    // startFrameCount = true; // put this in the drawDialogue function
+    if (cutscenePos.y > 163) {
+      //if (cutscenePos.y > 163 && startFrameCount) {
+      frameCounter++;
+    }
+
+    cutsceneFrameCount++;
+    if (cutsceneFrameCount > 50) {
+      if (cutscenePos.x < 492) {
+        facingDirection = "RIGHT";
+        cutscenePos.x += 1.5;
+        moving = true;
+      } else if (cutscenePos.y > 163) {
+        facingDirection = "UP";
+        cutscenePos.y -= 1.5;
+        moving = true;
+      } else {
+        fadingOut = true;
+      }
+    }
+  } else {
+    image(backgroundImages[0], 0, 0);
+    if (cutscenePos.x > 430 && cutsceneFrameCount > 50) {
+      //if (cutscenePos.y > 163 && startFrameCount) {
+      frameCounter++;
+    }
+    //drawDialogue(4, person);
+    cutsceneFrameCount++;
+    if (cutsceneFrameCount > 50) {
+      // && startFrameCount
+      if (cutscenePos.y < 284) {
+        facingDirection = "DOWN";
+        cutscenePos.y += 2.5;
+        moving = true;
+      } else if (cutscenePos.x > 430) {
+        facingDirection = "LEFT";
+        cutscenePos.x -= 2.5;
+        moving = true;
+      } else {
+        // drawDialogue(5, person);
+        // drawDialogue(6, person);
+        // drawDialogue(7, person);
+        // after dialogue 7 run this code
+        cutscene = false;
+        playGame = true;
+        currentLevel = 1;
+        facingDirection = "LEFT";
+      }
+    }
+  }
+
+  if (facingDirection == "UP") {
+    directionDraw = 2;
+  } else if (facingDirection == "LEFT" || facingDirection == "RIGHT") {
+    directionDraw = 1;
+  } else if (facingDirection == "DOWN") {
+    directionDraw = 0;
+  }
+  if (moving) {
+    if (frameCounter >= 15) {
+      frameCounter = 0;
+      frameIndex = (frameIndex + 1) % spriteImage[directionDraw].length;
+    }
+    currentFrame = spriteImage[directionDraw][frameIndex];
+  } else {
+    currentFrame = spriteImage[directionDraw][0];
+  }
+
+  push();
+  translate(cutscenePos.x, cutscenePos.y);
+  if (facingDirection == "RIGHT") {
+    scale(-1, 1);
+    translate(-65, 0);
+  } else if (facingDirection == "UP") {
+    translate(-5, 0);
+  }
+  image(currentFrame, 0, 0);
+  fill(0, 100);
+  pop();
+  fadingTransition(playGame, 1);
+  //rect(cutscenePos.x, cutscenePos.y, 30 + 15, 70 + 32);
+}
+
+let playCutscene1 = false;
 function drawCutscene() {
   // draw cut scene depending on current level
   if (currentLevel == 0) {
@@ -131,9 +225,10 @@ function drawCutscene() {
     text("level 0 cutscene\nleft click to continue", width / 2, 200);
 
     if (mouseIsPressed) {
-      cutscene = false;
-      playGame = true;
-      currentLevel = 1;
+      playCutscene1 = true;
+    }
+    if (playCutscene1) {
+      drawCutscene1();
     }
     pop();
   } else if (currentLevel == 1) {
