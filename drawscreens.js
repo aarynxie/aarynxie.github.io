@@ -289,9 +289,10 @@ function drawCutscene() {
     fill(0);
     rect(0, 0, width, height);
     fill(255);
-    text("level 0 cutscene\nleft click to continue", width / 2, 200);
+    startDialogue();
+    text("level 0 cutscene\npress A to continue", width / 2, 200);
 
-    if (mouseIsPressed) {
+    if (keyIsDown(65)) {
       playCutscene1 = true;
     }
     if (playCutscene1) {

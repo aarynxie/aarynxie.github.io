@@ -1,11 +1,11 @@
 // for debugging
 let currentRoom = 0;
 let playerSpeed = 2.5;
-let showCutscenes = false;
+let showCutscenes = true;
 let debuggingHitboxes = false;
 let transitions = true; // fade in fade out
 let currentLevel = 0;
-let skipStartCutscene = true;
+let skipStartCutscene = false;
 let hitboxesOn = true;
 
 function preload() {
@@ -70,7 +70,9 @@ function draw() {
 
       uiDraw();
       levelCompleteDialogue();
-      //drawDialogue();
+      if (showDialogue) {
+        drawDialogue();
+      }
       soundPlay();
     } else if (allowSomaCheck) {
       drawFocusMode();
@@ -87,5 +89,8 @@ function draw() {
     showLevelComplete();
   } else if (cutscene) {
     drawCutscene();
+    if (showDialogue) {
+      drawDialogue();
+    }
   }
 }

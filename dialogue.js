@@ -1,74 +1,77 @@
-// use image(dialogueBgImages[0], x, y) for erin's dialogue bg
-// use image(dialogueBgImages[1], x, y) for grandma's dialogue bg
+let dialogueArr = [
+  "Erin: Those birds really did a number on our cottage.",
+  "Erin: Those must be the sticks Grandma wants me to collect",
+  "Erin: Those thorns looked really weird, maybe I should check on myself",
+  "Erin: Oh my gosh! There's my jacket!",
+];
 
+let dialogueIndex = -1;
 let showDialogue = false;
-let dialogueCompleted = false;
-let currentTextIndex = 0;
-let lastUpdateTime = 0;
-const textBoxX = 100;
-const textBoxY = 450;
-const textBoxW = 600;
-const textBoxH = 100;
-const dialogueText =
-  "This must be one of the sticks my grandma was talking about, let's see if I can find more (left click to continue)";
-const textSpeed = 40; // Characters per second
+let hasClicked = false; // Prevents multiple clicks per press
 
-function checkDialogueTrigger() {
-  if (dialogueCompleted || currentRoom !== 0) return;
+function drawDialogue() {
+  // let's keep the bg the same brightness
+  /*
+  fill(0, 150);
+  rect(0, 0, width, height);*/
 
-  // First stick should be index 0 in your sticks array
-  const firstStick = sticks[0];
+  // Dialogue box
+  fill(255);
+  rect(50, height - 200, width - 100, 150, 10);
 
-  let playerNear =
-    playerPos.colX > firstStick.x - 100 &&
-    playerPos.colX < firstStick.x + firstStick.w + 100 &&
-    playerPos.colY > firstStick.y - 100 &&
-    playerPos.colY < firstStick.y + firstStick.h + 100;
+  // Text styling
+  fill(0);
+  textSize(20);
+  textAlign(LEFT, TOP);
+  textWrap(WORD);
 
-  if (playerNear && !showDialogue) {
-    showDialogue = true;
-    currentTextIndex = 0;
-    lastUpdateTime = millis();
+  // Split speaker and dialogue
+  const parts = dialogueArr[dialogueIndex].split(": ");
+  const speaker = parts[0] + ":";
+  const message = parts.slice(1).join(": ");
+
+  // Draw speaker name
+  fill(100);
+  textSize(18);
+  text(speaker, 70, height - 180);
+
+  // Draw message
+  fill(0);
+  textSize(20);
+  text(message, 70, height - 150, width - 140, 100);
+
+  // Draw continue prompt
+  if (frameCount % 60 < 30) {
+    // Blinking effect
+    fill(100);
+    textAlign(RIGHT);
+    text("Click to continue...", width - 70, height - 110);
   }
 }
 
-function drawDialogue() {
-  if (!showDialogue) return;
+function handleDialogueClick() {
+  if (!hasClicked && showDialogue) {
+    hasClicked = true;
 
-  // Typewriter animation
-  if (currentTextIndex < dialogueText.length) {
-    if (millis() - lastUpdateTime > 1000 / textSpeed) {
-      currentTextIndex++;
-      lastUpdateTime = millis();
+    if (dialogueIndex < dialogueArr.length - 1) {
+      dialogueIndex++;
+    } else {
+      showDialogue = false;
+      dialogueIndex = -1;
     }
+
+    setTimeout(() => (hasClicked = false), 100); // Reset click lock
   }
-
-  // Draw text box
-  push();
-  fill("#DE722D");
-  stroke(0);
-  strokeWeight(2);
-  rect(textBoxX, textBoxY, textBoxW, textBoxH, 10);
-
-  // Draw text
-  fill(0);
-  noStroke();
-  textSize(20);
-  textAlign(LEFT, TOP);
-  text(
-    dialogueText.substring(0, currentTextIndex),
-    textBoxX + 20,
-    textBoxY + 20,
-    textBoxW - 40,
-    textBoxH - 40
-  );
-  pop();
 }
 
 function mousePressed() {
-  // Add this condition:
-  if (showDialogue && currentTextIndex >= dialogueText.length) {
-    showDialogue = false;
-    dialogueCompleted = true;
+  handleDialogueClick();
+}
+
+// Start dialogue from beginning
+function startDialogue() {
+  if (!showDialogue) {
+    showDialogue = true;
+    dialogueIndex = 0;
   }
 }
