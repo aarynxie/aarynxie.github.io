@@ -17,12 +17,6 @@ let displayIndex = 0;
 let lastTypeTime = 0;
 const typingSpeed = 50; // Milliseconds per character
 
-function drawDialogueMain() {
-  if (showDialogue) {
-    drawDialogue(0);
-  }
-}
-
 let currentMessageArr;
 let currentMessage;
 function drawDialogue(dIndex) {

@@ -5,7 +5,7 @@ let showCutscenes = true;
 let debuggingHitboxes = false;
 let transitions = true; // fade in fade out
 let currentLevel = 0;
-let skipStartCutscene = true;
+let skipStartCutscene = false;
 let hitboxesOn = true;
 
 function preload() {

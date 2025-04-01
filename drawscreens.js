@@ -299,11 +299,9 @@ function drawCutscene() {
       startDialogue();
     }
 
-    text("level 0 cutscene\npress A to continue", width / 2, 200);
+    //text("level 0 cutscene\npress A to continue", width / 2, 200);
     if (!showDialogue) {
-      if (keyIsDown(65)) {
-        playCutscene1 = true;
-      }
+      playCutscene1 = true;
       if (playCutscene1) {
         drawCutscene1();
       }
