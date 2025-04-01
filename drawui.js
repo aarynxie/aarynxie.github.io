@@ -9,6 +9,9 @@ let inventoryItemsImage = [];
 let uiNewItemImage;
 let uiHealImage;
 
+let dialogueErinImage;
+let dialogueGrandmaImage;
+
 let dialogueBgImages = [];
 
 function uiPreload() {
@@ -36,6 +39,9 @@ function uiPreload() {
 
   uiNewItemImage = loadImage("sprites/ui/newitem.png");
   uiHealImage = loadImage("sprites/ui/heal.png");
+
+  dialogueErinImage = loadImage("sprites/ui/dialogue_textbox_Erin.png");
+  dialogueGrandmaImage = loadImage("sprites/ui/dialogue_textbox_Grandma.png");
 }
 
 let stickBarText;

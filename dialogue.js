@@ -18,6 +18,7 @@ function drawDialogue() {
   // Dialogue box
   fill(255);
   rect(50, height - 200, width - 100, 150, 10);
+  // use image(dialogueErinImage,x,y) and image(dialogueGrandmaImage,x,y)
 
   // Text styling
   fill(0);
