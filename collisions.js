@@ -184,7 +184,7 @@ let envObj = [
     { x: 82, y: 158, type: "ROCK_SMALL" },
     { x: 341, y: 490, type: "TREE_SMALL" },
     { x: 102, y: 440, type: "TREE_SMALL" },
-    { x: 580, y: 363, type: "TREE_SMALL" },
+    { x: 580, y: 383, type: "TREE_SMALL" },
     { x: 250, y: 507, type: "ROCK_MEDIUM" },
     { x: 301, y: 473, type: "BUSH_BIG" },
     { x: 272, y: 45, type: "ROCK_MEDIUM" },
@@ -303,7 +303,7 @@ let envObj = [
     { x: 305, y: 421, type: "TREE_BIG" },
     { x: 35, y: 433, type: "ROCK_BIG" },
     { x: 148, y: 452, type: "ROCK_SMALL" },
-    { x: 445, y: 65, type: "BUSH_BIG" },
+    { x: 466, y: 76, type: "BUSH_BIG" }, //
     { x: 139, y: 399, type: "BUSH_SMALL" },
     { x: 157, y: 313, type: "BUSH_BIG" },
     { x: 234, y: 146, type: "ROCK_SMALL" },
@@ -395,6 +395,12 @@ let jackets = [
   { x: 215, y: 110, w: 50, h: 50, type: 8 }, // room 10
 ];
 
+let headphones = [
+  { x: 76, y: 186, w: 50, h: 50, type: 8 }, // room 6
+  { x: 483, y: 410, w: 50, h: 50, type: 8 }, // room 7
+  //{ x: 338, y: 338, w: 50, h: 50, type: 8 }, // room 10
+];
+
 let objectives = [...belongings];
 let objectivesShow = new Array(belongings.length).fill(true);
 let objectivesCurrent = [...belongings];
@@ -407,18 +413,22 @@ let jacketsShow = new Array(jackets.length).fill(true);
 let jacketsShowCurrent = [...jacketsShow];
 let jacketsCurrent = [...jackets];
 
+let headphonesShow = new Array(headphones.length).fill(true);
+let headphonesShowCurrent = [...headphonesShow];
+let headphonesCurrent = [...headphones];
+
 let thorns = [
   { x: 148, y: 29, w: 90, h: 52 }, // room 1
   { x: 200, y: 129, w: 90, h: 52 }, // room 2
   { x: 400, y: 339, w: 90, h: 52 }, // room 3
-  { x: 511, y: 85, w: 90, h: 52 }, //room 4
+  { x: 522, y: 68, w: 90, h: 52 }, //room 4
   { x: 560, y: 405, w: 90, h: 52 },
   { x: 253, y: 212, w: 90, h: 52 }, // room 5
   { x: 97, y: 418, w: 90, h: 52 },
   { x: 554, y: 157, w: 90, h: 52 },
   { x: 152, y: 484, w: 90, h: 52 }, // room 6
   { x: 74, y: 94, w: 90, h: 52 },
-  { x: 494, y: 198, w: 90, h: 52 },
+  { x: 490, y: 184, w: 90, h: 52 },
   { x: 217, y: 53, w: 90, h: 52 }, // room 7
   { x: 568, y: 363, w: 90, h: 52 },
   { x: 510, y: 284, w: 90, h: 52 }, // room 8
@@ -537,8 +547,8 @@ function rectCollision(rect1, rect2) {
 function backgroundDrawCols() {
   push();
   imageMode(CORNER);
+  // draw the environment objects
   for (let env of envObjCurrent) {
-    // draw the environment objects
     if (env.type == "TREE_BIG") {
       image(envObjImage[0], env.x, env.y);
     } else if (env.type == "TREE_SMALL") {
@@ -576,25 +586,11 @@ function backgroundDrawCols() {
   thornsDraw();
   if (currentLevel == 2 || currentLevel == 3) {
     jacketsDraw();
-  }
-
-  pop();
-  /*
-  push();
-  fill(0, 0, 255);
-  for (let stk of sticks) {
-    rect(stk.x, stk.y, stk.w, stk.h);
-    //image(stickImage, stk.x, stk.y);
-  }
-  pop();*/
-  push();
-  fill(0, 0, 255, 100);
-  if (debuggingHitboxes) {
-    for (let thr of thornsCurrent) {
-      rect(thr.x, thr.y, thr.w, thr.h);
-      //image(stickImage, stk.x, stk.y);
+    if (currentLevel == 3) {
+      headphonesDraw();
     }
   }
+
   pop();
 }
 
@@ -603,8 +599,11 @@ function thornsDraw() {
   fill(0);
   thornsCol();
   for (let thr of thornsCurrent) {
-    //rect(thr.x, thr.y, thr.w, thr.h);
     image(thornsImage, thr.x - 10, thr.y);
+    if (debuggingHitboxes) {
+      fill(0, 0, 255, 100);
+      rect(thr.x, thr.y, thr.w, thr.h);
+    }
   }
   pop();
   updateThornsHit();
@@ -669,7 +668,7 @@ function objectivesDraw() {
     let obj = objectivesCurrent[i]; // Get the current element
     if (objectivesShowCurrent[i]) {
       if (currentLevel == 1) {
-        image(inventoryItemsImage[obj.type], obj.x, obj.y);
+        image(groundItemsImage[obj.type], obj.x, obj.y);
       } else if (currentLevel == 2) {
         image(stickImage, obj.x, obj.y);
       } else if (currentLevel == 3) {
@@ -726,6 +725,55 @@ function objectivesCol() {
   }
 }
 
+let headphonesHit = false;
+let previousHeadphonesHit = false;
+
+function headphonesDraw() {
+  push();
+  fill(0, 100);
+  headphonesCol();
+  for (let i = 0; i < headphonesCurrent.length; i++) {
+    let hdp = headphonesCurrent[i]; // Get the current element
+    if (headphonesShowCurrent[i]) {
+      if (headphonesStage < 2) {
+        image(headphonesImage[headphonesStage], hdp.x, hdp.y);
+      }
+    }
+  }
+  pop();
+}
+//collision for objectives
+function headphonesCol() {
+  let playerRect = {
+    x: playerPos.colX,
+    y: playerPos.colY,
+    w: player.w,
+    h: player.h,
+  };
+  headphonesHit = false;
+
+  for (let i = 0; i < headphones.length; i++) {
+    let hdp = headphones[i];
+    if (rectCollision(playerRect, hdp)) {
+      if (roomHeadphonesIndices[currentRoom]?.includes(i)) {
+        headphonesHit = true;
+        headphonesShow[i] = false;
+      }
+    }
+  }
+  if (headphonesHit && !previousHeadphonesHit && headphonesShowCurrent[0]) {
+    if (headphonesStage == 0) {
+      newItem = 9;
+    } else if (headphonesStage == 1) {
+      newItem = 10;
+    }
+    addToInventory(9);
+    ifNewItem = true;
+    //headphonesStage = min(headphonesStage + 1, 2);
+  }
+  previousHeadphonesHit = headphonesHit;
+}
+
 let jacketsHit = false;
 let previousJacketsHit = false;
 
@@ -766,7 +814,6 @@ function jacketsCol() {
     ifNewItem = true;
     /*
     if (wearingJacket) {
-      //console.log("add to inv");
       addToInventory(8);
     } else {
       wearingJacket = true;
@@ -792,6 +839,15 @@ roomJacketsIndices[1] = [0];
 roomJacketsIndices[4] = [1];
 roomJacketsIndices[10] = [2];
 
+let roomHeadphonesIndices = Object.fromEntries(
+  Array.from({ length: 11 }, (_, i) => [i, []])
+);
+
+// Manually assign the indices that should have values
+roomHeadphonesIndices[6] = [0];
+roomHeadphonesIndices[7] = [1];
+roomHeadphonesIndices[10] = [2];
+
 function updateObjectivesShow(currentRoom, objIndex) {
   if (roomObjectivesIndices[currentRoom]?.includes(objIndex)) {
     objectivesShow[objIndex] = false;
@@ -803,32 +859,58 @@ function addToInventory(itemType) {
   let existingItem = inventoryArr.find((item) => item.type === itemType);
   let quant;
   let ifUsable;
-  if (itemType == 8) {
-    quant = 1;
-  } else if (itemType !== 5) {
-    if (currentLevel == 1) {
-      quant = 1;
-    } else if (currentLevel == 2 || currentLevel == 3) {
-      quant = objectivesCounter;
+  if (itemType == 9 || itemType == 10) {
+    if (headphonesStage == 0) {
+      // no headphones
+      // add stage 1 headphones
+      inventoryArr.push({
+        type: 9,
+        quantity: 1,
+        usable: true,
+      });
+      headphonesStage = 1;
+    } else if (headphonesStage == 1) {
+      // headphones 1
+      // add stage 2 headphones
+      inventoryArr.push({
+        type: 10,
+        quantity: 1,
+        usable: true,
+      });
+      headphonesStage = 2;
     }
   } else {
-    quant = 1;
-  }
-  // if item is health kit, set to usable
-  if (itemType == 5 || itemType == 8) {
-    ifUsable = true;
-  } else {
-    ifUsable = false;
-  }
-  if (inventoryArr.length <= 6) {
-    if (existingItem) {
-      if (itemType !== 5 && itemType !== 8) {
-        existingItem.quantity = quant; // Increase quantity if already collected
-      } else {
-        existingItem.quantity += 1;
+    if (itemType == 8) {
+      quant = 1;
+    } else if (itemType !== 5) {
+      if (currentLevel == 1) {
+        quant = 1;
+      } else if (currentLevel == 2 || currentLevel == 3) {
+        quant = objectivesCounter;
       }
     } else {
-      inventoryArr.push({ type: itemType, quantity: quant, usable: ifUsable }); // Add new item
+      quant = 1;
+    }
+    // if item is health kit, set to usable
+    if (itemType == 5 || itemType == 8) {
+      ifUsable = true;
+    } else {
+      ifUsable = false;
+    }
+    if (inventoryArr.length <= 6) {
+      if (existingItem) {
+        if (itemType !== 5 && itemType !== 8) {
+          existingItem.quantity = quant; // Increase quantity if already collected
+        } else {
+          existingItem.quantity += 1;
+        }
+      } else {
+        inventoryArr.push({
+          type: itemType,
+          quantity: quant,
+          usable: ifUsable,
+        }); // Add new item
+      }
     }
   }
 }

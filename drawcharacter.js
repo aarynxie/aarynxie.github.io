@@ -1,5 +1,6 @@
 let walkImages = [];
 let walkImagesJacket = [];
+let SOImages = [];
 
 let frameIndex = 0;
 let frameDelay = 12; // the number of draw cycles to wait before showing the next frame (60 fps / 5 = 12 fps, we are delaying each frame by 5 to make our animation 12 fps)
@@ -42,44 +43,48 @@ function playerPreload() {
   let walkSideJacket = [];
   let walkBackJacket = [];
   walkFrontJacket[0] = loadImage(
-    "sprites/character/walk/jacket/jacket-front-1.png"
+    "sprites/character/walk/jacket/jacket-walk-front-1.png"
   );
   walkFrontJacket[1] = loadImage(
-    "sprites/character/walk/jacket/jacket-front-2.png"
+    "sprites/character/walk/jacket/jacket-walk-front-2.png"
   );
   walkFrontJacket[2] = loadImage(
-    "sprites/character/walk/jacket/jacket-front-3.png"
+    "sprites/character/walk/jacket/jacket-walk-front-3.png"
   );
   walkFrontJacket[3] = loadImage(
-    "sprites/character/walk/jacket/jacket-front-4.png"
+    "sprites/character/walk/jacket/jacket-walk-front-4.png"
   );
   walkSideJacket[0] = loadImage(
-    "sprites/character/walk/jacket/jacket-side-1.png"
+    "sprites/character/walk/jacket/jacket-walk-side-1.png"
   );
   walkSideJacket[1] = loadImage(
-    "sprites/character/walk/jacket/jacket-side-2.png"
+    "sprites/character/walk/jacket/jacket-walk-side-2.png"
   );
   walkSideJacket[2] = loadImage(
-    "sprites/character/walk/jacket/jacket-side-3.png"
+    "sprites/character/walk/jacket/jacket-walk-side-3.png"
   );
   walkSideJacket[3] = loadImage(
-    "sprites/character/walk/jacket/jacket-side-4.png"
+    "sprites/character/walk/jacket/jacket-walk-side-4.png"
   );
   walkBackJacket[0] = loadImage(
-    "sprites/character/walk/jacket/jacket-back-1.png"
+    "sprites/character/walk/jacket/jacket-walk-back-1.png"
   );
   walkBackJacket[1] = loadImage(
-    "sprites/character/walk/jacket/jacket-back-2.png"
+    "sprites/character/walk/jacket/jacket-walk-back-2.png"
   );
   walkBackJacket[2] = loadImage(
-    "sprites/character/walk/jacket/jacket-back-3.png"
+    "sprites/character/walk/jacket/jacket-walk-back-3.png"
   );
   walkBackJacket[3] = loadImage(
-    "sprites/character/walk/jacket/jacket-back-4.png"
+    "sprites/character/walk/jacket/jacket-walk-back-4.png"
   );
   walkImagesJacket[0] = walkFrontJacket;
   walkImagesJacket[1] = walkSideJacket;
   walkImagesJacket[2] = walkBackJacket;
+
+  SOImages[0] = loadImage("sprites/character/SO-front.png");
+  SOImages[1] = loadImage("sprites/character/SO-side.png");
+  SOImages[2] = loadImage("sprites/character/SO-back.png");
 }
 
 function playerSetup() {
@@ -113,6 +118,9 @@ function playerDraw() {
     currentFrame = spriteImage[directionDraw][frameIndex];
   } else {
     currentFrame = spriteImage[directionDraw][0];
+  }
+  if (stopMoveSO) {
+    currentFrame = SOImages[directionDraw];
   }
 
   push();
@@ -169,7 +177,13 @@ function playerMove() {
 
   //if (canMove(tempX, tempY)) {
   if (hitboxesOn) {
-    if (canMove(tempX, tempY) && !fadingOut && !fadingIn && !inventoryMode) {
+    if (
+      canMove(tempX, tempY) &&
+      !fadingOut &&
+      !fadingIn &&
+      !inventoryMode &&
+      !stopMoveSO
+    ) {
       playerPos.colX = tempX;
       playerPos.colY = tempY;
     }

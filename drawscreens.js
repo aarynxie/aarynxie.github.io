@@ -48,6 +48,7 @@ function resetLevel() {
       2: [2, 3],
     };
     addToInventory(5);
+    addToInventory(5);
     inventoryArr = inventoryArr.filter(
       (item) => item.type < 0 || item.type > 4
     );
@@ -65,6 +66,7 @@ function resetLevel() {
       1: [1],
       2: [2, 3],
     };
+    addToInventory(5);
     addToInventory(5);
     inventoryArr = inventoryArr.filter((item) => item.type == 5);
   }
@@ -116,7 +118,8 @@ function levelCompleteDialogue() {
         fadingOut = true;
       }
     } else if (currentLevel == 2) {
-      if (currentRoom == 0 && playerPos.colY < 215 && playerPos.colX < 577) {
+      if (currentRoom == 9) {
+        console.log("fading out");
         fadingOut = true;
       }
     }
@@ -213,6 +216,7 @@ function drawCutscene1() {
           facingDirection = "LEFT";
         }
       }
+      image(groundItemsImage[3], 442, 452);
     }
 
     if (facingDirection == "UP") {
@@ -272,6 +276,7 @@ function drawSpecialCutscene() {
     playGame = true;
     levelComplete = true;
     specialCutscene = false;
+    console.log(currentRoom);
   }
 }
 
@@ -310,6 +315,7 @@ function drawCutscene() {
     pop();
   } else if (currentLevel == 2) {
     if (specialCutscene) {
+      console.log("draw special cutscene");
       drawSpecialCutscene();
     } else {
       // below is temp code
@@ -322,6 +328,9 @@ function drawCutscene() {
         cutscene = false;
         playGame = true;
         currentLevel = 3;
+        currentRoom = 0;
+        playerPos.colX = 430;
+        playerPos.colY = 284;
       }
       pop();
     }

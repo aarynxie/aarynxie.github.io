@@ -1,12 +1,12 @@
 // for debugging
 let currentRoom = 0;
-let playerSpeed = 10;
+let playerSpeed = 2.5;
 let showCutscenes = false;
 let debuggingHitboxes = false;
 let transitions = true; // fade in fade out
 let currentLevel = 0;
 let skipStartCutscene = true;
-let hitboxesOn = false;
+let hitboxesOn = true;
 
 function preload() {
   backgroundPreload();
@@ -25,8 +25,22 @@ function setup() {
   if (!showCutscenes) {
     startScreen = false;
     playGame = true;
-    currentLevel = 1;
+    currentLevel = 3;
     inventoryMode = true;
+  }
+  if (currentLevel == 3) {
+    objectivesCounter = 0;
+    objectivesTotal = worms.length; // replace with worms
+    objectives = [...worms];
+    objectivesShow = new Array(worms.length).fill(true);
+    objectivesCurrent = [...worms];
+    objectivesShowCurrent = [...objectivesShow];
+    roomObjectivesIndices = {
+      0: [0],
+      1: [1],
+      2: [2, 3],
+    };
+    addToInventory(5);
   }
 }
 
@@ -47,6 +61,7 @@ function draw() {
       playerDraw();
       pop();
       temperatureCheck();
+      soundOverload();
       push();
       backgroundOverlay();
       blendMode(MULTIPLY);

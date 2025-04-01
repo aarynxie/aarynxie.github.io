@@ -32,6 +32,7 @@ function uiPreload() {
   inventoryItemsImage[7] = loadImage("sprites/ui/inventory/worm.png");
   inventoryItemsImage[8] = loadImage("sprites/ui/inventory/jacket.png");
   inventoryItemsImage[9] = loadImage("sprites/ui/inventory/headphones-1.png");
+  inventoryItemsImage[10] = loadImage("sprites/ui/inventory/headphones-2.png");
 
   uiNewItemImage = loadImage("sprites/ui/newitem.png");
   uiHealImage = loadImage("sprites/ui/heal.png");
@@ -175,23 +176,9 @@ function temperatureCheck() {
     if (playerSpeed > 2.5) {
       playerSpeed = 2.5;
     }
-    console.log(playerSpeed);
+    //console.log(playerSpeed);
     frameDelay = map(playerSpeed, 1, 2.5, 16, 12);
   }
-
-  /*
-  if (currentRoom == 4) {
-    push();
-    jacketCol();
-    if (!wearingJacket) {
-      fill(200, 50, 200);
-      noStroke();
-      rect(jacket.x, jacket.y, jacket.w, jacket.h);
-      fill(255);
-      text("jacket", jacket.x, jacket.y + 20);
-      pop();
-    }
-  }*/
 }
 
 function freezingDraw() {
@@ -200,6 +187,51 @@ function freezingDraw() {
   tint(255, freezingOpacity);
   image(freezingImage, 0, 0);
   pop();
+}
+
+let randomSO = 700;
+let level3FrameCount = 0;
+
+let minRandomSO = 1000;
+let maxRandomSO = 1600;
+let headphonesStage = 0;
+let countSO = 0;
+let playingSO = false;
+let stopMoveSO = false;
+
+let stageDuration = 100;
+
+function soundOverload() {
+  if (currentLevel == 3) {
+    if (playingSO) {
+      countSO++;
+    }
+    level3FrameCount++;
+    // triggers sound overload - stop movement
+    if (level3FrameCount > floor(randomSO) - 2) {
+      console.log("play sound");
+      playingSO = true;
+      // when this happens, stop movement and switch to the other sprite
+      if (headphonesStage == 0) {
+        stageDuration = 100;
+      } else if (headphonesStage == 1) {
+        stageDuration = 50;
+      } else if (headphonesStage == 2) {
+        stageDuration = 0;
+      }
+
+      if (countSO < stageDuration) {
+        stopMoveSO = true;
+      }
+    }
+    if (countSO > stageDuration) {
+      stopMoveSO = false;
+      playingSO = false;
+      countSO = 0;
+      randomSO = floor(random(minRandomSO, maxRandomSO));
+      level3FrameCount = 0;
+    }
+  }
 }
 
 let inventoryMode = false;
@@ -235,7 +267,7 @@ function inventoryDraw() {
           strokeWeight(3);
           noFill();
           rect(j * 62 + 424, i * 62 + 215, 50, 50);
-          if (mouseIsPressed) {
+          if (mouseIsPressed && inventoryArr[i * 2 + j]) {
             invSelect = currentItem;
           }
           pop();
@@ -268,15 +300,16 @@ function inventoryDraw() {
       );
     // uses the item if item is usable
     if (
-      (isUsable(invSelect) && invSelect !== 5 && invSelect !== 8) ||
-      (invSelect == 5 && health < maxHealth) ||
+      (isUsable(invSelect) && invSelect !== 8) ||
+      //(invSelect == 5 && health < maxHealth) ||
       (invSelect == 8 && !wearingJacket)
     ) {
+      // do the health pack thing
+      // if player wants to use health kit on max health, display text saying ""
       if (hitTest(264, 367, 110, 25)) {
         fill("#833312");
         if (mouseIsPressed) {
           inventoryMode = false;
-          // invSelect is the item type, check inventoryArr, get the index of the invSelect item, subtract 1 from the quantity
           useInventoryItem(invSelect);
           if (invSelect == 5) {
             health = min(maxHealth, health + 1);
@@ -285,12 +318,22 @@ function inventoryDraw() {
           if (invSelect == 8) {
             wearingJacket = true;
           }
+          if (invSelect == 9) {
+            // in inventoryArr, have 2 different items
+          }
           invSelect = 100;
         }
       } else {
         fill("#561900");
       }
     } else {
+      if (invSelect == 8 && wearingJacket) {
+        fill(255);
+        textSize(12);
+        textAlign(CENTER);
+        text("You are already wearing a jacket.", width / 2, 465);
+      }
+
       fill(80);
     }
 
@@ -330,14 +373,15 @@ function useInventoryItem(itemType) {
 }
 
 let inventoryItemsDesc = [
-  { name: "Flashlight", desc: "Flashlight desc" },
-  { name: "Binoculars", desc: "Binoculars desc" },
-  { name: "Sketchbook", desc: "Sketchbook desc" },
-  { name: "Waterbottle", desc: "Waterbottle desc" },
-  { name: "Bunny Slippers", desc: "Slippers desc" },
-  { name: "Health Pack", desc: "A kit with bandages \nand disinfectants" },
-  { name: "Firewood", desc: "Firewood desc" },
-  { name: "Worm", desc: "Worm desc" },
-  { name: "Jacket", desc: "Jacket desc" },
-  { name: "Headphones", desc: "Headphones desc" },
+  { name: "Flashlight", desc: "For navigating\nthe forest at night" },
+  { name: "Binoculars", desc: "Handy for \nbirdwatching" },
+  { name: "Sketchbook", desc: "Full of drawings from \nmany adventures" },
+  { name: "Waterbottle", desc: "No more parched \nthroat for me" },
+  { name: "Bunny Slippers", desc: "Fluffy slippers for \nlife!" },
+  { name: "Health Pack", desc: "A kit with bandages \nto heal wounds." },
+  { name: "Firewood", desc: "A dry and sturdy \ntree branch" },
+  { name: "Worm", desc: "A juicy worm! The \nowls will like this" },
+  { name: "Jacket", desc: "Keeps me warm \nand protected." },
+  { name: "Headphones", desc: "A flimsy pair of \nold headphones" },
+  { name: "Headphones", desc: "Noise cancelling \nheadphones!" },
 ];
