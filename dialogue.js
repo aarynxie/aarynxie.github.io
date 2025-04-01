@@ -1,78 +1,127 @@
 let dialogueArr = [
-  "Erin: Those birds really did a number on our cottage.",
-  "Erin: Those must be the sticks Grandma wants me to collect",
-  "Erin: Those thorns looked really weird, maybe I should check on myself",
-  "Erin: Oh my gosh! There's my jacket!",
+  [
+    "Hey grandma! Thank you so much for letting me stay at your cottage this weekend. I'll be there in 10 minutes!",
+    "Of course, no problem at all, my dear. Now, I know the cold doesn't bother you, but night time at Owl Creek can get dangerously cold.",
+    "Don't forget to turn on the furnace in the basement when you get there, okay? Do you have the key?",
+    "Don't worry, I have it in my trusty owl backpack that you gave me! I'm pretty exhausted so I'm going to go now, but I'll call you back once I get settled in!",
+  ],
 ];
 
+// Dialogue system variables
 let dialogueIndex = -1;
 let showDialogue = false;
-let hasClicked = false; // Prevents multiple clicks per press
+let hasClicked = false;
+let typingActive = false;
 
-function drawDialogue() {
-  // let's keep the bg the same brightness
-  /*
-  fill(0, 150);
-  rect(0, 0, width, height);*/
+let displayIndex = 0;
+let lastTypeTime = 0;
+const typingSpeed = 50; // Milliseconds per character
 
-  // Dialogue box
-  fill(255);
-  rect(50, height - 200, width - 100, 150, 10);
-  // use image(dialogueErinImage,x,y) and image(dialogueGrandmaImage,x,y)
-
-  // Text styling
-  fill(0);
-  textSize(20);
-  textAlign(LEFT, TOP);
-  textWrap(WORD);
-
-  // Split speaker and dialogue
-  const parts = dialogueArr[dialogueIndex].split(": ");
-  const speaker = parts[0] + ":";
-  const message = parts.slice(1).join(": ");
-
-  // Draw speaker name
-  fill(100);
-  textSize(18);
-  text(speaker, 70, height - 180);
-
-  // Draw message
-  fill(0);
-  textSize(20);
-  text(message, 70, height - 150, width - 140, 100);
-
-  // Draw continue prompt
-  if (frameCount % 60 < 30) {
-    // Blinking effect
-    fill(100);
-    textAlign(RIGHT);
-    text("Click to continue...", width - 70, height - 110);
+function drawDialogueMain() {
+  if (showDialogue) {
+    drawDialogue(0);
   }
 }
 
-function handleDialogueClick() {
-  if (!hasClicked && showDialogue) {
-    hasClicked = true;
+let currentMessageArr;
+let currentMessage;
+function drawDialogue(dIndex) {
+  let dPerson = "ERIN";
+  let dialogueX = 205;
+  currentMessageArr = dialogueArr[dIndex];
+  currentMessage = currentMessageArr[dialogueIndex];
+  if (dIndex == 0 && (dialogueIndex == 2 || dialogueIndex == 1)) {
+    dPerson = "GRANDMA";
+  }
+  // Update typing animation
 
-    if (dialogueIndex < dialogueArr.length - 1) {
-      dialogueIndex++;
-    } else {
-      showDialogue = false;
-      dialogueIndex = -1;
+  if (typingActive && millis() - lastTypeTime > typingSpeed) {
+    displayIndex = min(displayIndex + 2, currentMessage.length);
+    lastTypeTime = millis();
+    if (displayIndex === currentMessage.length) {
+      typingActive = false;
     }
+  }
+  let dImage = dialogueErinImage;
+  if (dPerson == "ERIN") {
+    dImage = dialogueErinImage;
+  } else if (dPerson == "GRANDMA") {
+    dImage = dialogueGrandmaImage;
+    dialogueX = 205 + 95;
+  }
 
-    setTimeout(() => (hasClicked = false), 100); // Reset click lock
+  // Dialogue box
+  push();
+  imageMode(CENTER);
+  image(dImage, width / 2, 510);
+  pop();
+
+  // Draw the dialogue text
+  push();
+  fill(0);
+  textSize(12);
+  //text(currentMessage, 205, 498, 305, 90);
+  text(currentMessage.substring(0, displayIndex), dialogueX, 498, 305, 90);
+
+  // Continue prompt
+  if (displayIndex === currentMessage.length && frameCount % 60 < 30) {
+    fill("#834916");
+    text("Click to continue...", dialogueX, 558);
+  }
+  pop();
+  handleDialogueClick(dIndex);
+}
+
+function handleDialogueClick(dIndex2) {
+  if (mouseIsPressed) {
+    if (!hasClicked && showDialogue) {
+      hasClicked = true;
+
+      if (displayIndex < currentMessage.length) {
+        // Complete current message
+        displayIndex = currentMessage.length;
+        typingActive = false;
+      } else {
+        // Advance dialogue
+        if (dialogueIndex < dialogueArr[dIndex2].length - 1) {
+          dialogueIndex++;
+          currentMessage = dialogueArr[dIndex2][dialogueIndex];
+          displayIndex = 0;
+          typingActive = true;
+          lastTypeTime = millis();
+        } else {
+          showDialogue = false;
+          dialogueIndex = -1;
+        }
+      }
+      setTimeout(() => (hasClicked = false), 100);
+    }
   }
 }
 
 function mousePressed() {
-  handleDialogueClick();
+  if (showDialogue) {
+    // handleDialogueClick();
+  }
+  // Add other mouse interactions here
 }
 
-// Start dialogue from beginning
+// Call this to start the dialogue sequence
 function startDialogue() {
   if (!showDialogue) {
     showDialogue = true;
     dialogueIndex = 0;
+    //currentMessage = dialogueArr[0][dialogueIndex];
+    displayIndex = 0;
+    typingActive = true;
+    lastTypeTime = millis();
   }
+  startDialogueBool = false;
 }
+
+// Example usage - add this where you want dialogue to trigger:
+// function keyPressed() {
+//   if (key === ' ') {  // Example trigger with spacebar
+//     startDialogue();
+//   }
+// }

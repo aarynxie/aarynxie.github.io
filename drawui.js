@@ -14,6 +14,9 @@ let dialogueGrandmaImage;
 
 let dialogueBgImages = [];
 
+let arrowImages = {}; // Store arrow images
+let arrows = []; // Store active arrows
+
 function uiPreload() {
   uiStickBarImage = loadImage("sprites/ui/stickbar.png");
   uiHealthBarImage = loadImage("sprites/ui/healthbar.png");
@@ -42,6 +45,11 @@ function uiPreload() {
 
   dialogueErinImage = loadImage("sprites/ui/dialogue_textbox_Erin.png");
   dialogueGrandmaImage = loadImage("sprites/ui/dialogue_textbox_Grandma.png");
+
+  arrowImages["UP"] = loadImage("sprites/ui/uparrow.png");
+  arrowImages["DOWN"] = loadImage("sprites/ui/downarrow.png");
+  arrowImages["LEFT"] = loadImage("sprites/ui/leftarrow.png");
+  arrowImages["RIGHT"] = loadImage("sprites/ui/rightarrow.png");
 }
 
 let stickBarText;
@@ -50,12 +58,16 @@ function uiDraw() {
   abilitiesBarDraw();
   healthBarDraw();
   inventoryDraw();
+  uiArrowDraw();
 }
 
 function newItemDraw() {
   push();
   //image(uiStickBarImage, 690, 10, 100, 49);
   if (newItem !== 5) {
+    if (currentLevel !== 3 && objectivesCounter !== objectivesTotal) {
+      // test this
+    }
     drawNewItem(newItem);
   }
 
@@ -215,13 +227,13 @@ function soundOverload() {
     level3FrameCount++;
     // triggers sound overload - stop movement
     if (level3FrameCount > floor(randomSO) - 2) {
-      console.log("play sound");
+      //console.log("play sound");
       playingSO = true;
       // when this happens, stop movement and switch to the other sprite
       if (headphonesStage == 0) {
-        stageDuration = 100;
+        stageDuration = 150;
       } else if (headphonesStage == 1) {
-        stageDuration = 50;
+        stageDuration = 75;
       } else if (headphonesStage == 2) {
         stageDuration = 0;
       }
@@ -384,10 +396,71 @@ let inventoryItemsDesc = [
   { name: "Sketchbook", desc: "Full of drawings from \nmany adventures" },
   { name: "Waterbottle", desc: "No more parched \nthroat for me" },
   { name: "Bunny Slippers", desc: "Fluffy slippers for \nlife!" },
-  { name: "Health Pack", desc: "A kit with bandages \nto heal wounds." },
+  { name: "Health Pack", desc: "A kit with bandages \nto heal wounds" },
   { name: "Firewood", desc: "A dry and sturdy \ntree branch" },
   { name: "Worm", desc: "A juicy worm! The \nowls will like this" },
   { name: "Jacket", desc: "Keeps me warm \nand protected." },
   { name: "Headphones", desc: "A flimsy pair of \nold headphones" },
   { name: "Headphones", desc: "Noise cancelling \nheadphones!" },
 ];
+
+function uiArrowDraw() {
+  for (let i = arrows.length - 1; i >= 0; i--) {
+    let arrow = arrows[i];
+    arrow.update();
+    arrow.draw();
+
+    // Remove arrow when it reaches its target position
+    if (arrow.reachedTarget) {
+      arrows.splice(i, 1);
+    }
+  }
+}
+
+function drawArrow(direction, x, y) {
+  arrows.push(new AnimatedArrow(direction, x, y));
+}
+
+class AnimatedArrow {
+  constructor(direction, targetX, targetY) {
+    this.direction = direction;
+    this.targetX = targetX;
+    this.targetY = targetY;
+    this.speed = 5; // Movement speed
+    this.reachedTarget = false;
+
+    // Set start position based on direction
+    if (direction === "UP") {
+      this.x = targetX;
+      this.y = targetY + 50;
+    } else if (direction === "DOWN") {
+      this.x = targetX;
+      this.y = targetY - 50;
+    } else if (direction === "LEFT") {
+      this.x = targetX + 50;
+      this.y = targetY;
+    } else if (direction === "RIGHT") {
+      this.x = targetX - 50;
+      this.y = targetY;
+    }
+  }
+
+  update() {
+    // Move arrow towards target
+    if (this.direction === "UP" && this.y > this.targetY) {
+      this.y -= this.speed;
+    } else if (this.direction === "DOWN" && this.y < this.targetY) {
+      this.y += this.speed;
+    } else if (this.direction === "LEFT" && this.x > this.targetX) {
+      this.x -= this.speed;
+    } else if (this.direction === "RIGHT" && this.x < this.targetX) {
+      this.x += this.speed;
+    } else {
+      this.reachedTarget = true; // Mark as finished
+    }
+  }
+
+  draw() {
+    image(arrowImages[this.direction], this.x, this.y);
+  }
+}

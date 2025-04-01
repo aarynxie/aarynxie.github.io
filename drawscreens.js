@@ -73,6 +73,7 @@ function resetLevel() {
 }
 
 // sets the game status (game over, level complete or not)
+// win condition
 function checkGameStatus() {
   if (health <= 0) {
     playGame = false;
@@ -101,9 +102,12 @@ function checkGameStatus() {
   } else if (currentLevel == 3) {
     if (objectivesCounter >= objectivesTotal) {
       if (
-        (currentRoom = 9 && playerPos.colX < 91 + 436 && playerPos.colY > 172)
+        currentRoom == 9 &&
+        playerPos.colX < 91 + 436 &&
+        playerPos.colY > 172
       ) {
-        //play cutscene
+        playGame = false;
+        cutscene = true;
       }
     }
   }
@@ -119,7 +123,6 @@ function levelCompleteDialogue() {
       }
     } else if (currentLevel == 2) {
       if (currentRoom == 9) {
-        console.log("fading out");
         fadingOut = true;
       }
     }
@@ -276,12 +279,13 @@ function drawSpecialCutscene() {
     playGame = true;
     levelComplete = true;
     specialCutscene = false;
-    console.log(currentRoom);
   }
 }
 
 let playCutscene1 = false;
 let playCutscene2 = false;
+
+let startDialogueBool = true;
 function drawCutscene() {
   // draw cut scene depending on current level
   if (currentLevel == 0) {
@@ -289,16 +293,25 @@ function drawCutscene() {
     fill(0);
     rect(0, 0, width, height);
     fill(255);
-    startDialogue();
-    text("level 0 cutscene\npress A to continue", width / 2, 200);
-
-    if (keyIsDown(65)) {
-      playCutscene1 = true;
+    //showDialogue = true;
+    // run this once
+    if (startDialogueBool) {
+      startDialogue();
     }
-    if (playCutscene1) {
-      drawCutscene1();
+
+    text("level 0 cutscene\npress A to continue", width / 2, 200);
+    if (!showDialogue) {
+      if (keyIsDown(65)) {
+        playCutscene1 = true;
+      }
+      if (playCutscene1) {
+        drawCutscene1();
+      }
     }
     pop();
+    if (showDialogue) {
+      drawDialogue(0);
+    }
   } else if (currentLevel == 1) {
     // below is temp code
     push();
@@ -316,7 +329,6 @@ function drawCutscene() {
     pop();
   } else if (currentLevel == 2) {
     if (specialCutscene) {
-      console.log("draw special cutscene");
       drawSpecialCutscene();
     } else {
       // below is temp code
@@ -336,6 +348,8 @@ function drawCutscene() {
       pop();
     }
   } else if (currentLevel == 3) {
+    gameComplete = true;
+    playGame = false;
   }
 }
 

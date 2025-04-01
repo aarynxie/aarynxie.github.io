@@ -712,7 +712,9 @@ function objectivesCol() {
     }
   }
   if (objectiveHit && !previousObjectiveHit) {
-    ifNewItem = true;
+    if (currentLevel !== 2 && objectivesCounter !== objectivesTotal) {
+      ifNewItem = true;
+    }
   }
   previousObjectiveHit = objectiveHit;
   // counts how many objective items the player has collected
