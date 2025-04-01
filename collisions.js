@@ -369,7 +369,7 @@ let belongings = [
   { x: 442, y: 452, w: 50, h: 50, type: 3 }, // waterbottle
   { x: 706, y: 420, w: 50, h: 50, type: 0 }, // flashlight
   { x: 50, y: 199, w: 50, h: 50, type: 4 }, // bunny slippers
-  { x: 147, y: 93, w: 50, h: 50, type: 1 }, //binoculars
+  { x: 82, y: 71, w: 50, h: 50, type: 1 }, //binoculars
   { x: 128, y: 49, w: 50, h: 50, type: 2 }, // sketchbook
 ];
 
@@ -608,6 +608,7 @@ function thornsDraw() {
   pop();
   updateThornsHit();
 }
+let firstThorns = true;
 
 let thornsHit = false;
 let previousThornsHit = false;
@@ -634,12 +635,16 @@ function updateThornsHit() {
 
 function detectThornsReset() {
   if (previousThornsHit && !thornsHit) {
+    if (firstThorns) {
+      runDialogue(9);
+    }
     if (hitboxesOn) {
       if (wearingJacket) {
         health -= 0.5;
       } else {
         health--;
       }
+      firstThorns = false;
     }
     if (wearingJacket) {
       hitThornsCounter++;
@@ -682,6 +687,7 @@ function objectivesDraw() {
   pop();
 }
 //collision for objectives
+
 function objectivesCol() {
   let playerRect = {
     x: playerPos.colX,
@@ -699,6 +705,17 @@ function objectivesCol() {
       ) {
         objectiveHit = true;
         newItem = obj.type;
+        if (obj.type == 0) {
+          runDialogue(4);
+        } else if (obj.type == 1) {
+          runDialogue(5);
+        } else if (obj.type == 2) {
+          runDialogue(6);
+        } else if (obj.type == 3) {
+          runDialogue(7);
+        } else if (obj.type == 4) {
+          runDialogue(8);
+        }
       }
       // special stick
       if (currentRoom == 9 && currentLevel == 2 && objectivesShow[i]) {

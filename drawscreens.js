@@ -168,12 +168,12 @@ function drawCutscene1() {
     spriteImage = walkImages;
 
     if (cutscene1Phase == 1) {
-      console.log("playing cutscene 1");
-      if (!showDialogue) {
-        //startDialogueBool = true;
+      if (!dialogueState.show && !dialogueDone[1]) {
+        startDialogueBool = true;
       }
       if (startDialogueBool) {
-        //startDialogue();
+        startDialogue(1);
+        startDialogueBool = false;
       }
       image(cutsceneBgImages[0], 0, 0);
       //drawDialogue(3, person);
@@ -184,7 +184,7 @@ function drawCutscene1() {
       }
 
       cutsceneFrameCount++;
-      if (cutsceneFrameCount > 50 && showDialogue) {
+      if (cutsceneFrameCount > 50 && dialogueDone[1]) {
         if (cutscenePos.x < 492) {
           facingDirection = "RIGHT";
           cutscenePos.x += 1.5;
@@ -194,11 +194,12 @@ function drawCutscene1() {
           cutscenePos.y -= 1.5;
           moving = true;
         } else {
+          moving = false;
           fadingOut = true;
         }
       } else {
-        if (showDialogue) {
-          drawDialogue(1);
+        if (dialogueState.show) {
+          drawDialogue();
         }
       }
     } else {
@@ -207,9 +208,9 @@ function drawCutscene1() {
         //if (cutscenePos.y > 163 && startFrameCount) {
         frameCounter++;
       }
-      //drawDialogue(4, person);
+      runDialogue(2);
       cutsceneFrameCount++;
-      if (cutsceneFrameCount > 50) {
+      if (cutsceneFrameCount > 50 && dialogueDone[2]) {
         // && startFrameCount
         if (cutscenePos.y < 284) {
           facingDirection = "DOWN";
@@ -219,11 +220,10 @@ function drawCutscene1() {
           facingDirection = "LEFT";
           cutscenePos.x -= 2.5;
           moving = true;
+        } else if (!dialogueDone[3]) {
+          moving = false;
+          runDialogue(3);
         } else {
-          // drawDialogue(5, person);
-          // drawDialogue(6, person);
-          // drawDialogue(7, person);
-          // after dialogue 7 run this code
           cutscene = false;
           playGame = true;
           currentLevel = 1;
@@ -304,22 +304,21 @@ function drawCutscene() {
     fill(0);
     rect(0, 0, width, height);
     fill(255);
-    //showDialogue = true;
-    // run this once
-    if (startDialogueBool) {
-      startDialogue();
-    }
 
     //text("level 0 cutscene\npress A to continue", width / 2, 200);
-    if (dialogueDone) {
+    if (dialogueDone[0]) {
       playCutscene1 = true;
       if (playCutscene1) {
         drawCutscene1();
       }
     }
     pop();
-    if (showDialogue) {
-      drawDialogue(0);
+    if (startDialogueBool) {
+      startDialogue(0);
+      startDialogueBool = false;
+    }
+    if (dialogueState.show) {
+      drawDialogue();
     }
   } else if (currentLevel == 1) {
     // below is temp code

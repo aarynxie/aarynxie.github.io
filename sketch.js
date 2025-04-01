@@ -5,7 +5,7 @@ let showCutscenes = true;
 let debuggingHitboxes = false;
 let transitions = true; // fade in fade out
 let currentLevel = 0;
-let skipStartCutscene = false;
+let skipStartCutscene = true;
 let hitboxesOn = true;
 
 function preload() {
@@ -52,7 +52,7 @@ function draw() {
       backgroundDraw();
       push();
       playerSetup();
-      if (!showDialogue) {
+      if (!dialogueState.show) {
         playerMove();
       }
       //checkDialogueTrigger();
@@ -67,7 +67,9 @@ function draw() {
       blendMode(MULTIPLY);
       backgroundFlashlight();
       pop();
-
+      if (dialogueState.show) {
+        drawDialogue();
+      }
       uiDraw();
       levelCompleteDialogue();
       soundPlay();
@@ -75,6 +77,7 @@ function draw() {
       drawFocusMode();
     }
     somaCheckCooldownCheck();
+    dialogueChecks();
     if (transitions) {
       fadingTransition(playGame, 0);
     }
@@ -86,5 +89,8 @@ function draw() {
     showLevelComplete();
   } else if (cutscene) {
     drawCutscene();
+    if (dialogueState.show) {
+      drawDialogue();
+    }
   }
 }

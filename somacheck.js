@@ -75,7 +75,7 @@ function drawFocusMode() {
     timeSinceSomaCheck = 0;
   }
 }
-
+let donefirstSomaCheck = false;
 function keyPressed() {
   if (keyIsDown(69) && !somaCheck) {
     // press E
@@ -89,6 +89,7 @@ function keyPressed() {
   }
 
   if (!somaCheck && keyIsDown(81) && allowSomaCheck && !inventoryMode) {
+    donefirstSomaCheck = true;
     enterFocusMode();
     return;
   }

@@ -8,120 +8,184 @@ let dialogueArr = [
   [
     "*Yawn* I'm too tired to do anything other than sleep right now… I'll unpack after taking a nap.",
   ],
+  ["Woah!! What happened here?! My stuff is everywhere!"],
+  [
+    "Hmm... These feathers and talon prints...I think I have an idea of who the culprit is.",
+    "Let's take a look at what's missing... Oh no! My owl backpack is gone! That bag had all my important stuff...",
+    "*Sigh* Argh, I'll start by picking up my stuff and then figure out where my “dear” feathered friends might have gone!",
+    "It looks like my waterbottle's just down there. Let's start with that.",
+  ],
+  ["My flashlight! I'll definitely need that when it gets dark."],
+  [
+    "Looks like these binoculars will come in handy for some bird watching...",
+    "I also see my bunny slippers just behind those bushes. Hmm...Let's see if there's a path around to it if I keep going to the left.",
+  ],
+  ["These talon prints on the cover are actually kind of cute."],
+  [
+    "Got my water bottle. I should follow this path into the forest to see if I can find more of my belongings.",
+  ],
+  [
+    "I probably won't be wearing these around the house before washing them properly.",
+  ],
+  ["Woah, what was that? Let me do a self-check. (Press Q)"],
+  [
+    "There's a cut on my leg...I better be careful around those thorns.",
+    "I'll use the bandages in the health pack to help me recover. (Press E)",
+  ],
+  [
+    "That should take care of the wound! But it appears I'm out of health packs. I'll have to restock on those the next time I go back to the cottage.",
+  ],
+  [
+    "Let's see...It seems like I'll have enough space for 2 more items in my bag. I'll keep looking around for now and drop everything off at the cottage once it's full.",
+  ],
 ];
+let dialogueState = {
+  index: -1,
+  show: false,
+  done: false,
+  hasClicked: false,
+  typingActive: false,
+  displayIndex: 0,
+  lastTypeTime: 0,
+  currentMessageArr: null,
+  currentMessage: "",
+};
 
-// Dialogue system variables
-let dialogueIndex = -1;
-let showDialogue = false;
-let hasClicked = false;
-let typingActive = false;
+const typingSpeed = 50;
 
-let displayIndex = 0;
-let lastTypeTime = 0;
-const typingSpeed = 50; // Milliseconds per character
+function startDialogue(dIndex) {
+  if (!dialogueState.show) {
+    dialogueState.show = true;
+    dialogueState.index = 0;
+    dialogueState.mainMessageIndex = dIndex;
+    dialogueState.currentMessageArr = dialogueArr[dIndex];
+    dialogueState.currentMessage = dialogueArr[dIndex][dialogueState.index];
+    dialogueState.displayIndex = 0;
+    dialogueState.typingActive = true;
+    dialogueState.lastTypeTime = millis();
+  }
+}
 
-let currentMessageArr;
-let currentMessage;
-function drawDialogue(dIndex) {
+function drawDialogue() {
+  if (!dialogueState.show) return;
+
   let dPerson = "ERIN";
   let dialogueX = 205;
-  currentMessageArr = dialogueArr[dIndex];
-  currentMessage = currentMessageArr[dialogueIndex];
-  if (dIndex == 0 && (dialogueIndex == 2 || dialogueIndex == 1)) {
-    dPerson = "GRANDMA";
-  }
-  // Update typing animation
-
-  if (typingActive && millis() - lastTypeTime > typingSpeed) {
-    displayIndex = min(displayIndex + 2, currentMessage.length);
-    lastTypeTime = millis();
-    if (displayIndex === currentMessage.length) {
-      typingActive = false;
+  if (dialogueState.mainMessageIndex == 0) {
+    if (dialogueState.index == 1 || dialogueState.index == 2) {
+      dPerson = "GRANDMA";
     }
   }
-  let dImage = dialogueErinImage;
-  if (dPerson == "ERIN") {
-    dImage = dialogueErinImage;
-  } else if (dPerson == "GRANDMA") {
-    dImage = dialogueGrandmaImage;
-    dialogueX = 205 + 95;
+
+  let dImage = dPerson === "ERIN" ? dialogueErinImage : dialogueGrandmaImage;
+  if (dPerson === "GRANDMA") dialogueX += 95;
+
+  // Typing animation
+  if (
+    dialogueState.typingActive &&
+    millis() - dialogueState.lastTypeTime > typingSpeed
+  ) {
+    dialogueState.displayIndex = min(
+      dialogueState.displayIndex + 2,
+      dialogueState.currentMessage.length
+    );
+    dialogueState.lastTypeTime = millis();
+    if (dialogueState.displayIndex === dialogueState.currentMessage.length) {
+      dialogueState.typingActive = false;
+    }
   }
 
-  // Dialogue box
   push();
   imageMode(CENTER);
   image(dImage, width / 2, 510);
   pop();
 
-  // Draw the dialogue text
   push();
   fill(0);
   textSize(12);
-  //text(currentMessage, 205, 498, 305, 90);
-  text(currentMessage.substring(0, displayIndex), dialogueX, 498, 305, 90);
+  text(
+    dialogueState.currentMessage.substring(0, dialogueState.displayIndex),
+    dialogueX,
+    498,
+    305,
+    90
+  );
 
-  // Continue prompt
-  if (displayIndex === currentMessage.length && frameCount % 60 < 30) {
+  if (
+    dialogueState.displayIndex === dialogueState.currentMessage.length &&
+    frameCount % 60 < 30
+  ) {
     fill("#834916");
     text("Click to continue...", dialogueX, 558);
   }
   pop();
-  handleDialogueClick(dIndex);
 }
 
-function handleDialogueClick(dIndex2) {
-  if (mouseIsPressed) {
-    if (!hasClicked && showDialogue) {
-      hasClicked = true;
+function handleDialogueClick() {
+  if (mouseIsPressed && dialogueState.show && !dialogueState.hasClicked) {
+    dialogueState.hasClicked = true;
 
-      if (displayIndex < currentMessage.length) {
-        // Complete current message
-        displayIndex = currentMessage.length;
-        typingActive = false;
+    if (dialogueState.displayIndex < dialogueState.currentMessage.length) {
+      dialogueState.displayIndex = dialogueState.currentMessage.length;
+      dialogueState.typingActive = false;
+    } else {
+      if (dialogueState.index < dialogueState.currentMessageArr.length - 1) {
+        dialogueState.index++;
+        dialogueState.currentMessage =
+          dialogueState.currentMessageArr[dialogueState.index];
+        dialogueState.displayIndex = 0;
+        dialogueState.typingActive = true;
+        dialogueState.lastTypeTime = millis();
       } else {
-        // Advance dialogue
-        if (dialogueIndex < dialogueArr[dIndex2].length - 1) {
-          dialogueIndex++;
-          currentMessage = dialogueArr[dIndex2][dialogueIndex];
-          displayIndex = 0;
-          typingActive = true;
-          lastTypeTime = millis();
+        // dialogue fully completed
+        dialogueState.show = false;
+        dialogueState.index = -1;
+        if (dialogueDoneIndex) {
+          dialogueDone[dialogueDoneIndex] = true;
         } else {
-          // dialogue is done
-          showDialogue = false;
-          dialogueIndex = -1;
-          dialogueDone = true;
+          dialogueDone.push(dialogueState.currentMessageArr);
         }
       }
-      setTimeout(() => (hasClicked = false), 100);
     }
+    setTimeout(() => (dialogueState.hasClicked = false), 100);
   }
 }
-let dialogueDone = false;
+
+let dialogueDone = [];
+let dialogueDoneIndex;
+
 function mousePressed() {
-  if (showDialogue) {
-    // handleDialogueClick();
+  if (dialogueState.show) {
+    handleDialogueClick();
   }
-  // Add other mouse interactions here
 }
 
-// Call this to start the dialogue sequence
-function startDialogue() {
-  if (!showDialogue) {
-    showDialogue = true;
-    dialogueIndex = 0;
-    //currentMessage = dialogueArr[0][dialogueIndex];
-    displayIndex = 0;
-    typingActive = true;
-    lastTypeTime = millis();
+function runDialogue(n) {
+  console.log(dialogueDoneIndex);
+  dialogueDoneIndex = n;
+  if (!dialogueState.show && !dialogueDone[n]) {
+    startDialogueBool = true;
   }
-  startDialogueBool = false;
-  dialogueDone = false;
+  if (startDialogueBool) {
+    startDialogue(n);
+    startDialogueBool = false;
+  }
 }
 
-// Example usage - add this where you want dialogue to trigger:
-// function keyPressed() {
-//   if (key === ' ') {  // Example trigger with spacebar
-//     startDialogue();
-//   }
-// }
+// checks for certain conditions for dialogue and runs them
+function dialogueChecks() {
+  if (!somaCheck && donefirstSomaCheck) {
+    runDialogue(10);
+  }
+  let temp = inventoryArr.find((item) => item.type === 5);
+  if (!temp) {
+    runDialogue(11);
+  }
+  if (currentLevel == 1 && objectivesCounter == 3 && !dialogueState.show) {
+    console.log("2 more items");
+    runDialogue(12);
+  }
+  if (currentLevel == 1 && levelComplete) {
+    // runDialogue()
+  }
+}
