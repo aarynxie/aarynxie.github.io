@@ -116,6 +116,7 @@ function backgroundOverlay() {
     blendMode(OVERLAY);
     image(backgroundImagesOverlay[3], 0, 0);
     blendMode(MULTIPLY);
+    tint(255, 170);
     image(backgroundImagesOverlay[2], 0, 0);
   }
   /*

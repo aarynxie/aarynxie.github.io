@@ -319,7 +319,7 @@ function inventoryDraw() {
             wearingJacket = true;
           }
           if (invSelect == 9) {
-            // in inventoryArr, have 2 different items
+            wearingHeadphones = true;
           }
           invSelect = 100;
         }
