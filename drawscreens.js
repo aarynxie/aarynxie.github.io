@@ -168,6 +168,13 @@ function drawCutscene1() {
     spriteImage = walkImages;
 
     if (cutscene1Phase == 1) {
+      console.log("playing cutscene 1");
+      if (!showDialogue) {
+        //startDialogueBool = true;
+      }
+      if (startDialogueBool) {
+        //startDialogue();
+      }
       image(cutsceneBgImages[0], 0, 0);
       //drawDialogue(3, person);
       // startFrameCount = true; // put this in the drawDialogue function
@@ -177,7 +184,7 @@ function drawCutscene1() {
       }
 
       cutsceneFrameCount++;
-      if (cutsceneFrameCount > 50) {
+      if (cutsceneFrameCount > 50 && showDialogue) {
         if (cutscenePos.x < 492) {
           facingDirection = "RIGHT";
           cutscenePos.x += 1.5;
@@ -188,6 +195,10 @@ function drawCutscene1() {
           moving = true;
         } else {
           fadingOut = true;
+        }
+      } else {
+        if (showDialogue) {
+          drawDialogue(1);
         }
       }
     } else {
@@ -300,7 +311,7 @@ function drawCutscene() {
     }
 
     //text("level 0 cutscene\npress A to continue", width / 2, 200);
-    if (!showDialogue) {
+    if (dialogueDone) {
       playCutscene1 = true;
       if (playCutscene1) {
         drawCutscene1();

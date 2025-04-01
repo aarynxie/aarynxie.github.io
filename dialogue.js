@@ -5,6 +5,9 @@ let dialogueArr = [
     "Don't forget to turn on the furnace in the basement when you get there, okay? Do you have the key?",
     "Don't worry, I have it in my trusty owl backpack that you gave me! I'm pretty exhausted so I'm going to go now, but I'll call you back once I get settled in!",
   ],
+  [
+    "*Yawn* I'm too tired to do anything other than sleep right now… I'll unpack after taking a nap.",
+  ],
 ];
 
 // Dialogue system variables
@@ -84,15 +87,17 @@ function handleDialogueClick(dIndex2) {
           typingActive = true;
           lastTypeTime = millis();
         } else {
+          // dialogue is done
           showDialogue = false;
           dialogueIndex = -1;
+          dialogueDone = true;
         }
       }
       setTimeout(() => (hasClicked = false), 100);
     }
   }
 }
-
+let dialogueDone = false;
 function mousePressed() {
   if (showDialogue) {
     // handleDialogueClick();
@@ -111,6 +116,7 @@ function startDialogue() {
     lastTypeTime = millis();
   }
   startDialogueBool = false;
+  dialogueDone = false;
 }
 
 // Example usage - add this where you want dialogue to trigger:
