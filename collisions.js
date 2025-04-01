@@ -347,6 +347,12 @@ let worms = [
   { x: 49, y: 453, w: 50, h: 34, type: 7 }, // room 10
 ];
 
+let jackets = [
+  { x: 339, y: 425, w: 50, h: 50, type: 8 }, // room 1
+  { x: 486, y: 504, w: 50, h: 50, type: 8 }, // room 4
+  { x: 215, y: 110, w: 50, h: 50, type: 8 }, // room 10
+];
+
 let objectives = [...belongings];
 let objectivesShow = new Array(belongings.length).fill(true);
 let objectivesCurrent = [...belongings];
@@ -354,6 +360,10 @@ let objectivesShowCurrent = [...objectivesShow];
 
 let objectivesCounter = 0;
 let objectivesTotal = belongings.length;
+
+let jacketsShow = new Array(jackets.length).fill(true);
+let jacketsShowCurrent = [...jacketsShow];
+let jacketsCurrent = [...jackets];
 
 let thorns = [
   { x: 148, y: 29, w: 90, h: 52 }, // room 1
@@ -520,6 +530,7 @@ function backgroundDrawCols() {
   imageMode(CORNER);
   objectivesDraw();
   thornsDraw();
+  jacketsDraw();
   pop();
   /*
   push();
@@ -577,7 +588,7 @@ function updateThornsHit() {
 
 function detectThornsReset() {
   if (previousThornsHit && !thornsHit) {
-    //health--;
+    health--;
   }
   // Update previous state
   previousThornsHit = thornsHit;
@@ -646,6 +657,56 @@ function objectivesCol() {
   }
 }
 
+let jacketsHit = false;
+let previousJacketsHit = false;
+
+function jacketsDraw() {
+  //console.log(jacketsShowCurrent);
+  push();
+  fill(0, 100);
+  jacketsCol();
+  for (let i = 0; i < jacketsCurrent.length; i++) {
+    let jkt = jacketsCurrent[i]; // Get the current element
+    if (jacketsShowCurrent[i]) {
+      image(jacketImage, jkt.x, jkt.y);
+    }
+  }
+  pop();
+}
+//collision for objectives
+function jacketsCol() {
+  let playerRect = {
+    x: playerPos.colX,
+    y: playerPos.colY,
+    w: player.w,
+    h: player.h,
+  };
+  jacketsHit = false;
+
+  for (let i = 0; i < jackets.length; i++) {
+    let jkt = jackets[i];
+    if (rectCollision(playerRect, jkt)) {
+      if (roomJacketsIndices[currentRoom]?.includes(i)) {
+        console.log("jacket hit");
+        jacketsHit = true;
+        jacketsShow[i] = false;
+      }
+    }
+  }
+  console.log(jacketsShowCurrent);
+  if (jacketsHit && !previousJacketsHit && jacketsShowCurrent[0]) {
+    addToInventory(8);
+    /*
+    if (wearingJacket) {
+      //console.log("add to inv");
+      addToInventory(8);
+    } else {
+      wearingJacket = true;
+    }*/
+  }
+  previousJacketsHit = jacketsHit;
+}
+
 // defines which objectives in the array is in which room
 let roomObjectivesIndices = {
   0: [0], // Room 0 affects index 0
@@ -653,6 +714,15 @@ let roomObjectivesIndices = {
   2: [2, 3],
   3: [4],
 };
+
+let roomJacketsIndices = Object.fromEntries(
+  Array.from({ length: 11 }, (_, i) => [i, []])
+);
+
+// Manually assign the indices that should have values
+roomJacketsIndices[1] = [0];
+roomJacketsIndices[4] = [1];
+roomJacketsIndices[10] = [2];
 
 function updateObjectivesShow(currentRoom, objIndex) {
   if (roomObjectivesIndices[currentRoom]?.includes(objIndex)) {
@@ -675,20 +745,21 @@ function addToInventory(itemType) {
     quant = 1;
   }
   // if item is health kit, set to usable
-  if (itemType == 5) {
+  if (itemType == 5 || itemType == 8) {
     ifUsable = true;
   } else {
     ifUsable = false;
   }
-
-  if (existingItem) {
-    if (itemType !== 5) {
-      existingItem.quantity = quant; // Increase quantity if already collected
+  if (inventoryArr.length <= 6) {
+    if (existingItem) {
+      if (itemType !== 5) {
+        existingItem.quantity = quant; // Increase quantity if already collected
+      } else {
+        existingItem.quantity += 1;
+      }
     } else {
-      existingItem.quantity += 1;
+      inventoryArr.push({ type: itemType, quantity: quant, usable: ifUsable }); // Add new item
     }
-  } else {
-    inventoryArr.push({ type: itemType, quantity: quant, usable: ifUsable }); // Add new item
   }
 }
 

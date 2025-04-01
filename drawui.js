@@ -30,7 +30,8 @@ function uiPreload() {
   inventoryItemsImage[5] = loadImage("sprites/ui/inventory/healthpack.png");
   inventoryItemsImage[6] = loadImage("sprites/ui/inventory/stick.png");
   inventoryItemsImage[7] = loadImage("sprites/ui/inventory/worm.png");
-  inventoryItemsImage[8] = loadImage("sprites/ui/inventory/headphones-1.png");
+  inventoryItemsImage[8] = loadImage("sprites/ui/inventory/jacket.png");
+  inventoryItemsImage[9] = loadImage("sprites/ui/inventory/headphones-1.png");
 
   uiNewItemImage = loadImage("sprites/ui/newitem.png");
   uiHealImage = loadImage("sprites/ui/heal.png");
@@ -158,7 +159,7 @@ function abilitiesBarDraw() {
 
 let temperature = 4500;
 
-let jacket = { x: 500, y: 200, w: 50, h: 50 };
+//let jacket = { x: 500, y: 200, w: 50, h: 50 };
 let wearingJacket = false;
 function temperatureCheck() {
   if (!wearingJacket) {
@@ -168,7 +169,7 @@ function temperatureCheck() {
   }
   //playerSpeed = max(0.5, map(temperature, 0, 4500, 1, 2.5));
   frameDelay = map(temperature, 0, 2500, 16, 12);
-
+  /*
   if (currentRoom == 4) {
     push();
     jacketCol();
@@ -180,7 +181,7 @@ function temperatureCheck() {
       text("jacket", jacket.x, jacket.y + 20);
       pop();
     }
-  }
+  }*/
 }
 
 function freezingDraw() {
@@ -206,7 +207,8 @@ function jacketCol() {
   };
 
   if (rectCollision(playerRect, jacketRect)) {
-    wearingJacket = true;
+    //wearingJacket = true;
+    addToInventory(8);
   }
 }
 let inventoryMode = false;
@@ -283,9 +285,16 @@ function inventoryDraw() {
           inventoryMode = false;
           // invSelect is the item type, check inventoryArr, get the index of the invSelect item, subtract 1 from the quantity
           useInventoryItem(invSelect);
+
+          console.log("press use " + invSelect);
+          if (invSelect == 5) {
+            health = min(maxHealth, health + 1);
+            startHealEffect();
+          }
+          if (invSelect == 8) {
+            wearingJacket = true;
+          }
           invSelect = 100;
-          health = min(maxHealth, health + 1);
-          startHealEffect();
         }
       } else {
         fill("#561900");
@@ -314,14 +323,18 @@ function hitTest(x, y, w, h) {
 function useInventoryItem(itemType) {
   // Find the index of the item with the given type
   let index = inventoryArr.findIndex((item) => item.type === itemType);
+  console.log("used item: " + index);
 
   // If the item exists in the inventory
   if (index !== -1) {
+    console.log("item exists");
     inventoryArr[index].quantity -= 1; // Subtract 1 from quantity
 
     // If the quantity reaches 0, remove the item from the inventory
     if (inventoryArr[index].quantity <= 0) {
       inventoryArr.splice(index, 1);
+      console.log("subtracted item: " + index);
+      console.log(inventoryArr);
     }
   }
 }
@@ -335,5 +348,6 @@ let inventoryItemsDesc = [
   { name: "Health Pack", desc: "A kit with bandages \nand disinfectants" },
   { name: "Firewood", desc: "Firewood desc" },
   { name: "Worm", desc: "Worm desc" },
+  { name: "Jacket", desc: "Jacket desc" },
   { name: "Headphones", desc: "Headphones desc" },
 ];

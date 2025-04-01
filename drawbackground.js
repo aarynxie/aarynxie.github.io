@@ -10,6 +10,8 @@ let stickImage;
 let thornImage;
 let wormImage;
 
+let jacketImage;
+
 function backgroundPreload() {
   backgroundImages[0] = loadImage(
     "sprites/environment/background/level/levels-1.png"
@@ -76,6 +78,7 @@ function backgroundPreload() {
   stickImage = loadImage("sprites/environment/objects/stick.png");
   thornsImage = loadImage("sprites/environment/objects/thorns.png");
   wormImage = loadImage("sprites/environment/objects/worm.png");
+  jacketImage = loadImage("sprites/environment/objects/jacket.png");
 
   cutsceneBgImages[0] = loadImage(
     "sprites/environment/background/level/levels-1-1.png"
@@ -127,7 +130,7 @@ function setNewRoom() {
       objS = 0;
       objE = 0;
     }
-    roomSetup(0, 0, 0, objS, objE); //room number, thornStart, thornEnd
+    roomSetup(0, 0, 0, objS, objE, 0, 0); //room number, thornStart, thornEnd
   } else if (currentRoom == 1) {
     let [direction, isChanging] = changeRoomDirection(true, false, false, true); //down, up, left, right
     changeDirection = direction;
@@ -146,7 +149,7 @@ function setNewRoom() {
       objS = 0;
       objE = 0;
     }
-    roomSetup(1, 0, 1, objS, objE); //room number, thornStart, thornEnd
+    roomSetup(1, 0, 1, objS, objE, 0, 1); //room number, thornStart, thornEnd
   } else if (currentRoom == 2) {
     let [direction, isChanging] = changeRoomDirection(true, true, true, true); //down, up, left, right
     changeDirection = direction;
@@ -170,9 +173,18 @@ function setNewRoom() {
       objS = 0;
       objE = 0;
     }
-    roomSetup(2, 1, 2, objS, objE); //room number
+    roomSetup(2, 1, 2, objS, objE, 0, 0); //room number
   } else if (currentRoom == 3) {
     let [direction, isChanging] = changeRoomDirection(true, false, true, false); //down, up, left, right
+    if (currentLevel == 1) {
+      [direction, isChanging] = changeRoomDirection(false, false, true, false); //down, up, left, right
+      if (playerPos.colY + 75 > height) {
+        console.log(
+          "Hmm…I should probably explore everything around the cottage before heading deeper into the forest."
+        );
+        // dialogue 27
+      }
+    }
     changeDirection = direction;
     if (changeDirection == "LEFT") {
       nextRoom = 2;
@@ -191,7 +203,7 @@ function setNewRoom() {
       objS = 0;
       objE = 1;
     }
-    roomSetup(3, 2, 3, objS, objE);
+    roomSetup(3, 2, 3, objS, objE, 0, 0);
   } else if (currentRoom == 4) {
     let [direction, isChanging] = changeRoomDirection(
       //down, up, left, right
@@ -221,7 +233,7 @@ function setNewRoom() {
       objS = 1;
       objE = 2;
     }
-    roomSetup(4, 3, 5, objS, objE); //roomNum, thornStart, thornEnd, objStart, objEnd
+    roomSetup(4, 3, 5, objS, objE, 1, 2); //roomNum, thornStart, thornEnd, objStart, objEnd
     // set the sticks
     //sticksCurrent = sticks.slice(3, 4);
     //sticksShowCurrent = sticksShow.slice(3, 4);
@@ -251,7 +263,7 @@ function setNewRoom() {
       objS = 0;
       objE = 0;
     }
-    roomSetup(5, 5, 8, objS, objE); //roomNum, thornStart, thornEnd, objStart, objEnd
+    roomSetup(5, 5, 8, objS, objE, 0, 0); //roomNum, thornStart, thornEnd, objStart, objEnd
   } else if (currentRoom == 6) {
     let [direction, isChanging] = changeRoomDirection(false, true, true, false); //down, up, left, right
     changeDirection = direction;
@@ -273,7 +285,7 @@ function setNewRoom() {
       objS = 0;
       objE = 0;
     }
-    roomSetup(6, 8, 11, objS, objE); //roomNum, thornStart, thornEnd, objStart, objEnd
+    roomSetup(6, 8, 11, objS, objE, 0, 0); //roomNum, thornStart, thornEnd, objStart, objEnd
   } else if (currentRoom == 7) {
     let [direction, isChanging] = changeRoomDirection(true, false, false, true); //down, up, left, right
     changeDirection = direction;
@@ -294,7 +306,7 @@ function setNewRoom() {
       objS = 2;
       objE = 3;
     }
-    roomSetup(7, 11, 13, objS, objE); //roomNum, thornStart, thornEnd, objStart, objEnd
+    roomSetup(7, 11, 13, objS, objE, 0, 0); //roomNum, thornStart, thornEnd, objStart, objEnd
   } else if (currentRoom == 8) {
     let [direction, isChanging] = changeRoomDirection(true, true, true, false); //down, up, left, right
     changeDirection = direction;
@@ -319,7 +331,7 @@ function setNewRoom() {
       objS = 3;
       objE = 4;
     }
-    roomSetup(8, 13, 15, objS, objE); //roomNum, thornStart, thornEnd, objStart, objEnd
+    roomSetup(8, 13, 15, objS, objE, 0, 0); //roomNum, thornStart, thornEnd, objStart, objEnd
   } else if (currentRoom == 9) {
     let [direction, isChanging] = changeRoomDirection(false, true, false, true); //down, up, left, right
     changeDirection = direction;
@@ -340,7 +352,7 @@ function setNewRoom() {
       objS = 0;
       objE = 0;
     }
-    roomSetup(9, 15, 17, objS, objE); //roomNum, thornStart, thornEnd, objStart, objEnd
+    roomSetup(9, 15, 17, objS, objE, 0, 0); //roomNum, thornStart, thornEnd, objStart, objEnd
   } else if (currentRoom == 10) {
     let [direction, isChanging] = changeRoomDirection(false, true, true, false); //down, up, left, right
     changeDirection = direction;
@@ -361,7 +373,7 @@ function setNewRoom() {
       objS = 4;
       objE = 5;
     }
-    roomSetup(10, 17, 19, objS, objE); //roomNum, thornStart, thornEnd, objStart, objEnd
+    roomSetup(10, 17, 19, objS, objE, 2, 3); //roomNum, thornStart, thornEnd, objStart, objEnd, jacketStart, jacketEnd
   }
   if (changingRooms) {
     if (transitions) {
@@ -376,12 +388,24 @@ let nextRoom = 0;
 let objS;
 let objE;
 
-function roomSetup(roomNum, thornStart, thornEnd, objStart, objEnd) {
+function roomSetup(
+  roomNum,
+  thornStart,
+  thornEnd,
+  objStart,
+  objEnd,
+  jacketStart,
+  jacketEnd
+) {
   obstaclesCurrent = obstacles[roomNum];
   envObjCurrent = envObj[roomNum];
   thornsCurrent = thorns.slice(thornStart, thornEnd);
   objectivesCurrent = objectives.slice(objStart, objEnd);
   objectivesShowCurrent = objectivesShow.slice(objStart, objEnd);
+
+  jacketsCurrent = jackets.slice(jacketStart, jacketEnd);
+  jacketsShowCurrent = jacketsShow.slice(jacketStart, jacketEnd);
+
   if (currentLevel == 1) {
     roomObjectivesIndices = {
       0: [0], // Room 0 affects index 0
@@ -440,7 +464,22 @@ function fadingTransition(boolean, cutsceneNo) {
       // Change game state after fade-out completes
 
       fadingIn = true; // Start fade-in for new state
-      if (boolean) {
+      if (cutsceneNo == 2) {
+        cutscene = false;
+        playGame = true;
+        currentLevel = 2;
+        facingDirection = "DOWN";
+        // set variable to show level 2 starting dialogue
+      } else if (
+        currentLevel == 1 &&
+        levelComplete &&
+        currentRoom == 0 &&
+        playerPos.colY < 215 &&
+        playerPos.colX < 577
+      ) {
+        cutscene = true;
+        resetLevel();
+      } else if (boolean) {
         currentRoom = nextRoom;
         roomReset();
       } else if (cutsceneNo == 1 && cutscene1Phase == 1) {

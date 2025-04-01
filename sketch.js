@@ -5,6 +5,7 @@ let showCutscenes = true;
 let debuggingHitboxes = false;
 let transitions = true; // fade in fade out
 let currentLevel = 0;
+let skipStartCutscene = true;
 
 function preload() {
   backgroundPreload();
@@ -52,6 +53,7 @@ function draw() {
       pop();
 
       uiDraw();
+      levelCompleteDialogue();
       //drawDialogue();
       soundPlay();
     } else if (allowSomaCheck) {
@@ -65,7 +67,7 @@ function draw() {
     showStartScreen();
   } else if (gameOver) {
     showGameOver();
-  } else if (levelComplete) {
+  } else if (gameComplete) {
     showLevelComplete();
   } else if (cutscene) {
     drawCutscene();
