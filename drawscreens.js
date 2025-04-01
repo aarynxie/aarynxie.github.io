@@ -98,17 +98,27 @@ function checkGameStatus() {
     }
   } else if (currentLevel == 3) {
     if (objectivesCounter >= objectivesTotal) {
-      // congrats!!
+      if (
+        (currentRoom = 9 && playerPos.colX < 91 + 436 && playerPos.colY > 172)
+      ) {
+        //play cutscene
+      }
     }
   }
 }
 
 function levelCompleteDialogue() {
-  if (currentLevel == 1 && levelComplete) {
-    //drawDialogue(25, person);
-    // once back to room one and approaches the house,
-    if (currentRoom == 0 && playerPos.colY < 215 && playerPos.colX < 577) {
-      fadingOut = true;
+  if (levelComplete) {
+    if (currentLevel == 1) {
+      //drawDialogue(25, person);
+      // once back to room one and approaches the house,
+      if (currentRoom == 0 && playerPos.colY < 215 && playerPos.colX < 577) {
+        fadingOut = true;
+      }
+    } else if (currentLevel == 2) {
+      if (currentRoom == 0 && playerPos.colY < 215 && playerPos.colX < 577) {
+        fadingOut = true;
+      }
     }
   }
 }
@@ -252,6 +262,19 @@ function drawCutscene2() {
   pop();
 }
 
+let specialCutscene;
+
+function drawSpecialCutscene() {
+  //temp cutscene
+  // insert dialogue ehre
+  text("press space", 200, 200);
+  if (keyIsDown(32)) {
+    playGame = true;
+    levelComplete = true;
+    specialCutscene = false;
+  }
+}
+
 let playCutscene1 = false;
 let playCutscene2 = false;
 function drawCutscene() {
@@ -279,24 +302,29 @@ function drawCutscene() {
     text("level 1 cutscene\nleft click to continue", width / 2, 200);
     if (mouseIsPressed) {
       playCutscene2 = true;
+      levelComplete = false;
     }
     if (playCutscene2) {
       drawCutscene2();
     }
     pop();
   } else if (currentLevel == 2) {
-    // below is temp code
-    push();
-    fill(0);
-    rect(0, 0, width, height);
-    fill(255);
-    text("level 2 cutscene\nleft click to continue", width / 2, 200);
-    if (mouseIsPressed) {
-      cutscene = false;
-      playGame = true;
-      currentLevel = 3;
+    if (specialCutscene) {
+      drawSpecialCutscene();
+    } else {
+      // below is temp code
+      push();
+      fill(0);
+      rect(0, 0, width, height);
+      fill(255);
+      text("level 2 cutscene\nleft click to continue", width / 2, 200);
+      if (mouseIsPressed) {
+        cutscene = false;
+        playGame = true;
+        currentLevel = 3;
+      }
+      pop();
     }
-    pop();
   } else if (currentLevel == 3) {
   }
 }

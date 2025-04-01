@@ -130,6 +130,10 @@ let obstacles = [
     { x: 25, y: 138, w: 97, h: 134 },
     { x: 51, y: 69, w: 88, h: 69 },
     { x: 68, y: 0, w: 103, h: 69 },
+    { x: 126, y: 108, w: 216, h: 234 },
+    { x: 342, y: 134, w: 80, h: 176 },
+    { x: 422, y: 161, w: 28, h: 149 },
+    { x: 422, y: 161, w: 28, h: 149 },
   ],
   [
     // room 10
@@ -321,12 +325,13 @@ let envObj = [
     { x: 523, y: -34, type: "TREE_BIG" },
     { x: -75, y: 128, type: "BUSH_SMALL" },
     { x: 152, y: 24, type: "BUSH_SMALL" },
-    { x: 260, y: 368, type: "BUSH_SMALL" },
+    { x: 177, y: 386, type: "BUSH_SMALL" },
     { x: 709, y: -13, type: "BUSH_BIG" },
     { x: 456, y: -22, type: "BUSH_BIG" },
     { x: 660, y: 441, type: "TREE_SMALL" },
     { x: 660, y: 441, type: "TREE_SMALL" },
     { x: 559, y: -32, type: "ROCK_BIG" },
+    { x: 104, y: 99, type: "OWL_TREE" },
   ],
   [
     // room 10
@@ -373,7 +378,7 @@ let sticks = [
   { x: 260, y: 461, w: 45, h: 24, type: 6 }, // room 5
   { x: 599, y: 351, w: 45, h: 24, type: 6 }, // room 6
   { x: 260, y: 252, w: 45, h: 24, type: 6 }, // room 8
-  { x: 566, y: 303, w: 45, h: 24, type: 6 }, // room 9
+  { x: 416, y: 397, w: 45, h: 24, type: 6 }, // room 9
 ];
 
 let worms = [
@@ -425,7 +430,7 @@ let thorns = [
 ];
 let thornsCurrent = [...thorns];
 
-let maxHealth = 4;
+let maxHealth = 5;
 let health = maxHealth;
 
 function initializeCols() {
@@ -548,6 +553,8 @@ function backgroundDrawCols() {
       image(envObjImage[5], env.x, env.y);
     } else if (env.type == "ROCK_SMALL") {
       image(envObjImage[6], env.x, env.y);
+    } else if (env.type == "OWL_TREE") {
+      image(envObjImage[7], env.x, env.y);
     }
   }
   noStroke();
@@ -629,7 +636,11 @@ function updateThornsHit() {
 function detectThornsReset() {
   if (previousThornsHit && !thornsHit) {
     if (hitboxesOn) {
-      //health--;
+      if (wearingJacket) {
+        health -= 0.5;
+      } else {
+        health--;
+      }
     }
     if (wearingJacket) {
       hitThornsCounter++;
@@ -637,7 +648,7 @@ function detectThornsReset() {
   }
   // Update previous state
   previousThornsHit = thornsHit;
-  if (hitThornsCounter > 1) {
+  if (hitThornsCounter > 2) {
     hitThornsCounter = 0;
     wearingJacket = false;
   }
@@ -659,12 +670,12 @@ function objectivesDraw() {
     if (objectivesShowCurrent[i]) {
       if (currentLevel == 1) {
         image(inventoryItemsImage[obj.type], obj.x, obj.y);
-        rect(obj.x, obj.y, obj.w, obj.h);
       } else if (currentLevel == 2) {
         image(stickImage, obj.x, obj.y);
-        rect(obj.x, obj.y, obj.w, obj.h);
       } else if (currentLevel == 3) {
         image(wormImage, obj.x, obj.y);
+      }
+      if (debuggingHitboxes) {
         rect(obj.x, obj.y, obj.w, obj.h);
       }
     }
@@ -689,6 +700,13 @@ function objectivesCol() {
       ) {
         objectiveHit = true;
         newItem = obj.type;
+      }
+      // special stick
+      if (currentRoom == 9 && currentLevel == 2 && objectivesShow[i]) {
+        // start cutscene
+        specialCutscene = true;
+        cutscene = true;
+        playGame = false;
       }
 
       updateObjectivesShow(currentRoom, i);
@@ -744,7 +762,6 @@ function jacketsCol() {
     }
   }
   if (jacketsHit && !previousJacketsHit && jacketsShowCurrent[0]) {
-    console.log("add jacket to inv");
     addToInventory(8);
     ifNewItem = true;
     /*

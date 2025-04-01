@@ -47,25 +47,16 @@ function backgroundPreload() {
     "sprites/environment/background/level/levels-11.png"
   );
   backgroundImagesOverlay[0] = loadImage(
-    "sprites/environment/background/room-topright-overlay.png"
+    "sprites/environment/background/level/level 2 multiply.png"
   );
   backgroundImagesOverlay[1] = loadImage(
-    "sprites/environment/background/room-middleright-overlay.png"
+    "sprites/environment/background/level/level 2 overlay.png"
   );
   backgroundImagesOverlay[2] = loadImage(
-    "sprites/environment/background/room-bottomright-overlay.png"
-  );
-  backgroundImagesOverlay[5] = loadImage(
-    "sprites/environment/background/room-bottomright-overlay.png"
-  );
-  backgroundImagesOverlay[4] = loadImage(
-    "sprites/environment/background/room-middleleft-overlay.png"
+    "sprites/environment/background/level/level 3 multiply.png"
   );
   backgroundImagesOverlay[3] = loadImage(
-    "sprites/environment/background/room-bottomleft-overlay.png"
-  );
-  backgroundImagesOverlay[6] = loadImage(
-    "sprites/environment/background/room-topright-overlay2.png"
+    "sprites/environment/background/level/level 3 overlay.png"
   );
   envObjImage[0] = loadImage("sprites/environment/objects/tree_big.png");
   envObjImage[1] = loadImage("sprites/environment/objects/tree_small.png");
@@ -74,6 +65,7 @@ function backgroundPreload() {
   envObjImage[4] = loadImage("sprites/environment/objects/rock_big.png");
   envObjImage[5] = loadImage("sprites/environment/objects/rock_medium.png");
   envObjImage[6] = loadImage("sprites/environment/objects/rock_small.png");
+  envObjImage[7] = loadImage("sprites/environment/objects/owl tree.png");
   flashlightImage = loadImage("sprites/environment/background/flashlight.png");
   stickImage = loadImage("sprites/environment/objects/stick.png");
   thornsImage = loadImage("sprites/environment/objects/thorns.png");
@@ -87,21 +79,40 @@ function backgroundPreload() {
 
 function backgroundDraw() {
   image(backgroundImages[currentRoom], 0, 0);
+  if (currentLevel == 2) {
+    level2FrameCount++;
+  }
 }
 
+let level2FrameCount = 0;
+
 function backgroundOverlay() {
-  image(backgroundImagesOverlay[currentRoom], 0, 0);
+  if (currentLevel == 2) {
+    blendMode(OVERLAY);
+    image(backgroundImagesOverlay[1], 0, 0);
+    tint(255, map(level2FrameCount, 600, 5000, 0, 255));
+    imageMode(MULTIPLY);
+    image(backgroundImagesOverlay[0], 0, 0);
+  } else if (currentLevel == 3) {
+    blendMode(OVERLAY);
+    image(backgroundImagesOverlay[3], 0, 0);
+    blendMode(MULTIPLY);
+    image(backgroundImagesOverlay[2], 0, 0);
+  }
+  /*
   push();
   if (currentRoom == 0) {
     blendMode(ADD);
     tint(255, 127);
     image(backgroundImagesOverlay[6], 0, 0);
   }
-  pop();
+  pop();*/
 }
 
 function backgroundFlashlight() {
-  image(flashlightImage, playerPos.x - 1196, playerPos.y - 930, 2400, 1920);
+  if (currentLevel == 3) {
+    image(flashlightImage, playerPos.x - 1196, playerPos.y - 930, 2400, 1920);
+  }
 }
 
 let changeDirection;
@@ -464,6 +475,17 @@ function fadingTransition(boolean, cutsceneNo) {
       // Change game state after fade-out completes
 
       fadingIn = true; // Start fade-in for new state
+      if (
+        currentLevel == 2 &&
+        levelComplete &&
+        currentRoom == 0 &&
+        playerPos.colY < 215 &&
+        playerPos.colX < 577
+      ) {
+        cutscene = true;
+        resetLevel();
+        facingDirection = "DOWN";
+      }
       if (cutsceneNo == 2) {
         cutscene = false;
         playGame = true;

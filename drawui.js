@@ -156,18 +156,29 @@ function abilitiesBarDraw() {
   pop();
 }
 
-let temperature = 4500;
+let temperature = 3000;
+let maxTemperature = temperature;
 
 //let jacket = { x: 500, y: 200, w: 50, h: 50 };
 let wearingJacket = false;
 function temperatureCheck() {
-  if (!wearingJacket) {
-    temperature--;
-  } else {
-    temperature = 4500;
+  if (currentLevel == 2 || currentLevel == 3) {
+    if (!wearingJacket) {
+      temperature -= 0.7;
+    } else {
+      temperature = maxTemperature;
+    }
+    playerSpeed = max(
+      1.2,
+      map(temperature, 0, maxTemperature - 1000, 1.2, 2.5)
+    );
+    if (playerSpeed > 2.5) {
+      playerSpeed = 2.5;
+    }
+    console.log(playerSpeed);
+    frameDelay = map(playerSpeed, 1, 2.5, 16, 12);
   }
-  //playerSpeed = max(0.5, map(temperature, 0, 4500, 1, 2.5));
-  frameDelay = map(playerSpeed, 1, 2.5, 8, 12);
+
   /*
   if (currentRoom == 4) {
     push();

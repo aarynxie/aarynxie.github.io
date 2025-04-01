@@ -160,8 +160,8 @@ function playerMove() {
   let tempY = playerPos.colY;
   if (magnitude > 0) {
     // Normalize movement and apply speed limit
-    tempX += (moveX / magnitude) * maxSpeed;
-    tempY += (moveY / magnitude) * maxSpeed;
+    tempX += (moveX / magnitude) * playerSpeed;
+    tempY += (moveY / magnitude) * playerSpeed;
     moving = true;
   } else {
     moving = false;

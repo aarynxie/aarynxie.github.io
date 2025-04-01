@@ -1,12 +1,12 @@
 // for debugging
 let currentRoom = 0;
 let playerSpeed = 10;
-let showCutscenes = true;
-let debuggingHitboxes = true;
+let showCutscenes = false;
+let debuggingHitboxes = false;
 let transitions = true; // fade in fade out
 let currentLevel = 0;
 let skipStartCutscene = true;
-let hitboxesOn = true;
+let hitboxesOn = false;
 
 function preload() {
   backgroundPreload();
@@ -48,9 +48,9 @@ function draw() {
       pop();
       temperatureCheck();
       push();
+      backgroundOverlay();
       blendMode(MULTIPLY);
-      //backgroundOverlay();
-      //backgroundFlashlight();
+      backgroundFlashlight();
       pop();
 
       uiDraw();
