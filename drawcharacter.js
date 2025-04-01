@@ -168,10 +168,15 @@ function playerMove() {
   }
 
   //if (canMove(tempX, tempY)) {
-
-  //if (canMove(tempX, tempY) && !fadingOut && !fadingIn && !inventoryMode) {
-  if (!fadingOut && !fadingIn && !inventoryMode) {
-    playerPos.colX = tempX;
-    playerPos.colY = tempY;
+  if (hitboxesOn) {
+    if (canMove(tempX, tempY) && !fadingOut && !fadingIn && !inventoryMode) {
+      playerPos.colX = tempX;
+      playerPos.colY = tempY;
+    }
+  } else {
+    if (!fadingOut && !fadingIn && !inventoryMode) {
+      playerPos.colX = tempX;
+      playerPos.colY = tempY;
+    }
   }
 }

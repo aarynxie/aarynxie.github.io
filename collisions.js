@@ -22,6 +22,14 @@ let obstacles = [
     { x: 71, y: 578, w: 689, h: 22 },
     { x: 0, y: 0, w: 71, h: 600 },
     { x: 71, y: 0, w: 729, h: 16 },
+    { x: 0, y: 382, w: 24, h: 48 },
+    { x: 24, y: 349, w: 58, h: 48 },
+    { x: 53, y: 315, w: 89, h: 34 },
+    { x: 82, y: 292, w: 139, h: 23 },
+    { x: 173, y: 254, w: 48, h: 19 },
+    { x: 112, y: 273, w: 109, h: 19 },
+    { x: 322, y: 254, w: 379, h: 61 },
+    { x: 701, y: 266, w: 99, h: 53 },
   ],
   [
     // room 2
@@ -29,6 +37,11 @@ let obstacles = [
     { x: 662, y: 0, w: 138, h: 37 },
     { x: 0, y: 120, w: 13, h: 38 },
     { x: 0, y: 523, w: 800, h: 77 },
+    { x: 0, y: 266, w: 478, h: 53 },
+    { x: 478, y: 247, w: 105, h: 53 },
+    { x: 583, y: 221, w: 64, h: 66 },
+    { x: 647, y: 177, w: 76, h: 80 },
+    { x: 723, y: 139, w: 77, h: 84 },
   ],
   [
     // room 3
@@ -39,6 +52,11 @@ let obstacles = [
     { x: 690, y: 51, w: 110, h: 165 },
     { x: 479, y: 0, w: 379, h: 51 },
     { x: 0, y: 0, w: 86, h: 37 },
+    { x: 0, y: 139, w: 59, h: 84 },
+    { x: 59, y: 125, w: 94, h: 54 },
+    { x: 263, y: 66, w: 54, h: 83 },
+    { x: 386, y: 0, w: 75, h: 49 },
+    { x: 317, y: 0, w: 69, h: 98 },
   ],
   [
     // room 4
@@ -47,6 +65,10 @@ let obstacles = [
     { x: 0, y: 0, w: 800, h: 15 },
     { x: 0, y: 542, w: 322, h: 58 },
     { x: 522, y: 578, w: 278, h: 54 },
+    { x: 0, y: 0, w: 59, h: 600 },
+    { x: 59, y: 133, w: 59, h: 467 },
+    { x: 118, y: 187, w: 78, h: 413 },
+    { x: 196, y: 222, w: 46, h: 378 },
   ],
   [
     // room 5
@@ -72,6 +94,15 @@ let obstacles = [
     { x: 148, y: 533, w: 112, h: 67 },
     { x: 462, y: 579, w: 65, h: 21 },
     { x: 755, y: 364, w: 42, h: 65 },
+    { x: 68, y: 460, w: 103, h: 140 },
+    { x: 113, y: 410, w: 87, h: 50 },
+    { x: 146, y: 360, w: 87, h: 50 },
+    { x: 177, y: 310, w: 87, h: 50 },
+    { x: 220, y: 260, w: 74, h: 50 },
+    { x: 269, y: 218, w: 66, h: 42 },
+    { x: 442, y: 136, w: 72, h: 48 },
+    { x: 514, y: 125, w: 165, h: 30 },
+    { x: 514, y: 0, w: 286, h: 125 },
   ],
   [
     // room 8
@@ -83,6 +114,8 @@ let obstacles = [
     { x: 283, y: 588, w: 302, h: 12 },
     { x: 59, y: 579, w: 65, h: 21 },
     { x: 0, y: 364, w: 10, h: 65 },
+    { x: 0, y: 0, w: 242, h: 65 },
+    { x: 0, y: 65, w: 61, h: 60 },
   ],
   [
     // room 9
@@ -93,6 +126,10 @@ let obstacles = [
     { x: 754, y: 276, w: 48, h: 48 },
     { x: 743, y: 441, w: 57, h: 74 },
     { x: 88, y: 580, w: 712, h: 20 },
+    { x: 0, y: 272, w: 103, h: 328 },
+    { x: 25, y: 138, w: 97, h: 134 },
+    { x: 51, y: 69, w: 88, h: 69 },
+    { x: 68, y: 0, w: 103, h: 69 },
   ],
   [
     // room 10
@@ -591,11 +628,22 @@ function updateThornsHit() {
 
 function detectThornsReset() {
   if (previousThornsHit && !thornsHit) {
-    health--;
+    if (hitboxesOn) {
+      //health--;
+    }
+    if (wearingJacket) {
+      hitThornsCounter++;
+    }
   }
   // Update previous state
   previousThornsHit = thornsHit;
+  if (hitThornsCounter > 1) {
+    hitThornsCounter = 0;
+    wearingJacket = false;
+  }
 }
+
+let hitThornsCounter = 0;
 
 let level = 0; // 0 is prologue, then levels 1, 2, 3
 
@@ -696,6 +744,7 @@ function jacketsCol() {
     }
   }
   if (jacketsHit && !previousJacketsHit && jacketsShowCurrent[0]) {
+    console.log("add jacket to inv");
     addToInventory(8);
     ifNewItem = true;
     /*
@@ -737,7 +786,7 @@ function addToInventory(itemType) {
   let existingItem = inventoryArr.find((item) => item.type === itemType);
   let quant;
   let ifUsable;
-  if (itemType == 8 && !existingItem) {
+  if (itemType == 8) {
     quant = 1;
   } else if (itemType !== 5) {
     if (currentLevel == 1) {
@@ -756,7 +805,7 @@ function addToInventory(itemType) {
   }
   if (inventoryArr.length <= 6) {
     if (existingItem) {
-      if (itemType !== 5) {
+      if (itemType !== 5 && itemType !== 8) {
         existingItem.quantity = quant; // Increase quantity if already collected
       } else {
         existingItem.quantity += 1;

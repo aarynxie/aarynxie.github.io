@@ -2,10 +2,11 @@
 let currentRoom = 0;
 let playerSpeed = 10;
 let showCutscenes = true;
-let debuggingHitboxes = false;
+let debuggingHitboxes = true;
 let transitions = true; // fade in fade out
 let currentLevel = 0;
 let skipStartCutscene = true;
+let hitboxesOn = true;
 
 function preload() {
   backgroundPreload();

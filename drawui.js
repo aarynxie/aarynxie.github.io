@@ -167,7 +167,7 @@ function temperatureCheck() {
     temperature = 4500;
   }
   //playerSpeed = max(0.5, map(temperature, 0, 4500, 1, 2.5));
-  frameDelay = map(temperature, 0, 2500, 16, 12);
+  frameDelay = map(playerSpeed, 1, 2.5, 8, 12);
   /*
   if (currentRoom == 4) {
     push();
