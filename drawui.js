@@ -63,7 +63,6 @@ let itemX = 800; // Start offscreen
 let itemOpacity = 255; // Fully visible
 
 function drawNewItem(newItem2) {
-  //console.log(newItem);
   if (ifNewItem) {
     frameCountNewItem++;
 
@@ -192,34 +191,16 @@ function freezingDraw() {
   pop();
 }
 
-function jacketCol() {
-  let playerRect = {
-    x: playerPos.colX,
-    y: playerPos.colY,
-    w: player.w,
-    h: player.h,
-  };
-  let jacketRect = {
-    x: jacket.x,
-    y: jacket.y,
-    w: jacket.w,
-    h: jacket.h,
-  };
-
-  if (rectCollision(playerRect, jacketRect)) {
-    //wearingJacket = true;
-    addToInventory(8);
-  }
-}
 let inventoryMode = false;
 function inventoryDraw() {
   if (inventoryMode) {
     image(uiInventoryImage, 223, 120);
     push();
     fill(255);
-    textAlign(CORNER);
+    textAlign(CENTER);
     textSize(20);
-    text("Inventory", 357, 168);
+    text("Inventory", width / 2, 168);
+    textAlign(CORNER);
 
     // draw items
     for (let i = 0; i < 3; i++) {
@@ -276,8 +257,9 @@ function inventoryDraw() {
       );
     // uses the item if item is usable
     if (
-      (isUsable(invSelect) && invSelect !== 5) ||
-      (invSelect == 5 && health < maxHealth)
+      (isUsable(invSelect) && invSelect !== 5 && invSelect !== 8) ||
+      (invSelect == 5 && health < maxHealth) ||
+      (invSelect == 8 && !wearingJacket)
     ) {
       if (hitTest(264, 367, 110, 25)) {
         fill("#833312");
@@ -285,8 +267,6 @@ function inventoryDraw() {
           inventoryMode = false;
           // invSelect is the item type, check inventoryArr, get the index of the invSelect item, subtract 1 from the quantity
           useInventoryItem(invSelect);
-
-          console.log("press use " + invSelect);
           if (invSelect == 5) {
             health = min(maxHealth, health + 1);
             startHealEffect();
@@ -307,6 +287,9 @@ function inventoryDraw() {
     fill(255);
     textSize(16);
     text("Use", 306, 385);
+    textAlign(CENTER);
+    textSize(12);
+    text("Press E again to exit inventory", width / 2, 438);
     pop();
   }
 }
@@ -323,18 +306,14 @@ function hitTest(x, y, w, h) {
 function useInventoryItem(itemType) {
   // Find the index of the item with the given type
   let index = inventoryArr.findIndex((item) => item.type === itemType);
-  console.log("used item: " + index);
 
   // If the item exists in the inventory
   if (index !== -1) {
-    console.log("item exists");
     inventoryArr[index].quantity -= 1; // Subtract 1 from quantity
 
     // If the quantity reaches 0, remove the item from the inventory
     if (inventoryArr[index].quantity <= 0) {
       inventoryArr.splice(index, 1);
-      console.log("subtracted item: " + index);
-      console.log(inventoryArr);
     }
   }
 }

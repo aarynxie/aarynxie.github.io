@@ -530,7 +530,10 @@ function backgroundDrawCols() {
   imageMode(CORNER);
   objectivesDraw();
   thornsDraw();
-  jacketsDraw();
+  if (currentLevel == 2 || currentLevel == 3) {
+    jacketsDraw();
+  }
+
   pop();
   /*
   push();
@@ -661,7 +664,6 @@ let jacketsHit = false;
 let previousJacketsHit = false;
 
 function jacketsDraw() {
-  //console.log(jacketsShowCurrent);
   push();
   fill(0, 100);
   jacketsCol();
@@ -687,15 +689,15 @@ function jacketsCol() {
     let jkt = jackets[i];
     if (rectCollision(playerRect, jkt)) {
       if (roomJacketsIndices[currentRoom]?.includes(i)) {
-        console.log("jacket hit");
         jacketsHit = true;
         jacketsShow[i] = false;
+        newItem = 8;
       }
     }
   }
-  console.log(jacketsShowCurrent);
   if (jacketsHit && !previousJacketsHit && jacketsShowCurrent[0]) {
     addToInventory(8);
+    ifNewItem = true;
     /*
     if (wearingJacket) {
       //console.log("add to inv");
@@ -735,7 +737,9 @@ function addToInventory(itemType) {
   let existingItem = inventoryArr.find((item) => item.type === itemType);
   let quant;
   let ifUsable;
-  if (itemType !== 5) {
+  if (itemType == 8 && !existingItem) {
+    quant = 1;
+  } else if (itemType !== 5) {
     if (currentLevel == 1) {
       quant = 1;
     } else if (currentLevel == 2 || currentLevel == 3) {

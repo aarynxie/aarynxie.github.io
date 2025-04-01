@@ -66,8 +66,6 @@ function resetLevel() {
       2: [2, 3],
     };
     addToInventory(5);
-    addToInventory(5);
-    addToInventory(5);
     inventoryArr = inventoryArr.filter((item) => item.type == 5);
   }
 }
@@ -240,7 +238,6 @@ function drawCutscene1() {
   }
 }
 function drawCutscene2() {
-  console.log("drawing cutscene 2");
   push();
   fill(0);
   rect(0, 0, width, height);
