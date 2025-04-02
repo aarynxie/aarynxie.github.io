@@ -65,6 +65,23 @@ function uiDraw() {
   //healthBarDraw();
   inventoryDraw();
   uiArrowDraw();
+  if (showInstructions) {
+    push();
+    imageMode(CENTER);
+    image(instructionsImage, width / 2, height / 2);
+    fill("#561900");
+
+    textSize(30);
+    textAlign(CENTER);
+    text("Instructions", width / 2, 180);
+    fill(0);
+    textSize(22);
+    text("Use keys WASD\nto move around!", width / 2, 257);
+    textSize(17);
+    fill(255);
+    text("Press any key to proceed", width / 2, 455);
+    pop();
+  }
 }
 
 function newItemDraw() {
@@ -243,7 +260,7 @@ function soundOverload() {
         if (headphonesStage == 1) {
           SOSound.setVolume(0.5);
         } else if (headphonesStage == 2) {
-          SOSound.setVolume(0.1);
+          SOSound.setVolume(0.05);
         } else {
           SOSound.setVolume(1);
         }

@@ -857,7 +857,12 @@ function jacketsCol() {
     }
 
     addToInventory(8);
-    if (!dialogueDone[20] && dialogueDone[16] && !wearingJacket) {
+    if (
+      !dialogueDone[20] &&
+      dialogueDone[16] &&
+      !wearingJacket &&
+      (!dialogueDone[18] || !dialogueDone[19])
+    ) {
       runDialogue(20);
     }
     ifNewItem = true;

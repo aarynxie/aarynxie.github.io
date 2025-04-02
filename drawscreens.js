@@ -15,6 +15,8 @@ let somaCheckImage;
 let somaCheckDoneImage;
 let somaCheckImage2;
 
+let instructionsImage;
+
 function screensPreload() {
   screenLevelCompleteImage = loadImage("sprites/ui/levelcompletescreen.png");
   screenStartImage = loadImage("sprites/ui/startscreen.png");
@@ -25,7 +27,10 @@ function screensPreload() {
   somaCheckImage = loadImage("sprites/ui/somacheckbg.png");
   somaCheckDoneImage = loadImage("sprites/ui/somacheckbgdone.png");
   somaCheckImage2 = loadImage("sprites/ui/somacheckbg2.png");
+
+  instructionsImage = loadImage("sprites/ui/instruction.png");
 }
+let showInstructions = true;
 
 function showStartScreen() {
   image(screenStartImage, 0, 0);
@@ -35,6 +40,7 @@ function showStartScreen() {
     if (showCutscenes) {
       cutscene = true;
     } else {
+      showInstructions = true;
       playGame = true;
       currentLevel = 1;
     }

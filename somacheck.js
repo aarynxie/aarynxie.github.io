@@ -91,6 +91,10 @@ function drawFocusMode() {
 let donefirstSomaCheck = false; // NEW------
 let donesecondSomaCheck = false; // NEW------
 function keyPressed() {
+  if (playGame) {
+    showInstructions = false;
+  }
+
   if (keyIsDown(69) && !somaCheck && !dialogueState.show) {
     // press E
     if (inventoryMode) {
@@ -119,21 +123,24 @@ function keyPressed() {
 
   if (somaCheck && qteActive) {
     if (keyIsDown(32)) {
+      // Spacebar is pressed
       currentStep++;
 
       if (currentStep === qteLength) {
         qteActive = false;
         somaCheckComplete = true;
+
         setTimeout(() => {
           somaCheckComplete = false;
           showHealth = true;
-          setTimeout(() => {
-            showHealth = false;
-            somaCheck = false;
-          }, 3000);
-        }, 1500);
+        }, 1500); // Show health after 1.5 seconds
       }
     }
+  }
+  if (keyCode === 81 && showHealth) {
+    // "Q" is pressed while health is shown
+    showHealth = false;
+    somaCheck = false;
   }
 }
 

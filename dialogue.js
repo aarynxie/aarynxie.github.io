@@ -40,7 +40,7 @@ let dialogueArr = [
   ],
   ["Oh! My binoculars are over there to my left."],
   [
-    "My hands are getting too full...I need to go back to the cottage to drop all this off.",
+    "My hands are getting too full...I need to go back to the cottage to drop all this off. It looks like I can continue going to the left here to get back.",
   ],
   [
     "Hmm... I should probably explore everything around the cottage before heading deeper into the forest.",
@@ -68,12 +68,12 @@ let dialogueArr = [
   ], // 21
   [
     "Woah...the sun is setting already? I guess I better hurry up and collect some firewood while searching for the basement key. ",
-    "I should explore deeper into the forest. If I remember correctly...There was a pathway in the southwest direction.",
+    "I should explore deeper into the forest. If I remember correctly...There was a pathway in the southeast direction.",
   ], // 22
   [
     "Oh no! The thorns ripped my jacket...Do I have another one in my bag? I'll need to put one on before I get too cold again...",
   ], // 23
-  ["This seems to be the right direction."], // 24
+  ["This seems to be the right direction. Let's keep heading south."], // 24
   [
     "Woah wait...What's that in the tree? An owl nest...?",
     "Hey! That's the basement key!!",
@@ -98,7 +98,7 @@ let dialogueArr = [
     "Looks like I found my noise cancelling headphones! These should block out all the forest noises.",
   ], // 31
   [
-    "That should be all 5 worms! I should head back to the big tree with the owl nest in the southeast.",
+    "That should be all 5 worms! I should head back to the big tree with the owl nest in the southwest.",
   ], // 32
   ["There's the tree! Let's walk underneath it."], //33
   ["Great! It looks like I can go around these bushes to get my slippers."], //34
