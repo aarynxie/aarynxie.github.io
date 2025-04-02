@@ -191,6 +191,7 @@ function drawDialogue() {
     text("Click to continue...", dialogueX, 558);
   }
   pop();
+  handleDialogueClick();
 }
 
 function handleDialogueClick() {
@@ -225,12 +226,6 @@ function handleDialogueClick() {
 
 let dialogueDone = [];
 let dialogueDoneIndex;
-
-function mousePressed() {
-  if (dialogueState.show) {
-    handleDialogueClick();
-  }
-}
 
 function runDialogue(n) {
   dialogueDoneIndex = n;

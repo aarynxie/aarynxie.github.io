@@ -20,6 +20,9 @@ let dialogueBgImages = [];
 let arrowImages = {}; // Store arrow images
 let arrows = []; // Store active arrows
 
+let somaCheckImage;
+let somaCheckDoneImage;
+
 function uiPreload() {
   uiStickBarImage = loadImage("sprites/ui/stickbar.png");
   uiHealthBarImage = loadImage("sprites/ui/healthbar.png");
@@ -56,6 +59,9 @@ function uiPreload() {
 
   cutscene1Image = loadImage("sprites/ui/owlandkey.png");
   cutscene2Image = loadImage("sprites/ui/birdAndnest.png");
+
+  somaCheckImage = loadImage("sprites/ui/somacheckbg.png");
+  somaCheckDoneImage = loadImage("sprites/ui/somacheckbgdone.png");
 }
 
 let stickBarText;
