@@ -75,7 +75,9 @@ function resetLevel() {
     addToInventory(5);
     addToInventory(5);
     addToInventory(5);
-    inventoryArr = inventoryArr.filter((item) => item.type == 5);
+    inventoryArr = inventoryArr.filter(
+      (item) => item.type == 5 || item.type == 8
+    );
   }
 }
 
@@ -182,6 +184,7 @@ function drawCutscene1() {
         startDialogue(1);
         startDialogueBool = false;
       }
+
       image(cutsceneBgImages[0], 0, 0);
       //drawDialogue(3, person);
       // startFrameCount = true; // put this in the drawDialogue function
@@ -285,6 +288,7 @@ function drawCutscene2() {
     //
     fadingOut = true;
   }
+
   fadingTransition(playGame, 2);
   pop();
 }
@@ -298,7 +302,9 @@ function drawSpecialCutscene() {
   push();
   if (dialogueState.index >= 1 && dialogueState.index <= 4) {
     fill(0);
+    imageMode(CENTER);
     rect(0, 0, width, height);
+    image(cutscene2Image, width / 2, height / 2);
   }
   if (!dialogueDone[25]) {
     runDialogue(25);
@@ -339,7 +345,11 @@ function drawCutscene() {
     if (dialogueState.show) {
       drawDialogue();
     }
+    if (dialogueState.index > 2 && !dialogueDone[1]) {
+      image(cutscene1Image, 0, 0);
+    }
   } else if (currentLevel == 1) {
+    moving = false;
     // below is temp code
     push();
     fill(0);
@@ -357,6 +367,7 @@ function drawCutscene() {
     pop();
   } else if (currentLevel == 2) {
     if (specialCutscene) {
+      moving = false;
       drawSpecialCutscene();
     } else {
       // below is temp code
@@ -367,6 +378,7 @@ function drawCutscene() {
       text("level 2 cutscene\nleft click to continue", width / 2, 200);
       image(screenLevel2, 0, 0);
       if (keyIsDown(32)) {
+        levelComplete = false;
         cutscene = false;
         playGame = true;
         currentLevel = 3;

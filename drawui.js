@@ -9,6 +9,9 @@ let inventoryItemsImage = [];
 let uiNewItemImage;
 let uiHealImage;
 
+let cutscene1Image;
+let cutscene2Image;
+
 let dialogueErinImage;
 let dialogueGrandmaImage;
 
@@ -50,6 +53,9 @@ function uiPreload() {
   arrowImages["DOWN"] = loadImage("sprites/ui/downarrow.png");
   arrowImages["LEFT"] = loadImage("sprites/ui/leftarrow.png");
   arrowImages["RIGHT"] = loadImage("sprites/ui/rightarrow.png");
+
+  cutscene1Image = loadImage("sprites/ui/owlandkey.png");
+  cutscene2Image = loadImage("sprites/ui/birdAndnest.png");
 }
 
 let stickBarText;
@@ -68,7 +74,10 @@ function newItemDraw() {
     if (currentLevel !== 3 && objectivesCounter !== objectivesTotal) {
       // test this
     }
-    drawNewItem(newItem);
+    if (currentLevel == 3 && !dialogueDone[24]) {
+    } else {
+      drawNewItem(newItem);
+    }
   }
 
   //stickBarText = objectivesCounter + "/" + objectivesTotal;
@@ -124,6 +133,9 @@ function healDraw() {
   healX = playerPos.x;
   if (ifHeal) {
     healFrames++;
+    if (!healSound.isPlaying() && healFrames >= 10) {
+      healSound.play();
+    }
 
     // Move up gradually (1.5 pixels per frame)
     healY -= 1;
@@ -227,14 +239,24 @@ function soundOverload() {
     level3FrameCount++;
     // triggers sound overload - stop movement
     if (level3FrameCount > floor(randomSO) - 2) {
+      if (!SOSound.isPlaying()) {
+        if (headphonesStage == 1) {
+          SOSound.setVolume(0.5);
+        } else if (headphonesStage == 2) {
+          SOSound.setVolume(0.1);
+        } else {
+          SOSound.setVolume(1);
+        }
+        SOSound.play();
+      }
       console.log("play sound");
       firstSO = true;
       playingSO = true;
       // when this happens, stop movement and switch to the other sprite
       if (headphonesStage == 0) {
-        stageDuration = 150;
+        stageDuration = 300;
       } else if (headphonesStage == 1) {
-        stageDuration = 75;
+        stageDuration = 150;
       } else if (headphonesStage == 2) {
         stageDuration = 0;
       }
@@ -339,6 +361,9 @@ function inventoryDraw() {
           }
           if (invSelect == 9) {
             wearingHeadphones = true;
+            if (headphonesStage == 2) {
+              wearStage2Headphones = true;
+            }
           }
           invSelect = 100;
         }

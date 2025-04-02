@@ -86,6 +86,50 @@ function playerPreload() {
   walkImagesJacket[1] = walkSideJacket;
   walkImagesJacket[2] = walkBackJacket;
 
+  let walkFrontHeadphones1 = [];
+  let walkSideHeadphones1 = [];
+  let walkBackHeadphones1 = [];
+
+  walkFrontHeadphones1[0] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-front-1.png"
+  );
+  walkFrontHeadphones1[1] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-front-2.png"
+  );
+  walkFrontHeadphones1[2] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-front-3.png"
+  );
+  walkFrontHeadphones1[3] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-front-4.png"
+  );
+  walkSideHeadphones1[0] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-side-1.png"
+  );
+  walkSideHeadphones1[1] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-side-2.png"
+  );
+  walkSideHeadphones1[2] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-side-3.png"
+  );
+  walkSideHeadphones1[3] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-side-4.png"
+  );
+  walkBackHeadphones1[0] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-back-1.png"
+  );
+  walkBackHeadphones1[1] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-back-2.png"
+  );
+  walkBackHeadphones1[2] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-back-3.png"
+  );
+  walkBackHeadphones1[3] = loadImage(
+    "sprites/character/walk/no-jacket-headphones1/walk-back-4.png"
+  );
+  walkImagesHeadphones1[0] = walkFrontHeadphones1;
+  walkImagesHeadphones1[1] = walkSideHeadphones1;
+  walkImagesHeadphones1[2] = walkBackHeadphones1;
+
   let walkFrontHeadphones2 = [];
   let walkSideHeadphones2 = [];
   let walkBackHeadphones2 = [];
@@ -129,6 +173,50 @@ function playerPreload() {
   walkImagesHeadphones2[0] = walkFrontHeadphones2;
   walkImagesHeadphones2[1] = walkSideHeadphones2;
   walkImagesHeadphones2[2] = walkBackHeadphones2;
+
+  let walkFrontJacketHeadphones1 = [];
+  let walkSideJacketHeadphones1 = [];
+  let walkBackJacketHeadphones1 = [];
+
+  walkFrontJacketHeadphones1[0] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-front-1.png"
+  );
+  walkFrontJacketHeadphones1[1] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-front-2.png"
+  );
+  walkFrontJacketHeadphones1[2] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-front-3.png"
+  );
+  walkFrontJacketHeadphones1[3] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-front-4.png"
+  );
+  walkSideJacketHeadphones1[0] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-side-1.png"
+  );
+  walkSideJacketHeadphones1[1] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-side-2.png"
+  );
+  walkSideJacketHeadphones1[2] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-side-3.png"
+  );
+  walkSideJacketHeadphones1[3] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-side-4.png"
+  );
+  walkBackJacketHeadphones1[0] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-back-1.png"
+  );
+  walkBackJacketHeadphones1[1] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-back-2.png"
+  );
+  walkBackJacketHeadphones1[2] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-back-3.png"
+  );
+  walkBackJacketHeadphones1[3] = loadImage(
+    "sprites/character/walk/jacket-headphones1/walk-back-4.png"
+  );
+  walkImagesJacketHeadphones1[0] = walkFrontJacketHeadphones1;
+  walkImagesJacketHeadphones1[1] = walkSideJacketHeadphones1;
+  walkImagesJacketHeadphones1[2] = walkBackJacketHeadphones1;
 
   let walkFrontJacketHeadphones2 = [];
   let walkSideJacketHeadphones2 = [];
@@ -174,9 +262,12 @@ function playerPreload() {
   walkImagesJacketHeadphones2[1] = walkSideJacketHeadphones2;
   walkImagesJacketHeadphones2[2] = walkBackJacketHeadphones2;
 
-  SOImages[0] = loadImage("sprites/character/SO-front.png");
-  SOImages[1] = loadImage("sprites/character/SO-side.png");
-  SOImages[2] = loadImage("sprites/character/SO-back.png");
+  SOImages[0] = loadImage("sprites/character/SO.png");
+  SOImages[1] = loadImage("sprites/character/SOjacket.png");
+  SOImages[2] = loadImage("sprites/character/SO1.png");
+  SOImages[3] = loadImage("sprites/character/SO2.png"); // replace with SO 2
+  SOImages[4] = loadImage("sprites/character/SOjacket1.png");
+  SOImages[5] = loadImage("sprites/character/SOjacket2.png");
 }
 
 function playerSetup() {
@@ -188,27 +279,36 @@ function playerSetup() {
 }
 
 let wearingHeadphones;
+let wearStage2Headphones;
+let currentSOImage;
+// SO, SOjacket, SO1, SO2, SOjacket1, SOjacket2
 
 function playerDraw() {
   let spriteImage = walkImagesJacket;
   if (!wearingJacket) {
     // if not wearing jacket
     spriteImage = walkImages;
+    currentSOImage = SOImages[0];
     if (wearingHeadphones) {
       if (headphonesStage < 2) {
-        spriteImage = walkImagesHeadphones2; // change to 1
+        spriteImage = walkImagesHeadphones1;
+        currentSOImage = SOImages[2];
       } else {
         spriteImage = walkImagesHeadphones2;
+        currentSOImage = SOImages[3];
       }
     }
   } else {
     // if wearing jacket
     spriteImage = walkImagesJacket;
+    currentSOImage = SOImages[1];
     if (wearingHeadphones) {
       if (headphonesStage < 2) {
-        spriteImage = walkImagesJacketHeadphones2; // change to 1
+        spriteImage = walkImagesJacketHeadphones1;
+        currentSOImage = SOImages[4];
       } else {
         spriteImage = walkImagesJacketHeadphones2;
+        currentSOImage = SOImages[5];
       }
     }
   }
@@ -230,7 +330,7 @@ function playerDraw() {
     currentFrame = spriteImage[directionDraw][0];
   }
   if (stopMoveSO) {
-    currentFrame = SOImages[directionDraw];
+    currentFrame = currentSOImage;
   }
 
   push();

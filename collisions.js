@@ -644,6 +644,10 @@ function detectThornsReset() {
       } else {
         health--;
       }
+      if (!tear1Sound.isPlaying()) {
+        console.log("tear");
+        tear1Sound.play();
+      }
       firstThorns = false;
     }
     if (wearingJacket) {
@@ -653,8 +657,12 @@ function detectThornsReset() {
   // Update previous state
   previousThornsHit = thornsHit;
   if (hitThornsCounter > 2) {
-    if (dialogueDone[23]) {
+    if (!dialogueDone[23]) {
+      // debug this?
       runDialogue(23);
+    }
+    if (!tear2Sound.isPlaying()) {
+      tear2Sound.play();
     }
     hitThornsCounter = 0;
     wearingJacket = false;
@@ -787,6 +795,9 @@ function headphonesCol() {
     }
   }
   if (headphonesHit && !previousHeadphonesHit && headphonesShowCurrent[0]) {
+    if (!popSound.isPlaying()) {
+      popSound.play();
+    }
     if (headphonesStage == 0) {
       newItem = 9;
       if (!dialogueDone[30]) {
@@ -841,8 +852,12 @@ function jacketsCol() {
     }
   }
   if (jacketsHit && !previousJacketsHit && jacketsShowCurrent[0]) {
+    if (!popSound.isPlaying()) {
+      popSound.play();
+    }
+
     addToInventory(8);
-    if (!dialogueDone[20] && dialogueDone[16]) {
+    if (!dialogueDone[20] && dialogueDone[16] && !wearingJacket) {
       runDialogue(20);
     }
     ifNewItem = true;

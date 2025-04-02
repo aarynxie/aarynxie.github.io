@@ -1,12 +1,12 @@
 let dialogueArr = [
   [
-    "Hey grandma! Thank you so much for letting me stay at your cottage this weekend. I'll be there in 10 minutes!",
+    "Hey grandma! Thank you so much for letting me stay at your cottage this weekend. I'm driving right now, but I'll be there in 10 minutes!",
     "Of course, no problem at all, my dear. Now, I know the cold doesn't bother you, but night time at Owl Creek can get dangerously cold.",
     "Don't forget to turn on the furnace in the basement when you get there, okay? Do you have the key?",
     "Don't worry, I have it in my trusty owl backpack that you gave me! I'm pretty exhausted so I'm going to go now, but I'll call you back once I get settled in!",
   ],
   [
-    "*Yawn* I'm too tired to do anything other than sleep right now… I'll unpack after taking a nap.",
+    "I'm finally here! *Yawn* I'm too tired to do anything other than sleep right now… I'll unpack after taking a nap.",
   ],
   ["Woah!! What happened here?! My stuff is everywhere!"],
   [
@@ -51,7 +51,7 @@ let dialogueArr = [
   ["Oh no - my fingertips are so blue! My body must be getting too cold."],
   [
     "Where's my jacket when I need it? Oh! There were a few in my lost backpack...Maybe I'll find them around the forest.",
-  ],
+  ], // 18
   [
     "Where's my jacket when I need it? Oh! I think I picked one up earlier that I can put on. (Press E)",
   ],
@@ -60,7 +60,7 @@ let dialogueArr = [
     "And I should also be more protected from those annoying thorns! (Press E)",
   ], // 20
   [
-    "Hey grandma! So uh...I left my luggage in the trunk of my van and took a nap...and I think some owls came and took my stuff...",
+    "*Phone rings* Hey grandma! So uh...I left my luggage in the trunk of my van and took a nap...and I think some owls came and took my stuff...",
     "And I think they took the basement key. What should I do?",
     "Oh dear! That's not good...That means you won't be able to turn on the furnace for the night.",
     "Hmm...while you try to find your stuff, can you go collect some firewood? Just in case you need to keep warm the old fashioned way.",
@@ -102,6 +102,10 @@ let dialogueArr = [
   ], // 32
   ["There's the tree! Let's walk underneath it."], //33
   ["Great! It looks like I can go around these bushes to get my slippers."], //34
+  [
+    "Okay... Got my flashlight. Time to look for some worms.",
+    "I think 5 should be enough? Let's take a good look around the forest and head back to the nest.",
+  ], // 35
 ];
 let dialogueState = {
   index: -1,
@@ -254,7 +258,7 @@ function dialogueChecks() {
         runDialogue(12);
         // 2 more items
       }
-      if (levelComplete) {
+      if (levelComplete && !dialogueDone[14]) {
         runDialogue(14);
         // head back to cottage
       }
@@ -279,7 +283,7 @@ function dialogueChecks() {
       }
       let temp2 = inventoryArr.find((item) => item.type === 8);
       if (dialogueDone[17]) {
-        if (!temp2 && !dialogueDone[18]) {
+        if (!temp2 && !dialogueDone[18] && !dialogueDone[19]) {
           runDialogue(18);
         } else if (!dialogueDone[19] && !dialogueDone[18]) {
           runDialogue(19);
@@ -288,15 +292,14 @@ function dialogueChecks() {
       if (currentRoom == 3 && !fadingIn && !fadingOut && !dialogueDone[26]) {
         runDialogue(24);
       }
-      if (currentRoom == 4 && !dialogueDone[28] && playerPos.colY > 200) {
+      if (currentRoom == 4 && !dialogueDone[28] && playerPos.colY > 250) {
         // go deeper by going down
         runDialogue(28);
       }
     } else if (currentLevel == 3) {
       // debug this
-
-      if (!dialogueDone[26]) {
-        runDialogue(26);
+      if (!dialogueDone[35]) {
+        runDialogue(35);
       }
       if (firstSO && !dialogueDone[29]) {
         runDialogue(29);
@@ -304,7 +307,11 @@ function dialogueChecks() {
       if (objectivesCounter > objectivesTotal && !dialogueDone[32]) {
         runDialogue(32);
       }
-      if (levelComplete && !dialogueDone[33]) {
+      if (
+        currentRoom == 9 &&
+        objectivesCounter >= objectivesTotal &&
+        !dialogueDone[33]
+      ) {
         runDialogue(33);
         // there's the tree
       }
