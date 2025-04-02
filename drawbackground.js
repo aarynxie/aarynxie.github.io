@@ -209,11 +209,8 @@ function setNewRoom() {
     let [direction, isChanging] = changeRoomDirection(true, false, true, false); //down, up, left, right
     if (currentLevel == 1) {
       [direction, isChanging] = changeRoomDirection(false, false, true, false); //down, up, left, right
-      if (playerPos.colY + 75 > height) {
-        console.log(
-          "Hmm…I should probably explore everything around the cottage before heading deeper into the forest."
-        );
-        // dialogue 27
+      if (playerPos.colY + 75 > height && !dialogueDone[15]) {
+        runDialogue(15);
       }
     }
     changeDirection = direction;

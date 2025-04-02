@@ -36,7 +36,14 @@ let dialogueArr = [
     "That should take care of the wound! But it appears I'm out of health packs. I'll have to restock on those the next time I go back to the cottage.",
   ],
   [
-    "Let's see...It seems like I'll have enough space for 2 more items in my bag. I'll keep looking around for now and drop everything off at the cottage once it's full.",
+    "Let's see...It seems like I'll have enough space for around 2 more items in my bag. I'll keep exploring more of the forest for now and drop everything off at the cottage once it's full.",
+  ],
+  ["Oh! My binoculars are over there to my left."],
+  [
+    "My hands are getting too full...I need to go back to the cottage to drop all this off.",
+  ],
+  [
+    "Hmm... I should probably explore everything around the cottage before heading deeper into the forest.",
   ],
 ];
 let dialogueState = {
@@ -161,7 +168,6 @@ function mousePressed() {
 }
 
 function runDialogue(n) {
-  console.log(dialogueDoneIndex);
   dialogueDoneIndex = n;
   if (!dialogueState.show && !dialogueDone[n]) {
     startDialogueBool = true;
@@ -181,11 +187,24 @@ function dialogueChecks() {
   if (!temp) {
     runDialogue(11);
   }
-  if (currentLevel == 1 && objectivesCounter == 3 && !dialogueState.show) {
-    console.log("2 more items");
+  if (
+    currentLevel == 1 &&
+    objectivesCounter == 3 &&
+    !dialogueDone[12] &&
+    !dialogueState.show
+  ) {
     runDialogue(12);
+    //debug this
   }
-  if (currentLevel == 1 && levelComplete) {
-    // runDialogue()
+  if (currentLevel == 1 && levelComplete && !dialogueState.show) {
+    runDialogue(14);
+  }
+  if (
+    currentLevel == 1 &&
+    currentRoom == 2 &&
+    playerPos.colY > 60 &&
+    !dialogueDone[13]
+  ) {
+    runDialogue(13);
   }
 }
