@@ -91,7 +91,7 @@ function playerPreload() {
   let walkBackHeadphones2 = [];
 
   walkFrontHeadphones2[0] = loadImage(
-    "sprites/character/walk/no-jacket-headphones2/headphone-walk-front-2.png"
+    "sprites/character/walk/no-jacket-headphones2/headphone-walk-front-1.png"
   );
   walkFrontHeadphones2[1] = loadImage(
     "sprites/character/walk/no-jacket-headphones2/headphone-walk-front-2.png"

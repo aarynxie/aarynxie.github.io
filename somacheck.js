@@ -75,9 +75,10 @@ function drawFocusMode() {
     timeSinceSomaCheck = 0;
   }
 }
-let donefirstSomaCheck = false;
+let donefirstSomaCheck = false; // NEW------
+let donesecondSomaCheck = false; // NEW------
 function keyPressed() {
-  if (keyIsDown(69) && !somaCheck) {
+  if (keyIsDown(69) && !somaCheck && !dialogueState.show) {
     // press E
     if (inventoryMode) {
       invSelect = 100;
@@ -88,8 +89,17 @@ function keyPressed() {
     invSelect = 100;
   }
 
-  if (!somaCheck && keyIsDown(81) && allowSomaCheck && !inventoryMode) {
-    donefirstSomaCheck = true;
+  if (
+    !somaCheck &&
+    keyIsDown(81) &&
+    allowSomaCheck &&
+    !inventoryMode &&
+    !dialogueState.show
+  ) {
+    donefirstSomaCheck = true; // NEW------
+    if (dialogueDone[16]) {
+      donesecondSomaCheck = true;
+    }
     enterFocusMode();
     return;
   }

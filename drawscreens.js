@@ -3,6 +3,9 @@ let screenLevelCompleteImage;
 let screenStartImage;
 let screenYouDiedImage;
 
+let screenLevel1;
+let screenLevel2;
+
 let startScreen = true;
 let gameOver = false;
 let gameComplete = false;
@@ -12,6 +15,8 @@ function screensPreload() {
   screenLevelCompleteImage = loadImage("sprites/ui/levelcompletescreen.png");
   screenStartImage = loadImage("sprites/ui/startscreen.png");
   screenYouDiedImage = loadImage("sprites/ui/youdiedscreen.png");
+  screenLevel1 = loadImage("sprites/ui/Level1Complete.png");
+  screenLevel2 = loadImage("sprites/ui/Level2Complete.png");
 }
 
 function showStartScreen() {
@@ -49,6 +54,7 @@ function resetLevel() {
     };
     addToInventory(5);
     addToInventory(5);
+    addToInventory(5);
     inventoryArr = inventoryArr.filter(
       (item) => item.type < 0 || item.type > 4
     );
@@ -66,6 +72,7 @@ function resetLevel() {
       1: [1],
       2: [2, 3],
     };
+    addToInventory(5);
     addToInventory(5);
     addToInventory(5);
     inventoryArr = inventoryArr.filter((item) => item.type == 5);
@@ -227,6 +234,7 @@ function drawCutscene1() {
           cutscene = false;
           playGame = true;
           currentLevel = 1;
+          dialogueDone[27] = false;
           facingDirection = "LEFT";
         }
       }
@@ -270,10 +278,11 @@ function drawCutscene2() {
   fill(0);
   rect(0, 0, width, height);
   fill(255);
-  text("press space", 200, 200);
+  //text("press space", 200, 200);
+  runDialogue(21);
   // draw the 3 dialogues
-  if (keyIsDown(32)) {
-    // next
+  if (dialogueDone[21]) {
+    //
     fadingOut = true;
   }
   fadingTransition(playGame, 2);
@@ -285,8 +294,18 @@ let specialCutscene;
 function drawSpecialCutscene() {
   //temp cutscene
   // insert dialogue ehre
-  text("press space", 200, 200);
-  if (keyIsDown(32)) {
+  //text("press space", 200, 200);
+  push();
+  if (dialogueState.index >= 1 && dialogueState.index <= 4) {
+    fill(0);
+    rect(0, 0, width, height);
+  }
+  if (!dialogueDone[25]) {
+    runDialogue(25);
+  }
+
+  pop();
+  if (dialogueDone[25]) {
     playGame = true;
     levelComplete = true;
     specialCutscene = false;
@@ -326,8 +345,9 @@ function drawCutscene() {
     fill(0);
     rect(0, 0, width, height);
     fill(255);
-    text("level 1 cutscene\nleft click to continue", width / 2, 200);
-    if (mouseIsPressed) {
+    //text("level 1 cutscene\nleft click to continue", width / 2, 200);
+    image(screenLevel1, 0, 0);
+    if (keyIsDown(32)) {
       playCutscene2 = true;
       levelComplete = false;
     }
@@ -345,10 +365,12 @@ function drawCutscene() {
       rect(0, 0, width, height);
       fill(255);
       text("level 2 cutscene\nleft click to continue", width / 2, 200);
-      if (mouseIsPressed) {
+      image(screenLevel2, 0, 0);
+      if (keyIsDown(32)) {
         cutscene = false;
         playGame = true;
         currentLevel = 3;
+        dialogueDone[27] = false;
         currentRoom = 0;
         playerPos.colX = 430;
         playerPos.colY = 284;

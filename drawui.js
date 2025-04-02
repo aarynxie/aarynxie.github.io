@@ -175,7 +175,7 @@ function abilitiesBarDraw() {
   pop();
 }
 
-let temperature = 3000;
+let temperature = 4000;
 let maxTemperature = temperature;
 
 //let jacket = { x: 500, y: 200, w: 50, h: 50 };
@@ -189,7 +189,7 @@ function temperatureCheck() {
     }
     playerSpeed = max(
       1.2,
-      map(temperature, 0, maxTemperature - 1000, 1.2, 2.5)
+      map(temperature, 0, maxTemperature - 2000, 1.2, 2.5)
     );
     if (playerSpeed > 2.5) {
       playerSpeed = 2.5;
@@ -218,7 +218,7 @@ let playingSO = false;
 let stopMoveSO = false;
 
 let stageDuration = 100;
-
+let firstSO = false;
 function soundOverload() {
   if (currentLevel == 3) {
     if (playingSO) {
@@ -227,7 +227,8 @@ function soundOverload() {
     level3FrameCount++;
     // triggers sound overload - stop movement
     if (level3FrameCount > floor(randomSO) - 2) {
-      //console.log("play sound");
+      console.log("play sound");
+      firstSO = true;
       playingSO = true;
       // when this happens, stop movement and switch to the other sprite
       if (headphonesStage == 0) {
@@ -366,7 +367,7 @@ function inventoryDraw() {
   }
 }
 // stores all the inventory items, using the number IDs
-let inventoryArr = [{ type: 5, quantity: 1, usable: true }];
+let inventoryArr = [{ type: 5, quantity: 2, usable: true }];
 
 let invSelect = 100;
 

@@ -25,7 +25,7 @@ let dialogueArr = [
     "Got my water bottle. I should follow this path into the forest to see if I can find more of my belongings.",
   ],
   [
-    "I probably won't be wearing these around the house before washing them properly.",
+    "Got my slippers! I probably won't be wearing these around the house before washing them properly.",
   ],
   ["Woah, what was that? Let me do a self-check. (Press Q)"],
   [
@@ -45,6 +45,63 @@ let dialogueArr = [
   [
     "Hmm... I should probably explore everything around the cottage before heading deeper into the forest.",
   ],
+  [
+    "Urgh, why is it getting so hard to move? My legs feel like stone! Maybe I need to do a soma check. (Press Q)",
+  ],
+  ["Oh no - my fingertips are so blue! My body must be getting too cold."],
+  [
+    "Where's my jacket when I need it? Oh! There were a few in my lost backpack...Maybe I'll find them around the forest.",
+  ],
+  [
+    "Where's my jacket when I need it? Oh! I think I picked one up earlier that I can put on. (Press E)",
+  ],
+  [
+    "What's that? ...Oh yes! I finally found my jacket! It'll be nice to be warm and cozy again...",
+    "And I should also be more protected from those annoying thorns! (Press E)",
+  ], // 20
+  [
+    "Hey grandma! So uh...I left my luggage in the trunk of my van and took a nap...and I think some owls came and took my stuff...",
+    "And I think they took the basement key. What should I do?",
+    "Oh dear! That's not good...That means you won't be able to turn on the furnace for the night.",
+    "Hmm...while you try to find your stuff, can you go collect some firewood? Just in case you need to keep warm the old fashioned way.",
+    "Okay, thanks for the advice grandma! For now, I think I'll sort out some of my luggage to take an inventory of what's gone missing, but I'll keep you updated on the situation! Bye!",
+  ], // 21
+  [
+    "Woah...the sun is setting already? I guess I better hurry up and collect some firewood while searching for the basement key. ",
+    "I should explore deeper into the forest. If I remember correctly...There was a pathway in the southwest direction.",
+  ], // 22
+  [
+    "Oh no! The thorns ripped my jacket...Do I have another one in my bag? I'll need to put one on before I get too cold again...",
+  ], // 23
+  ["This seems to be the right direction."], // 24
+  [
+    "Woah wait...What's that in the tree? An owl nest...?",
+    "Hey! That's the basement key!!",
+    "Hi friends, would it be okay if I-",
+    "Ow! These owls are so feisty. It looks like they won't back down without a fight.",
+    "Let me look around the forest to see if I can find some worms as a peace offering...",
+    "But it's way too dark to see anything now. I need to go back to the cottage to get my flashlight.",
+  ], // 25
+  [
+    "Okay... Got my flashlight. Time to look for some worms.",
+    "I think 5 should be enough? Let's take a good look around the forest and head back to the nest.",
+  ], // 26
+  ["It's been a while... I should do a soma check. (Press Q)"], // 27
+  ["Ok... It looks like I can go down to go deeper into the forest."], // 28
+  [
+    "Ow! The forest sure is loud at night...I'm getting a bit overwhelmed by these noises. *sigh* I wish I had my headphones...",
+  ], // 29
+  [
+    "My old headphones! These should help block out the noises. I wish I had my thick, black headset though...Maybe they're also somewhere out here in the forest. (Press E)",
+  ], // 30
+  [
+    "Looks like I found my noise cancelling headphones! These should block out all the forest noises.",
+  ], // 31
+  [
+    "That should be all 5 worms! I should head back to the big tree with the owl nest in the southeast.",
+  ], // 32
+  ["There's the tree! Let's walk underneath it."], //33
+  ["Great! It looks like I can go around these bushes to get my slippers."], //34
 ];
 let dialogueState = {
   index: -1,
@@ -80,6 +137,10 @@ function drawDialogue() {
   let dialogueX = 205;
   if (dialogueState.mainMessageIndex == 0) {
     if (dialogueState.index == 1 || dialogueState.index == 2) {
+      dPerson = "GRANDMA";
+    }
+  } else if (dialogueState.mainMessageIndex == 21) {
+    if (dialogueState.index == 2 || dialogueState.index == 3) {
       dPerson = "GRANDMA";
     }
   }
@@ -180,31 +241,76 @@ function runDialogue(n) {
 
 // checks for certain conditions for dialogue and runs them
 function dialogueChecks() {
-  if (!somaCheck && donefirstSomaCheck) {
-    runDialogue(10);
-  }
   let temp = inventoryArr.find((item) => item.type === 5);
   if (!temp) {
     runDialogue(11);
   }
-  if (
-    currentLevel == 1 &&
-    objectivesCounter == 3 &&
-    !dialogueDone[12] &&
-    !dialogueState.show
-  ) {
-    runDialogue(12);
-    //debug this
-  }
-  if (currentLevel == 1 && levelComplete && !dialogueState.show) {
-    runDialogue(14);
-  }
-  if (
-    currentLevel == 1 &&
-    currentRoom == 2 &&
-    playerPos.colY > 60 &&
-    !dialogueDone[13]
-  ) {
-    runDialogue(13);
+  if (!dialogueState.show) {
+    if (currentLevel == 1) {
+      if (!somaCheck && donefirstSomaCheck) {
+        runDialogue(10);
+      }
+      if (objectivesCounter == 3 && !dialogueDone[12]) {
+        runDialogue(12);
+        // 2 more items
+      }
+      if (levelComplete) {
+        runDialogue(14);
+        // head back to cottage
+      }
+      if (currentRoom == 2 && playerPos.colY > 60 && !dialogueDone[13]) {
+        runDialogue(13);
+        // go to binoculars
+      }
+      if (currentRoom == 1 && !dialogueDone[34]) {
+        runDialogue(34);
+        // go around bushes
+      }
+    } else if (currentLevel == 2) {
+      if (!dialogueDone[22]) {
+        runDialogue(22);
+      }
+      if (temperature < 1200 && !dialogueDone[16]) {
+        runDialogue(16);
+        // getting cold
+      }
+      if (!somaCheck && donesecondSomaCheck && !dialogueDone[17]) {
+        runDialogue(17);
+      }
+      let temp2 = inventoryArr.find((item) => item.type === 8);
+      if (dialogueDone[17]) {
+        if (!temp2 && !dialogueDone[18]) {
+          runDialogue(18);
+        } else if (!dialogueDone[19] && !dialogueDone[18]) {
+          runDialogue(19);
+        }
+      }
+      if (currentRoom == 3 && !fadingIn && !fadingOut && !dialogueDone[26]) {
+        runDialogue(24);
+      }
+      if (currentRoom == 4 && !dialogueDone[28] && playerPos.colY > 200) {
+        // go deeper by going down
+        runDialogue(28);
+      }
+    } else if (currentLevel == 3) {
+      // debug this
+
+      if (!dialogueDone[26]) {
+        runDialogue(26);
+      }
+      if (firstSO && !dialogueDone[29]) {
+        runDialogue(29);
+      }
+      if (objectivesCounter > objectivesTotal && !dialogueDone[32]) {
+        runDialogue(32);
+      }
+      if (levelComplete && !dialogueDone[33]) {
+        runDialogue(33);
+        // there's the tree
+      }
+    }
+    if (health < 3 && !dialogueDone[27]) {
+      runDialogue(27);
+    }
   }
 }

@@ -1,6 +1,6 @@
 // for debugging
 let currentRoom = 0;
-let playerSpeed = 10;
+let playerSpeed = 2.5;
 let showCutscenes = true;
 let debuggingHitboxes = false;
 let transitions = true; // fade in fade out

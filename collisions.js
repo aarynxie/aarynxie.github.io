@@ -653,6 +653,9 @@ function detectThornsReset() {
   // Update previous state
   previousThornsHit = thornsHit;
   if (hitThornsCounter > 2) {
+    if (dialogueDone[23]) {
+      runDialogue(23);
+    }
     hitThornsCounter = 0;
     wearingJacket = false;
   }
@@ -705,31 +708,34 @@ function objectivesCol() {
       ) {
         objectiveHit = true;
         newItem = obj.type;
-        if (obj.type == 0) {
-          runDialogue(4);
-        } else if (obj.type == 1) {
-          runDialogue(5);
-        } else if (obj.type == 2) {
-          runDialogue(6);
-        } else if (obj.type == 3) {
-          runDialogue(7);
-        } else if (obj.type == 4) {
-          runDialogue(8);
+        if (currentLevel == 1) {
+          if (obj.type == 0) {
+            runDialogue(4);
+          } else if (obj.type == 1) {
+            runDialogue(5);
+          } else if (obj.type == 2) {
+            runDialogue(6);
+          } else if (obj.type == 3) {
+            runDialogue(7);
+          } else if (obj.type == 4) {
+            runDialogue(8);
+          }
         }
-      }
-      // special stick
-      if (currentRoom == 9 && currentLevel == 2 && objectivesShow[i]) {
-        // start cutscene
-        specialCutscene = true;
-        cutscene = true;
-        playGame = false;
+        // special stick
+        if (currentRoom == 9 && currentLevel == 2 && objectivesShow[i]) {
+          // start cutscene
+          specialCutscene = true;
+          cutscene = true;
+          playGame = false;
+        }
       }
 
       updateObjectivesShow(currentRoom, i);
     }
   }
   if (objectiveHit && !previousObjectiveHit) {
-    if (currentLevel !== 2 && objectivesCounter !== objectivesTotal) {
+    if (objectivesCounter !== objectivesTotal) {
+      //if (currentLevel !== 2 && objectivesCounter !== objectivesTotal) {
       ifNewItem = true;
     }
   }
@@ -783,8 +789,14 @@ function headphonesCol() {
   if (headphonesHit && !previousHeadphonesHit && headphonesShowCurrent[0]) {
     if (headphonesStage == 0) {
       newItem = 9;
+      if (!dialogueDone[30]) {
+        runDialogue(30);
+      }
     } else if (headphonesStage == 1) {
       newItem = 10;
+      if (!dialogueDone[31]) {
+        runDialogue(31);
+      }
     }
     addToInventory(9);
     ifNewItem = true;
@@ -830,6 +842,9 @@ function jacketsCol() {
   }
   if (jacketsHit && !previousJacketsHit && jacketsShowCurrent[0]) {
     addToInventory(8);
+    if (!dialogueDone[20] && dialogueDone[16]) {
+      runDialogue(20);
+    }
     ifNewItem = true;
     /*
     if (wearingJacket) {
