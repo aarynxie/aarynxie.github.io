@@ -25,7 +25,7 @@ function setup() {
   if (!showCutscenes) {
     startScreen = false;
     playGame = true;
-    currentLevel = 3;
+    currentLevel = 0;
     inventoryMode = true;
   }
   if (currentLevel == 3) {

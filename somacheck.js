@@ -11,13 +11,16 @@ function drawFocusMode() {
   stroke(0);
   strokeWeight(5);
   fill(222, 114, 45);
-  rect(200, 100, 400, 390);
+  //rect(200, 100, 400, 390);
   stroke(255);
   strokeWeight(5);
   pop();
 
-  if (qteActive) {
+  if (qteActive && !showHealth) {
     push();
+    imageMode(CENTER);
+    image(somaCheckImage, width / 2, height / 2);
+    /*
     textAlign(CENTER);
     fill(102, 49, 20);
     rect(210, 160, 380, 250);
@@ -27,16 +30,24 @@ function drawFocusMode() {
     text("Press the space key", width / 2, 450);
     text("Soma Check", width / 2, 140);
     imageMode(CENTER);
-    image(walkImages[0][0], width / 2, height / 2, 160, 210);
+    image(walkImages[0][0], width / 2, height / 2, 160, 210); */
     rectMode(CENTER);
     let rectHeight = map(currentStep, 0, 10, 230, 400);
     fill(50, 200, 50);
     rect(width / 2, rectHeight, 100, 6);
     pop();
   }
+  console.log(showHealth + "showing health");
 
-  if (somaCheckComplete) {
+  if (somaCheckComplete && !showHealth) {
+    if (!somaCheckSound.isPlaying()) {
+      somaCheckSound.play();
+    }
+    console.log("bg");
     push();
+    imageMode(CENTER);
+    image(somaCheckDoneImage, width / 2, height / 2);
+    /*
     fill(102, 49, 20);
     rect(210, 160, 380, 250);
     textAlign(CENTER);
@@ -44,7 +55,7 @@ function drawFocusMode() {
     fill(255);
     textSize(64);
     text("Soma Check\ncomplete", width / 2, height / 2 - 10);
-    textSize(32);
+    textSize(32); */
     pop();
   }
 
@@ -53,13 +64,15 @@ function drawFocusMode() {
     stroke(255);
     strokeWeight(5);
     fill(102, 49, 20);
-    rect(210, 130, 380, 150);
+    //rect(210, 130, 380, 150);
     noStroke();
     imageMode(CENTER);
-    image(walkImages[0][0], width / 2, height / 2 - 100, 200, 200);
-    fill(0, 255, 0);
-    textAlign(CENTER);
-    text("Health: " + health, width / 2, 350);
+    image(somaCheckImage2, width / 2, height / 2);
+    //image(walkImages[0][0], width / 2, height / 2 - 100, 200, 200);
+    fill(0);
+    textAlign(LEFT);
+    textSize(16);
+    text("Health: " + health + " / " + maxHealth, width / 2, 250);
     let temperatureText;
     if (temperature > 2400) {
       temperatureText = "Everything seems okay.";
@@ -68,7 +81,7 @@ function drawFocusMode() {
     } else {
       temperatureText = "Oh no! my fingertips are turning blue.";
     }
-    text("Temperature: " + temperatureText, width / 2, 400);
+    text("Temperature: " + temperatureText, width / 2, 300, 150, 400);
     pop();
     freezingDraw();
     healthBarDraw();

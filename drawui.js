@@ -62,7 +62,7 @@ let stickBarText;
 function uiDraw() {
   newItemDraw();
   abilitiesBarDraw();
-  healthBarDraw();
+  //healthBarDraw();
   inventoryDraw();
   uiArrowDraw();
 }

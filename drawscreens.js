@@ -11,12 +11,20 @@ let gameOver = false;
 let gameComplete = false;
 let levelComplete = false;
 
+let somaCheckImage;
+let somaCheckDoneImage;
+let somaCheckImage2;
+
 function screensPreload() {
   screenLevelCompleteImage = loadImage("sprites/ui/levelcompletescreen.png");
   screenStartImage = loadImage("sprites/ui/startscreen.png");
   screenYouDiedImage = loadImage("sprites/ui/youdiedscreen.png");
   screenLevel1 = loadImage("sprites/ui/Level1Complete.png");
   screenLevel2 = loadImage("sprites/ui/Level2Complete.png");
+
+  somaCheckImage = loadImage("sprites/ui/somacheckbg.png");
+  somaCheckDoneImage = loadImage("sprites/ui/somacheckbgdone.png");
+  somaCheckImage2 = loadImage("sprites/ui/somacheckbg2.png");
 }
 
 function showStartScreen() {

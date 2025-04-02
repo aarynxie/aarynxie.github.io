@@ -8,6 +8,9 @@ let tear1Sound;
 let tear2Sound;
 let healSound;
 
+let typeSound;
+let somaCheckSound;
+
 function soundPreload() {
   walkingSound = loadSound("sound/Walking_Sound.mp3");
   popSound = loadSound("sound/new/pop.mp3");
@@ -18,6 +21,9 @@ function soundPreload() {
   tear1Sound = loadSound("sound/new/tear_1.mp3");
   tear2Sound = loadSound("sound/new/tear_2.mp3");
   healSound = loadSound("sound/new/heal_twinkle.mp3");
+
+  typeSound = loadSound("sound/new/typeWriter.mp3");
+  somaCheckSound = loadSound("sound/new/taskSound.mp3");
 }
 
 let cricketSoundDelay;
@@ -69,6 +75,11 @@ function soundPlay() {
     tear1Sound.stop();
     tear2Sound.stop();
     SOSound.stop();
+    typeSound.stop();
+    somaCheckSound.stop();
+  }
+  if (!dialogueState.show) {
+    typeSound.stop();
   }
 }
 

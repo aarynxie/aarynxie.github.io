@@ -182,11 +182,17 @@ function drawDialogue() {
     305,
     90
   );
+  if (dialogueState.displayIndex < dialogueState.currentMessage.length) {
+    if (!typeSound.isPlaying()) {
+      typeSound.play();
+    }
+  }
 
   if (
     dialogueState.displayIndex === dialogueState.currentMessage.length &&
     frameCount % 60 < 30
   ) {
+    typeSound.stop();
     fill("#834916");
     text("Click to continue...", dialogueX, 558);
   }
