@@ -411,4 +411,5 @@ function drawCutscene() {
 
 function showLevelComplete() {
   image(screenLevelCompleteImage, 0, 0);
+  moving = false;
 }

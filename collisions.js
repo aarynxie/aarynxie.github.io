@@ -922,7 +922,7 @@ function addToInventory(itemType) {
         quantity: 1,
         usable: true,
       });
-      headphonesStage = 1;
+      // headphonesStage = 1;
     } else if (headphonesStage == 1) {
       // headphones 1
       // add stage 2 headphones
@@ -931,7 +931,7 @@ function addToInventory(itemType) {
         quantity: 1,
         usable: true,
       });
-      headphonesStage = 2;
+      //headphonesStage = 2;
     }
   } else {
     if (itemType == 8) {

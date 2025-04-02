@@ -5,7 +5,7 @@ let showCutscenes = true;
 let debuggingHitboxes = false;
 let transitions = true; // fade in fade out
 let currentLevel = 0;
-let skipStartCutscene = false;
+let skipStartCutscene = true;
 let hitboxesOn = true;
 
 function preload() {
@@ -86,6 +86,7 @@ function draw() {
   } else if (gameOver) {
     showGameOver();
   } else if (gameComplete) {
+    walkingSound.stop();
     showLevelComplete();
   } else if (cutscene) {
     drawCutscene();

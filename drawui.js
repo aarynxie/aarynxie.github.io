@@ -91,9 +91,12 @@ function newItemDraw() {
     if (currentLevel !== 3 && objectivesCounter !== objectivesTotal) {
       // test this
     }
-    if (currentLevel == 3 && !dialogueDone[24]) {
-    } else {
+    if (currentLevel !== 3) {
       drawNewItem(newItem);
+    } else {
+      if (dialogueDone[24]) {
+        drawNewItem(newItem);
+      }
     }
   }
 
@@ -150,7 +153,7 @@ function healDraw() {
   healX = playerPos.x;
   if (ifHeal) {
     healFrames++;
-    if (!healSound.isPlaying() && healFrames >= 10) {
+    if (!healSound.isPlaying() && healFrames <= 10) {
       healSound.play();
     }
 
@@ -173,6 +176,7 @@ function healDraw() {
       healOpacity = 350; // Reset opacity for next use
     }
   }
+  console.log(ifHeal);
 }
 
 // Call this function when healing starts
@@ -265,6 +269,7 @@ function soundOverload() {
           SOSound.setVolume(1);
         }
         SOSound.play();
+        moving = false;
       }
       console.log("play sound");
       firstSO = true;
@@ -378,6 +383,11 @@ function inventoryDraw() {
           }
           if (invSelect == 9) {
             wearingHeadphones = true;
+            if (headphonesStage == 1) {
+              headphonesStage = 2;
+            } else {
+              headphonesStage = 1;
+            }
             if (headphonesStage == 2) {
               wearStage2Headphones = true;
             }
